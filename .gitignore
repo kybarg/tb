@@ -45,3 +45,12 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Vagrant
+.vagrant/
+
+# NodeJS
+node_modules/
+
+# Bower
+bower_components/
