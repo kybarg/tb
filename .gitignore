@@ -61,5 +61,6 @@ bower_components/
 # VS
 .vscode/
 jsconfig.json
-
-logfile.log
+app/logfile.txt
+app/logfile.txt
+app/logfile.txt
