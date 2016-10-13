@@ -61,3 +61,5 @@ bower_components/
 # VS
 .vscode/
 jsconfig.json
+
+logfile.log
