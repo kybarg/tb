@@ -18,16 +18,33 @@
                 <option value="Колготки">Колготки</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="inputProductVendor">Vendor</label>
-            <select name="product[vendor]" class="form-control" id="inputProductVendor">
-                <option value="Adidas">Adidas</option>
-                <option value="Oodji">Oodji</option>
-                <option value="Reebok">Reebok</option>
-                <option value="Puma">Puma</option>
-                <option value="s'Olives">s'Olives</option>
-            </select>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputProductVendor">Vendor</label>
+                    <select name="product[vendor]" class="form-control" id="inputProductVendor">
+                        <option value="Adidas">Adidas</option>
+                        <option value="Oodji">Oodji</option>
+                        <option value="Reebok">Reebok</option>
+                        <option value="Puma">Puma</option>
+                        <option value="s'Olives">s'Olives</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputProductShop">Shop</label>
+                    <select name="product[shop]" class="form-control" id="inputProductShop">
+                        <option value="Lamoda">Lamoda</option>
+                        <option value="Wildberries">Wildberries</option>
+                        <option value="Quelle">Quelle</option>
+                        <option value="La Redoute">La Redoute</option>
+                        <option value="KupiVip">KupiVip</option>
+                    </select>
+                </div>
+            </div>
         </div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -82,7 +99,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputProductSize">Size</label>
-                    <select name="product[size][]" class="form-control" id="inputProductSize" multiple="multiple" size="9">
+                    <select name="product[size][]" class="form-control" id="inputProductSize" multiple="multiple">
                         <option value="XS">XS</option>
                         <option value="S">S</option>
                         <option value="M">M</option>
@@ -95,17 +112,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="inputProductSeason">Season</label>
-                    <select name="product[season]" class="form-control" id="inputProductSeason">
-                        <option value="Демисезон">Демисезон</option>
-                        <option value="Мультисезон">Мультисезон</option>
-                        <option value="Зима">Зима</option>
-                        <option value="Лето">Лето</option>
-                        <option value="Весна/Осень">Весна/Осень</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Sex</label>
+                    <label>Age</label>
                     <div class="form-check">
                         <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
@@ -133,17 +140,74 @@
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <label for="inputProductShop">Shop</label>
-            <select name="product[shop]" class="form-control" id="inputProductShop">
-                <option value="Lamoda">Lamoda</option>
-                <option value="Wildberries">Wildberries</option>
-                <option value="Quelle">Quelle</option>
-                <option value="La Redoute">La Redoute</option>
-                <option value="KupiVip">KupiVip</option>
-            </select>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Season</label>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
+                            None
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="1">
+                            Summer
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
+                            Winter
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
+                            Demi
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="4">
+                            All-season
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Sex</label>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
+                            None
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="1">
+                            Women
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
+                            Men
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
+                            Unisex
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
 
 
         <button type="submit" class="btn btn-primary">Submit</button>
