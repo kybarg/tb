@@ -11,6 +11,8 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var session = require('express-session')
 var exphbs = require('express-handlebars');
+var path = require('path');
+var static  = require('express-static');
 
 var configDB = require('./config/database.js');
 
@@ -30,10 +32,7 @@ app.use(bodyParser.urlencoded({
     })) // get information from html forms
 app.use(bodyParser.json());
 
-app.engine('handlebars', exphbs({
-    defaultLayout: 'main'
-})); // set up handlebars for templating
-app.set('view engine', 'handlebars');
+app.set('view engine', '.hbs');
 
 // required for passport
 app.use(session({
@@ -58,7 +57,10 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/routes.js')(app, passport, exphbs); // load our routes and pass in our app and fully configured passport
+require('./routes/admin.js')(app, passport, exphbs);
+
+app.use('/admin', express.static('admin'));
 
 // launch ======================================================================
 app.listen(port);
