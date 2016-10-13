@@ -12,7 +12,9 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 var exphbs = require('express-handlebars');
 var path = require('path');
-var static  = require('express-static');
+var static = require('express-static');
+var multer = require('multer');
+var upload = multer();
 
 var configDB = require('./config/database.js');
 
@@ -23,14 +25,15 @@ require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
 app.use(logger({
-    path: "./logfile.txt"
+    path: "./logfile.log"
 })); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 
 app.use(bodyParser.urlencoded({
-        extended: false
-    })) // get information from html forms
+    extended: true
+})); // get information from html forms
 app.use(bodyParser.json());
+app.use(upload.array());
 
 app.set('view engine', '.hbs');
 

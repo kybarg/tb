@@ -27,6 +27,10 @@ module.exports = function(app, passport, exphbs) {
     app.get('/admin/products/add', isLoggedIn, function(req, res) {
         res.render('products/add');
     });
+
+    app.post('/admin/products/add', function(req, res) {
+        console.log(req.body);
+    });
 }
 
 // route middleware to make sure

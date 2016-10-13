@@ -69,9 +69,19 @@
                 </form> -->
             </nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Library</a></li>
-                <li class="breadcrumb-item active">Data</li>
+                {{#each breadcrumb}}
+                    {{#unless @last}}
+                        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="{{this.url}}" itemprop="url">
+                                <span itemprop="title">{{this.label}}</span>
+                            </a>
+                        </li>
+                        {{else}}
+                            <li>
+                                <span>{{this.label}}</span>
+                            </li>
+                    {{/unless}}
+                {{/each}}
             </ol>
             <div class="container-fluid">
                 {{{body}}}
