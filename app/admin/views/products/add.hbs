@@ -11,21 +11,21 @@
         <div class="form-group">
             <label for="inputProductCategory">Categories</label>
             <select name="product[category]" class="form-control" id="inputProductCategory" multiple="multiple">
-                <option>Женщине</option>
-                <option>Одежда</option>
-                <option>Блузки</option>
-                <option>Свитера</option>
-                <option>Колготки</option>
+                <option value="Женщине">Женщине</option>
+                <option value="Одежда">Одежда</option>
+                <option value="Блузки">Блузки</option>
+                <option value="Свитера">Свитера</option>
+                <option value="Колготки">Колготки</option>
             </select>
         </div>
         <div class="form-group">
             <label for="inputProductVendor">Vendor</label>
-            <select namd="product[vendor]" class="form-control" id="inputProductVendor">
-                <option>Adidas</option>
-                <option>Oodji</option>
-                <option>Reebok</option>
-                <option>Puma</option>
-                <option>s'Olives</option>
+            <select name="product[vendor]" class="form-control" id="inputProductVendor">
+                <option value="Adidas">Adidas</option>
+                <option value="Oodji">Oodji</option>
+                <option value="Reebok">Reebok</option>
+                <option value="Puma">Puma</option>
+                <option value="s'Olives">s'Olives</option>
             </select>
         </div>
         <div class="row">
@@ -58,50 +58,50 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputProductColor">Color</label>
-                    <select namd="product[color]" class="form-control" id="inputProductColor" multiple="multiple">
-                        <option>Белый</option>
-                        <option>Розовый</option>
-                        <option>Синий</option>
-                        <option>Красный</option>
-                        <option>Черный</option>
+                    <select name="product[color][]" class="form-control" id="inputProductColor" multiple="multiple">
+                        <option value="Белый">Белый</option>
+                        <option value="Розовый">Розовый</option>
+                        <option value="Синий">Синий</option>
+                        <option value="Красный">Красный</option>
+                        <option value="Черный">Черный</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputProductMaterial">Material</label>
-                    <select namd="productmaterial]" class="form-control" id="inputProductMaterial" multiple="multiple">
-                        <option>Замш</option>
-                        <option>Кожа</option>
-                        <option>Кожзам.</option>
-                        <option>Хлопок</option>
-                        <option>Шерсть</option>
+                    <select name="product[material][]" class="form-control" id="inputProductMaterial" multiple="multiple">
+                        <option value="Замш">Замш</option>
+                        <option value="Кожа">Кожа</option>
+                        <option value="Кожзам.">Кожзам.</option>
+                        <option value="Хлопок">Хлопок</option>
+                        <option value="Шерсть">Шерсть</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputProductSize">Size</label>
-                    <select namd="product[size]" class="form-control" id="inputProductSize" multiple="multiple" size="9">
-                        <option>XS</option>
-                        <option>S</option>
-                        <option>M</option>
-                        <option>L</option>
-                        <option>XL</option>
-                        <option>XXL</option>
-                        <option>XXXL</option>
+                    <select name="product[size][]" class="form-control" id="inputProductSize" multiple="multiple" size="9">
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                        <option value="XXXL">XXXL</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputProductSeason">Season</label>
-                    <select namd="product[season]" class="form-control" id="inputProductSeason">
-                        <option>Демисезон</option>
-                        <option>Мультисезон</option>
-                        <option>Зима</option>
-                        <option>Лето</option>
-                        <option>Весна/Осень</option>
+                    <select name="product[season]" class="form-control" id="inputProductSeason">
+                        <option value="Демисезон">Демисезон</option>
+                        <option value="Мультисезон">Мультисезон</option>
+                        <option value="Зима">Зима</option>
+                        <option value="Лето">Лето</option>
+                        <option value="Весна/Осень">Весна/Осень</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -136,12 +136,12 @@
 
         <div class="form-group">
             <label for="inputProductShop">Shop</label>
-            <select namd="product[shop]" class="form-control" id="inputProductShop">
-                <option>Lamoda</option>
-                <option>Wildberries</option>
-                <option>Quelle</option>
-                <option>La Redoute</option>
-                <option>KupiVip</option>
+            <select name="product[shop]" class="form-control" id="inputProductShop">
+                <option value="Lamoda">Lamoda</option>
+                <option value="Wildberries">Wildberries</option>
+                <option value="Quelle">Quelle</option>
+                <option value="La Redoute">La Redoute</option>
+                <option value="KupiVip">KupiVip</option>
             </select>
         </div>
 

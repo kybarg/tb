@@ -25,7 +25,7 @@ require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
 app.use(logger({
-    path: "./logfile.txt"
+    path: "./logfile.log"
 })); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 
