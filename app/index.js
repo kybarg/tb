@@ -11,8 +11,11 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var session = require('express-session')
 var exphbs = require('express-handlebars');
+var path = require('path');
+var static  = require('express-static');
 
 var configDB = require('./config/database.js');
+
 
 
 // configuration ===============================================================
@@ -20,21 +23,24 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
+
 // set up our express application
 app.use(logger({
     path: "./logfile.txt"
 })); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
 
 app.use(bodyParser.urlencoded({
         extended: false
     })) // get information from html forms
 app.use(bodyParser.json());
+app.use(cookieParser()); // read cookies (needed for auth)
 
-app.engine('handlebars', exphbs({
-    defaultLayout: 'main'
-})); // set up handlebars for templating
-app.set('view engine', 'handlebars');
+// app.engine('.hbs', exphbs({
+//     defaultLayout: 'main',
+//     extname: '.hbs',
+//     // layoutsDir: app.get('views') + '/layouts/'
+// })); // set up handlebars for templating
+app.set('view engine', '.hbs');
 
 // required for passport
 app.use(session({
@@ -59,7 +65,10 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/routes.js')(app, passport, exphbs); // load our routes and pass in our app and fully configured passport
+require('./routes/admin.js')(app, passport, exphbs);
+
+app.use('/admin', express.static('admin'));
 
 // launch ======================================================================
 app.listen(port);

@@ -1,0 +1,21 @@
+{
+  "name": "trendberry",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Trendberry Team"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/kybarg/tb",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "v4.0.0-alpha.4",
+    "mdi": "^1.7.22"
+  }
+}
