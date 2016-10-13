@@ -51,6 +51,17 @@ Temporary Items
 
 # NodeJS
 node_modules/
+typings/
+typings.json
+logfile.txt
 
 # Bower
 bower_components/
+
+# VS
+.vscode/
+jsconfig.json
+
+
+
+
