@@ -67,4 +67,4 @@ app.use('/admin', express.static('admin'));
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log('Connected to port ' + port);

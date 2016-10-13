@@ -20,6 +20,9 @@ module.exports = function(app, passport, exphbs) {
     // =====================================
     // PRODUCTS ============================
     // =====================================
+    
+    var Product = require('../models/product');
+    
     app.get('/admin/products', isLoggedIn, function(req, res) {
         res.render('products');
     });
@@ -29,8 +32,15 @@ module.exports = function(app, passport, exphbs) {
     });
 
     app.post('/admin/products/add', function(req, res) {
-        console.log(req.body);
-    });
+        console.log(req.body.product);
+        var product = new Product(req.body.product);
+        product.save(function(err) {
+                    if (err)
+                       throw err;
+                    console.log('Product added, id = ' + product._id);
+                    res.render('products/add');
+                });
+            });
 }
 
 // route middleware to make sure

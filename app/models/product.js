@@ -9,20 +9,20 @@ var productSchema = mongoose.Schema({
     url: String,
     vendor: String,
     age: {
-        type: String,
-        enum: ['child', 'adult', 'kid', 'none'],
-        default: 'none'
+        type: Number,
+        enum: [null, 1, 2, 3],
+        default: null
     },
-    color: String,
-    material: String,
-    size: String,     // need converter
+    color: [String],
+    material: [String],
+    size: [String],     // need converter
     sex: {
-        type: String,
-        enum: ['male', 'female', 'unisex'],
-        default: 'unisex'
+        type: Number,
+        enum: [null, 1, 2, 3],
+        default: null
     },
     season: String,
-    shop: Number,
+    shop: String,
     meta:{
         title: String,
         desc: String
