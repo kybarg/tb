@@ -43,13 +43,19 @@
 
 #page-content-wrapper {
     width: 100%;
+    padding-bottom: 15px;
     position: absolute;
-    padding: 15px;
 }
 
 #page-content-wrapper > .navbar {
     border-radius: 0;
-    margin: -15px -15px 15px;
+    margin-bottom: 15px;
+}
+
+#page-content-wrapper > .navbar + .breadcrumb {
+    border-radius: 0;
+    margin-bottom: 15px;
+    margin-top: -15px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -123,7 +129,6 @@
     }
 
     #page-content-wrapper {
-        padding: 15px;
         position: relative;
     }
 
@@ -131,4 +136,8 @@
         position: relative;
         margin-right: 0;
     }
+}
+
+select[multiple] {
+    overflow: auto;
 }
