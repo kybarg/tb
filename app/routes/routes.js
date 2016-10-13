@@ -1,9 +1,19 @@
-module.exports = function(app, passport) {
+module.exports = function(app, passport, exphbs) {
+
+    app.all('/*', function(req, res, next) {
+        app.set('views', 'views');
+        app.engine('.hbs', exphbs({
+            defaultLayout: 'main',
+            extname: '.hbs',
+            layoutsDir: 'views/layouts/'
+        }));
+        next(); // pass control to the next handler
+    });
 
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
-	app.get('/', function(req, res) {
+	app.get('/', function(req, res, next) {
 		res.render('index'); // load the index.hbs file
 	});
 
@@ -59,6 +69,7 @@ module.exports = function(app, passport) {
 		req.logout();
 		res.redirect('/');
 	});
+
 };
 
 // route middleware to make sure
