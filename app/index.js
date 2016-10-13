@@ -14,7 +14,6 @@ var exphbs = require('express-handlebars');
 
 var configDB = require('./config/database.js');
 
-
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 
