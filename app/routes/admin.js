@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
         crypto.pseudoRandomBytes(16, function(err, raw) {
             if (err) return cb(err)
 
-            cb(null, raw.toString('hex') + path.extname(file.originalname))
+            cb(null, raw.toString('hex') + Date.now().toString() + path.extname(file.originalname))
         })
     }
 })
