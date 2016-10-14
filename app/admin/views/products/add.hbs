@@ -1,105 +1,121 @@
-<form class="row" method="POST" enctype="multipart/form-data">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="inputProductName">Name</label>
-            <input name="product[name]" type="text" class="form-control" id="inputProductName" placeholder="Product name">
+<form method="POST" enctype="multipart/form-data">
+    <div class="m-b-1">
+        <div class="pull-xs-left">
+            <a href="/admin/products" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
         </div>
-        <div class="form-group">
-            <label for="inputProductDescription">Description</label>
-            <textarea name="product[description]" class="form-control" id="inputProductDescription" rows="3"></textarea>
+
+        <div class="pull-xs-right">
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
         </div>
-        <div class="form-group">
-            <label for="inputProductCategory">Categories</label>
-            <select name="product[category]" class="form-control" id="inputProductCategory" multiple="multiple">
+        <div class="clearfix"></div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputProductName">Name</label>
+                <input name="product[name]" type="text" class="form-control" id="inputProductName" placeholder="Product name" value="{{product.name}}">
+            </div>
+            <div class="form-group">
+                <label for="inputProductDescription">Description</label>
+                <textarea name="product[description]" class="form-control" id="inputProductDescription" rows="3">{{{product.description}}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="inputProductCategory">Categories</label>
+                <select name="product[category]" class="form-control" id="inputProductCategory" multiple="multiple">
                 <option value="Женщине">Женщине</option>
                 <option value="Одежда">Одежда</option>
                 <option value="Блузки">Блузки</option>
                 <option value="Свитера">Свитера</option>
                 <option value="Колготки">Колготки</option>
             </select>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputProductVendor">Vendor</label>
-                    <select name="product[vendor]" class="form-control" id="inputProductVendor">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductVendor">Vendor</label>
+                        <select name="product[vendor]" class="form-control" id="inputProductVendor">
                         <option value="Adidas">Adidas</option>
                         <option value="Oodji">Oodji</option>
                         <option value="Reebok">Reebok</option>
                         <option value="Puma">Puma</option>
                         <option value="s'Olives">s'Olives</option>
                     </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputProductShop">Shop</label>
-                    <select name="product[shop]" class="form-control" id="inputProductShop">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductShop">Shop</label>
+                        <select name="product[shop]" class="form-control" id="inputProductShop">
                         <option value="Lamoda">Lamoda</option>
                         <option value="Wildberries">Wildberries</option>
                         <option value="Quelle">Quelle</option>
                         <option value="La Redoute">La Redoute</option>
                         <option value="KupiVip">KupiVip</option>
                     </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputProductPrice">Price</label>
-                    <div class="input-group">
-                        <input name="product[price]" type="text" class="form-control" id="inputProductPrice" placeholder="0.00">
-                        <span class="input-group-addon">RUB</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputProductOldprice">Old price</label>
-                    <div class="input-group">
-                        <input name="product[oldprice]" type="text" class="form-control" id="inputProductOldprice" placeholder="0.00">
-                        <span class="input-group-addon">RUB</span>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductPrice">Price</label>
+                        <div class="input-group">
+                            <input name="product[price]" type="text" class="form-control" id="inputProductPrice" placeholder="0.00" value="{{product.price}}">
+                            <span class="input-group-addon">RUB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductOldprice">Old price</label>
+                        <div class="input-group">
+                            <input name="product[oldPrice]" type="text" class="form-control" id="inputProductOldprice" placeholder="0.00" value="{{product.oldPrice}}">
+                            <span class="input-group-addon">RUB</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="inputProductUrl">Url</label>
-            <input name="product[url]" type="text" class="form-control" id="inputProductUrl" placeholder="URL">
-        </div>
+            <div class="form-group">
+                <label for="inputProductUrl">Url</label>
+                <input name="product[url]" type="text" class="form-control" id="inputProductUrl" placeholder="URL" value="{{product.url}}">
+            </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputProductColor">Color</label>
-                    <select name="product[color][]" class="form-control" id="inputProductColor" multiple="multiple">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductColor">Color</label>
+                        <select name="product[color][]" class="form-control" id="inputProductColor" multiple="multiple">
                         <option value="Белый">Белый</option>
                         <option value="Розовый">Розовый</option>
                         <option value="Синий">Синий</option>
                         <option value="Красный">Красный</option>
                         <option value="Черный">Черный</option>
                     </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputProductMaterial">Material</label>
-                    <select name="product[material][]" class="form-control" id="inputProductMaterial" multiple="multiple">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductMaterial">Material</label>
+                        <select name="product[material][]" class="form-control" id="inputProductMaterial" multiple="multiple">
                         <option value="Замш">Замш</option>
                         <option value="Кожа">Кожа</option>
                         <option value="Кожзам.">Кожзам.</option>
                         <option value="Хлопок">Хлопок</option>
                         <option value="Шерсть">Шерсть</option>
                     </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputProductSize">Size</label>
-                    <select name="product[size][]" class="form-control" id="inputProductSize" multiple="multiple">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductSize">Size</label>
+                        <select name="product[size][]" class="form-control" id="inputProductSize" multiple="multiple">
                         <option value="XS">XS</option>
                         <option value="S">S</option>
                         <option value="M">M</option>
@@ -108,122 +124,133 @@
                         <option value="XXL">XXL</option>
                         <option value="XXXL">XXXL</option>
                     </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Age</label>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
                             None
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="1">
                             Toddler
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
                             Child
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
                             Adults
                         </label>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Season</label>
-                    <div class="form-check">
-                        <label class="form-check-label">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Season</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
                             None
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="1">
                             Summer
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
                             Winter
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
                             Demi
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="4">
                             All-season
                         </label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Sex</label>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Sex</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
                             None
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="1">
                             Women
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
                             Men
                         </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
                             Unisex
                         </label>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="inputProductAlias">Alias</label>
-            <input name="product[alias]" type="text" class="form-control" id="inputProductAlias" placeholder="product-name-vendor-id">
-        </div>
-        <div class="form-group">
-            <label for="inputProductMetaTitle">Meta Title</label>
-            <input name="product[meta][title]" type="text" class="form-control" id="inputProductMetaTitle" placeholder="Title">
-        </div>
-        <div class="form-group">
-            <label for="inputProductMetaDescription">Meta Description</label>
-            <textarea name="product[meta][description]" class="form-control" id="inputProductMetaDescription" rows="3"></textarea>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputProductAlias">Alias</label>
+                <input name="product[alias]" type="text" class="form-control" id="inputProductAlias" placeholder="product-name-vendor-id" value="{{product.alias}}">
+            </div>
+            <div class="form-group">
+                <label for="inputProductMetaTitle">Meta Title</label>
+                <input name="product[meta][title]" type="text" class="form-control" id="inputProductMetaTitle" placeholder="Title" value="{{product.meta.title}}">
+            </div>
+            <div class="form-group">
+                <label for="inputProductMetaDescription">Meta Description</label>
+                <textarea name="product[meta][description]" class="form-control" id="inputProductMetaDescription" rows="3">{{product.meta.description}}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Picture</label>
+                {{#if product.picture}}
+                    <div class="clearfix m-y-1">
+                        <img src="/public/uploads/{{product.picture}}" style="max-height: 320px;" />
+                    </div>
+                {{else}}
+                    <div class="clearfix"></div>
+                {{/if}}
+                <input type="hidden" name="product[picture]" value="{{product.picture}}" />
+                <label class="custom-file">
+                    <input name="image" type="file" id="image" class="custom-file-input">
+                    <span class="custom-file-control"></span>
+                </label>
+            </div>
         </div>
     </div>
 </form>

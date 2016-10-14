@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 var productSchema = mongoose.Schema({
     name: String,
     description: String,
     category: [String],
+    price: Number,
     oldPrice: Number,
     alias: String,
     url: String,
@@ -15,19 +17,29 @@ var productSchema = mongoose.Schema({
     },
     color: [String],
     material: [String],
-    size: [String],     // need converter
+    size: [String], // need converter
     sex: {
         type: Number,
         enum: [null, 1, 2, 3],
         default: null
     },
+    picture: String,
     season: String,
     shop: String,
-    meta:{
+    meta: {
         title: String,
-        desc: String
+        description: String
     }
 });
+productSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Product', productSchema);
 
+/* TODO
+/* Sort fields for better reading
+/* File upload callback for picture field with image resize
+/* https://www.npmjs.com/package/mongoose-file - file upload
+/* https://www.npmjs.com/package/lwip - image operations
+/* Need to add timestamp field of 'last edit time' OR if possible get it from ObjectID
+/* Not sure about Category/Vendor/Shop field type - it will store ObjectIDs. Is it String?
+*/
