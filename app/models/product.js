@@ -5,7 +5,19 @@ var fs = require('fs');
 var productSchema = mongoose.Schema({
     name: String,
     description: String,
-    category: [String],
+    category: [
+        {
+        name: String,
+        description: String,
+        parent: String,
+        picture: String,
+        popularity: [String],
+        meta:{
+            title: String,
+            description: String
+        }
+    }
+    ],
     price: Number,
     oldPrice: Number,
     alias: String,
