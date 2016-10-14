@@ -133,7 +133,7 @@ module.exports = function(app, passport, exphbs) {
 
         // Check if posting new picture
         if (req.file)
-            product.picture = req.file.name; // Store uploaded picture filename
+            product.picture = req.file.filename; // Store uploaded picture filename
 
         /* TODO
         /* Now it works syncronyosly as we dont save model till file is'n uploaded
