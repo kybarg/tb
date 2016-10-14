@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
+var fs = require('fs');
 
 var productSchema = mongoose.Schema({
     name: String,
@@ -31,6 +32,13 @@ var productSchema = mongoose.Schema({
         description: String
     }
 });
+
+productSchema.post('remove', function(doc) {
+    console.log('Product removed, id = ' + doc._id);
+    if (doc.picture)
+        fs.unlink(__dirname + '/../public/uploads/' + doc.picture);
+});
+
 productSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Product', productSchema);
