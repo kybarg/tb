@@ -100,17 +100,16 @@ module.exports = function(app, passport, exphbs) {
             productsIds.push(mongoose.Types.ObjectId(products[i]));
         }
 
-        /* TODO
-        /*  Need to deal with bulk image deletion.
-        */
-
         // Removes all products with IDs
-        Product.remove({
+        Product.find({
             _id: {
                 $in: productsIds
             }
-        }, function(err) {
+        }, function(err, products) {
             if (err) throw err;
+            products.forEach(function(product) {
+                product.remove();
+            });
             res.redirect('/admin/products');
         });
     })
@@ -208,14 +207,7 @@ module.exports = function(app, passport, exphbs) {
             product.remove(function(err) {
                 if (err) throw err;
 
-                // If product deleted successfully we can delete picture now
-
-                /* TODO
-                /* Looks like deletion process needs callbacks to be set in case of possible errors
-                */
-
-                if (product.picture)
-                    fs.unlink(__dirname + '/../public/uploads/' + product.picture);
+                // Redirect to all products list
                 res.redirect('/admin/products');
             });
 
