@@ -1,5 +1,12 @@
 // set up ======================================================================
 // get all the tools we need
+
+/* TODO
+/* Need to remove unnecessary extensions
+/* Need to define globals
+/* Need to think on better structure
+*/
+
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
@@ -13,8 +20,8 @@ var session = require('express-session')
 var exphbs = require('express-handlebars');
 var path = require('path');
 var static = require('express-static');
-var multer = require('multer');
-var upload = multer();
+// var multer = require('multer');
+// var upload = multer();
 
 var configDB = require('./config/database.js');
 
@@ -23,18 +30,19 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-// set up our express application
+// Set up our express application
 app.use(logger({
     path: "./logfile.log"
 })); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 
+// Parcing request data as json
 app.use(bodyParser.urlencoded({
     extended: true
 })); // get information from html forms
 app.use(bodyParser.json());
-app.use(upload.array());
 
+// Define default template engine
 app.set('view engine', '.hbs');
 
 // required for passport
@@ -63,8 +71,10 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./routes/routes.js')(app, passport, exphbs); // load our routes and pass in our app and fully configured passport
 require('./routes/admin.js')(app, passport, exphbs);
 
+// Defines folders with static files
 app.use('/admin', express.static('admin'));
+app.use('/public', express.static('public'));
 
 // launch ======================================================================
 app.listen(port);
-console.log('Connected to port ' + port);
+console.log('Connected on port ' + port);

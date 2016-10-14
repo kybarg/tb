@@ -25,24 +25,26 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="/admin">Trendberry</a>
-                </li>
-                <li>
-                    <a href="/admin/categories">Categories</a>
-                </li>
-                <li>
-                    <a href="/admin/products">Products</a>
-                </li>
-                <li>
-                    <a href="/admin/vendors">Vendors</a>
-                </li>
-                <li>
-                    <a href="/admin/stores">Stores</a>
-                </li>
-            </ul>
+        <div id="sidebar-wrapper" class="bg-inverse">
+            <div class="navbar navbar-dark">
+                <a class="navbar-brand" href="/admin">Trendberry</a>
+            </div>
+            <div class="navbar-dark">
+                <ul class="nav navbar-nav nav-pills nav-stacked">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/products">Products</a>
+                    </li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/vendors">Vendors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/stores">Stores</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <!-- /#sidebar-wrapper -->
 
@@ -68,29 +70,39 @@
                     <input class="form-control" type="text" placeholder="Search">
                 </form> -->
             </nav>
-            <ol class="breadcrumb">
-                {{#each breadcrumb}}
-                    {{#unless @last}}
-                        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-                            <a href="{{this.url}}" itemprop="url">
-                                <span itemprop="title">{{this.label}}</span>
-                            </a>
-                        </li>
-                        {{else}}
-                            <li>
-                                <span>{{this.label}}</span>
+            {{#if breadcrumb}}
+                <ol class="breadcrumb">
+                    {{#each breadcrumb}}
+                        {{#unless @last}}
+                            <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                                <a href="{{this.url}}" itemprop="url">
+                                    <span itemprop="title">{{this.label}}</span>
+                                </a>
                             </li>
-                    {{/unless}}
-                {{/each}}
-            </ol>
+            {{else}}
+                <li>
+                    <span>{{this.label}}</span>
+                </li>
+                        {{/unless}}
+                    {{/each}}
+                </ol>
+            {{/if}}
             <div class="container-fluid">
                 {{{body}}}
             </div>
+
+
         </div>
         <!-- /#page-content-wrapper -->
 
     </div>
     <!-- /#wrapper -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <span class="text-muted">Trednberry</span>
+        </div>
+    </footer>
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -99,6 +111,7 @@
     <!-- <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script> -->
     <script src="/admin/assets/js/tether.min.js"></script>
     <script src="/admin/assets/js/bootstrap.min.js"></script>
+    <script src="/admin/assets/js/holder.min.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <!-- <script src="/admin/assets/js/holder.min.js"></script> -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -110,6 +123,22 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
+
+        $("#select-all-toggle").click(function() {
+            var checkBoxes = $('input[name=products\\[\\]]');
+            checkBoxes.prop('checked', !checkBoxes.prop('checked'));
+        });
+
+        $('#deleteConfirmModal').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).attr('data-href'));
+        });
+
+        Holder.addTheme('gray', {
+            bg: '#777',
+            fg: 'rgba(255,255,255,.75)',
+            font: 'Helvetica',
+            fontweight: 'normal'
+        })
     </script>
 
 </body>
