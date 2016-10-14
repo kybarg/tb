@@ -140,10 +140,11 @@ module.exports = function(app, passport, exphbs) {
         /* Now it works syncronyosly as we dont save model till file is'n uploaded
         */
 
-        var product = new Product(product);
+        product = new Product(product);
         product.save(function(err, product) {
             if (err) throw err;
             console.log('Product added, id = ' + product._id);
+            console.log(product.name);
             res.redirect('/admin/products/' + product._id);
         });
     });
@@ -204,9 +205,7 @@ module.exports = function(app, passport, exphbs) {
         }, function(err, product) {
             if (err) throw err;
 
-            Product.remove({
-                _id: mongoose.Types.ObjectId(req.params.id)
-            }, function(err) {
+            product.remove(function(err) {
                 if (err) throw err;
 
                 // If product deleted successfully we can delete picture now
