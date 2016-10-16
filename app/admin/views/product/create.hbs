@@ -1,10 +1,11 @@
 <form method="POST" enctype="multipart/form-data">
     <div class="m-b-1">
         <div class="pull-xs-left">
-            <a href="/admin/products" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+            <a href="/admin/product/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
         </div>
 
         <div class="pull-xs-right">
+            <a href="#" data-href="/admin/product/delete/{{product._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
             <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
         </div>
         <div class="clearfix"></div>
@@ -254,3 +255,24 @@
         </div>
     </div>
 </form>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                You are about to delete this product!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-primary btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>

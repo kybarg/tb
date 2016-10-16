@@ -1,0 +1,90 @@
+<form method="POST" enctype="multipart/form-data">
+    <div class="m-b-1">
+        <div class="pull-xs-left">
+            <a href="/admin/category/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+        </div>
+
+        <div class="pull-xs-right">
+            <a href="#" data-href="/admin/category/delete/{{category._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputCategoryName">Name</label>
+                <input name="category[name]" type="text" class="form-control" id="inputCategoryName" placeholder="Category name" value="{{category.name}}">
+            </div>
+            <div class="form-group">
+                <label for="inputCategoryDescription">Description</label>
+                <textarea name="category[description]" class="form-control" id="inputCategoryDescription" rows="3">{{{category.description}}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="inputCategoryCategory">Parent category</label>
+                <select name="category[parent]" class="form-control" id="inputCategoryCategory">
+                <option value="Женщине">Женщине</option>
+                <option value="Одежда">Одежда</option>
+                <option value="Блузки">Блузки</option>
+                <option value="Свитера">Свитера</option>
+                <option value="Колготки">Колготки</option>
+            </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputCategoryAlias">Alias</label>
+                <input name="category[alias]" type="text" class="form-control" id="inputCategoryAlias" placeholder="category-name-vendor-id" value="{{category.alias}}">
+            </div>
+            <div class="form-group">
+                <label for="inputCategoryMetaTitle">Meta Title</label>
+                <input name="category[meta][title]" type="text" class="form-control" id="inputCategoryMetaTitle" placeholder="Title" value="{{category.meta.title}}">
+            </div>
+            <div class="form-group">
+                <label for="inputCategoryMetaDescription">Meta Description</label>
+                <textarea name="category[meta][description]" class="form-control" id="inputCategoryMetaDescription" rows="3">{{category.meta.description}}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Picture</label>
+                {{#if category.picture}}
+                    <div class="clearfix m-y-1">
+                        <img src="/public/uploads/{{category.picture}}" style="max-height: 320px;" />
+                    </div>
+                {{else}}
+                    <div class="clearfix"></div>
+                {{/if}}
+                <input type="hidden" name="category[picture]" value="{{category.picture}}" />
+                <label class="custom-file">
+                    <input name="image" type="file" id="image" class="custom-file-input">
+                    <span class="custom-file-control"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                You are about to delete this category!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-primary btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>

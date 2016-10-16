@@ -54,11 +54,12 @@ module.exports = function(app, passport, exphbs) {
 
     var Product = require('../models/product');
 
-    app.get('/admin/products', isLoggedIn, function(req, res) {
+    app.get('/admin/product/index', isLoggedIn, function(req, res) {
 
         // Using paginate for simplier pagination
         Product.paginate({}, {
             page: req.query.page ? req.query.page : 1,
+            sort: '-_id',
             limit: 50
         }, function(err, result) {
             // result.docs
@@ -66,10 +67,10 @@ module.exports = function(app, passport, exphbs) {
             // result.limit - 10
             // result.page - 3
             // result.pages
-            result.page = parseInt(result.page);
+            // result.page = parseInt(result.page);
 
             if (!err) {
-                res.render('products', {
+                res.render('product/index', {
                     products: result.docs,
                     pagination: {
                         page: result.page,
@@ -87,12 +88,12 @@ module.exports = function(app, passport, exphbs) {
     });
 
     // Remove products with IDs
-    app.post('/admin/products/delete', isLoggedIn, function(req, res) {
+    app.post('/admin/product/delete', isLoggedIn, function(req, res) {
         var products = req.body.products;
         var productsIds = [];
 
         if (!products) {
-            res.redirect('/admin/products');
+            res.redirect('/admin/product/index');
         }
 
         // Converting all IDs from String to ObjectID
@@ -110,14 +111,14 @@ module.exports = function(app, passport, exphbs) {
             products.forEach(function(product) {
                 product.remove();
             });
-            res.redirect('/admin/products');
+            res.redirect('/admin/product/index');
         });
     })
 
 
     // View from for addign new product
-    app.get('/admin/products/add', isLoggedIn, function(req, res) {
-        res.render('products/add');
+    app.get('/admin/product/create', isLoggedIn, function(req, res) {
+        res.render('product/create');
     });
 
 
@@ -127,7 +128,7 @@ module.exports = function(app, passport, exphbs) {
     */
 
     // Save new product
-    app.post('/admin/products/add', isLoggedIn, upload.single('image'), function(req, res) {
+    app.post('/admin/product/create', isLoggedIn, upload.single('image'), function(req, res) {
 
         var product = req.body.product;
 
@@ -144,23 +145,23 @@ module.exports = function(app, passport, exphbs) {
             if (err) throw err;
             console.log('Product added, id = ' + product._id);
             console.log(product.name);
-            res.redirect('/admin/products/' + product._id);
+            res.redirect('/admin/product/update/' + product._id);
         });
     });
 
     // Display product with ID
-    app.get('/admin/products/:id', isLoggedIn, function(req, res) {
+    app.get('/admin/product/update/:id', isLoggedIn, function(req, res) {
         Product.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
         }, function(err, product) {
-            res.render('products/add', {
+            res.render('product/create', {
                 product: product
             });
         });
     })
 
     // Update product with ID
-    app.post('/admin/products/:id', isLoggedIn, upload.single('image'), function(req, res) {
+    app.post('/admin/product/update/:id', isLoggedIn, upload.single('image'), function(req, res) {
 
         var product = req.body.product;
 
@@ -189,14 +190,14 @@ module.exports = function(app, passport, exphbs) {
             new: true // return new model
         }, function(err, product) {
             if (err) throw err;
-            res.render('products/add', {
+            res.render('product/create', {
                 product: product
             });
         });
     });
 
     // Remove product with ID
-    app.get('/admin/products/:id/delete', isLoggedIn, function(req, res) {
+    app.get('/admin/product/delete/:id', isLoggedIn, function(req, res) {
 
         // Need to read prodcut to be able to delete picture in the future
         Product.findOne({
@@ -208,13 +209,23 @@ module.exports = function(app, passport, exphbs) {
                 if (err) throw err;
 
                 // Redirect to all products list
-                res.redirect('/admin/products');
+                res.redirect('/admin/product/index');
             });
 
         });
 
+    });
 
-    })
+
+    // Category
+    app.get('/admin/category/index', isLoggedIn, function(req, res) {
+        res.render('category/index');
+    });
+
+    app.get('/admin/category/create', isLoggedIn, function(req, res) {
+        res.render('category/create');
+    });
+
 }
 
 // route middleware to make sure
