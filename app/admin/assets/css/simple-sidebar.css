@@ -56,7 +56,7 @@ body {
 #page-content-wrapper {
     width: 100%;
     padding-bottom: 15px;
-    position: absolute;
+    /*position: absolute;*/
 }
 
 #page-content-wrapper>.navbar {

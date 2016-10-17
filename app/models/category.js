@@ -8,7 +8,10 @@ var categorySchema = mongoose.Schema({
     name: String,
     description: String,
     alias: String,
-    parent: String,
+    parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+    },
     picture: String,
     popularity: [],
     meta: {
@@ -25,4 +28,4 @@ categorySchema.post('remove', function(doc) {
 
 categorySchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Category', categorySchema); 
+module.exports = mongoose.model('Category', categorySchema);

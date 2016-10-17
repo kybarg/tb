@@ -241,7 +241,7 @@
                 <label>Picture</label>
                 {{#if product.picture}}
                     <div class="clearfix m-y-1">
-                        <img src="/public/uploads/{{product.picture}}" style="max-height: 320px;" />
+                        <img src="{{pictUrl}}{{product.picture}}" style="max-height: 320px;" />
                     </div>
                 {{else}}
                     <div class="clearfix"></div>
