@@ -121,55 +121,62 @@
 
     <!-- Menu Toggle Script -->
     <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
+        $(document).ready(function() {
 
-        $('#select-all-toggle').click(function() {
-            var checkBoxes = $('input[name=products\\[\\]]');
-            checkBoxes.prop('checked', !checkBoxes.prop('checked'));
-        });
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
 
-        $('#deleteConfirmModal').on('show.bs.modal', function(e) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).attr('data-href'));
-        });
+            $('#select-all-toggle').click(function() {
+                var checkBoxes = $('input[name=products\\[\\]]');
+                checkBoxes.prop('checked', !checkBoxes.prop('checked'));
+            });
 
-        Holder.addTheme('gray', {
-            bg: '#777',
-            fg: 'rgba(255,255,255,.75)',
-            font: 'Helvetica',
-            fontweight: 'normal'
-        })
+            $('#deleteConfirmModal').on('show.bs.modal', function(e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).attr('data-href'));
+            });
 
-        $('#inputCategoryCategory').select2({
-            ajax: {
-                url: "/admin/category/search",
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    // console.log(params)
-                    return {
-                        searchString: params.term,
-                        limit: 10
-                            // c_id: initial_creditor_id,
-                            // page: params.page
-                    };
-                },
-                processResults: function(data, page) {
-                    console.log(data)
+            Holder.addTheme('gray', {
+                bg: '#777',
+                fg: 'rgba(255,255,255,.75)',
+                font: 'Helvetica',
+                fontweight: 'normal'
+            })
 
-                    $.each(data, function(index, element) {
-                        data[index].id = element._id;
-                        data[index].text = element.name;
-                    });
+            $('#inputCategoryCategory').select2({
+                ajax: {
+                    url: "/admin/category/search",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        // console.log(params)
+                        return {
+                            searchString: params.term,
+                            limit: 10
+                                // c_id: initial_creditor_id,
+                                // page: params.page
+                        };
+                    },
+                    processResults: function(data, page) {
+                        console.log(data)
 
-                    return {
-                        results: data
-                    };
-                },
-                method: 'POST'
-            }
+                        $.each(data, function(index, element) {
+                            data[index].id = element._id;
+                            if (element.ancestors > 0) {
+                                data[index].text = element.ancestors[0].name + ' ' + element.name;
+                            } else {
+                                data[index].text = element.name;
+                            }
+                        });
+
+                        return {
+                            results: data
+                        };
+                    },
+                    method: 'POST'
+                }
+            });
         });
     </script>
 

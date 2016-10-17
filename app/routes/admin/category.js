@@ -68,13 +68,13 @@ module.exports = function (app, passport, exphbs) {
     });
 
     app.post('/admin/category/create', isLoggedIn, upload.single('image'), function (req, res) {
-        category = new Category(req.body.category);
+        var category = new Category(req.body.category);
         if (req.file) {
             category.picture = req.file.filename; // Store uploaded picture filename
         };
 
         if (category.parent) {
-            Category.findById(catogory.parent._id, function (err, doc) {
+            Category.findById(category.parent, function (err, doc) {
                 category.ancestors.push(doc.ancestors);
                 category.ancestors.push(doc._id);
             });
@@ -91,9 +91,11 @@ module.exports = function (app, passport, exphbs) {
         Category.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
         })
-        .populate('ancestors')
+        .populate('ancestors.category')
         .populate('parent')
         .exec(function(err, category) {
+
+            console.log(category)
 
             req.breadcrumbs([{
                 name: 'Categories',
