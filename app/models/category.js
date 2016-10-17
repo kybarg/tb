@@ -20,6 +20,8 @@ var categorySchema = mongoose.Schema({
     }
 });
 
+categorySchema.index({name: 'text'});
+
 categorySchema.post('remove', function(doc) {
     console.log('Category removed, id = ' + doc._id);
     if (doc.picture)

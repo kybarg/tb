@@ -117,7 +117,6 @@ module.exports = function(app, passport, exphbs) {
             category.picture = req.file.filename;
         }
 
-
         Category.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {
             $set: category
         }, {
@@ -130,9 +129,7 @@ module.exports = function(app, passport, exphbs) {
         });
     });
 
-
     app.get('/admin/category/delete/:id', isLoggedIn, function(req, res) {
-
 
         Category.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
@@ -145,6 +142,21 @@ module.exports = function(app, passport, exphbs) {
             });
         });
     });
+
+    app.post('/admin/category/search', function(req, res) {
+        Category.find({
+                name: {
+                    $regex: req.body.searchString,
+                    $options: 'i'
+                }
+            })
+            .limit(parseInt(req.body.limit))
+            .exec(function(err, docs) {
+                if (err) throw err;
+                res.send(docs);
+            });
+    });
+
 }
 
 function isLoggedIn(req, res, next) {
