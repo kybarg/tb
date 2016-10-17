@@ -15,6 +15,7 @@
     <!-- Bootstrap core CSS -->
     <link href="/admin/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/admin/assets/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/admin/assets/css/select2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/admin/assets/css/simple-sidebar.css" rel="stylesheet">
@@ -79,10 +80,10 @@
                                     <span itemprop="title">{{name}}</span>
                                 </a>
                             </li>
-                        {{else}}
-                            <li class="breadcrumb-item active">
-                                <span>{{name}}</span>
-                            </li>
+            {{else}}
+                <li class="breadcrumb-item active">
+                    <span>{{name}}</span>
+                </li>
                         {{/unless}}
                     {{/each}}
                 </ol>
@@ -112,6 +113,7 @@
     <script src="/admin/assets/js/tether.min.js"></script>
     <script src="/admin/assets/js/bootstrap.min.js"></script>
     <script src="/admin/assets/js/holder.min.js"></script>
+    <script src="/admin/assets/js/select2.full.min.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <!-- <script src="/admin/assets/js/holder.min.js"></script> -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -124,7 +126,7 @@
             $("#wrapper").toggleClass("toggled");
         });
 
-        $("#select-all-toggle").click(function() {
+        $('#select-all-toggle').click(function() {
             var checkBoxes = $('input[name=products\\[\\]]');
             checkBoxes.prop('checked', !checkBoxes.prop('checked'));
         });
@@ -139,6 +141,36 @@
             font: 'Helvetica',
             fontweight: 'normal'
         })
+
+        $('#inputCategoryCategory').select2({
+            ajax: {
+                url: "/admin/category/search",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    // console.log(params)
+                    return {
+                        searchString: params.term,
+                        limit: 10
+                            // c_id: initial_creditor_id,
+                            // page: params.page
+                    };
+                },
+                processResults: function(data, page) {
+                    console.log(data)
+
+                    $.each(data, function(index, element) {
+                        data[index].id = element._id;
+                        data[index].text = element.name;
+                    });
+
+                    return {
+                        results: data
+                    };
+                },
+                method: 'POST'
+            }
+        });
     </script>
 
 </body>

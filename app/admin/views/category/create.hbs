@@ -28,12 +28,10 @@
             <div class="form-group">
                 <label for="inputCategoryCategory">Parent category</label>
                 <select name="category[parent]" class="form-control" id="inputCategoryCategory">
-                <option value="Женщине">Женщине</option>
-                <option value="Одежда">Одежда</option>
-                <option value="Блузки">Блузки</option>
-                <option value="Свитера">Свитера</option>
-                <option value="Колготки">Колготки</option>
-            </select>
+                    {{#if category.parent}}
+                    <option value="{{category.parent._id}}">{{category.parent.name}}</option>
+                    {{/if}}
+                </select>
             </div>
         </div>
         <div class="col-md-6">
