@@ -4,12 +4,14 @@ var multer = require('multer');
 var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
- var Product = require('../../models/product');
-var pictPath = require('../../config/path.js').productPictPath;
+var Product = require('../../models/product');
+var pathConfig = require('../../config/path.js');
+var pictPath = pathConfig.productPictPath;
+var pictUrl = pathConfig.productPictUrl;
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, pictPath) 
+        cb(null, pictPath)
     },
     filename: function(req, file, cb) {
         crypto.pseudoRandomBytes(16, function(err, raw) {
@@ -25,6 +27,9 @@ var upload = multer({
 
 module.exports = function(app, passport, exphbs) {
     app.get('/admin/product/index', isLoggedIn, function(req, res) {
+
+        req.breadcrumbs('Products');
+
         Product.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: '-_id',
@@ -32,7 +37,9 @@ module.exports = function(app, passport, exphbs) {
         }, function(err, result) {
             if (!err) {
                 res.render('product/index', {
+                    breadcrumbs: req.breadcrumbs(),
                     products: result.docs,
+                    pictUrl: pictUrl,
                     pagination: {
                         page: result.page,
                         pageCount: result.pages
@@ -47,7 +54,7 @@ module.exports = function(app, passport, exphbs) {
             }
         });
     });
-    
+
     app.post('/admin/product/delete', isLoggedIn, function(req, res) {
         var products = req.body.products;
         var productsIds = [];
@@ -77,16 +84,25 @@ module.exports = function(app, passport, exphbs) {
 
     // View from for addign new product
     app.get('/admin/product/create', isLoggedIn, function(req, res) {
-        res.render('product/create');
+        req.breadcrumbs([{
+            name: 'Products',
+            url: '/admin/product/index'
+        }, {
+            name: 'New product'
+        }]);
+
+        res.render('product/create', {
+            breadcrumbs: req.breadcrumbs()
+        });
     });
 
-   // Save new product
+    // Save new product
     app.post('/admin/product/create', isLoggedIn, upload.single('image'), function(req, res) {
         product = new Product(req.body.product);
-        if (req.file){
+        if (req.file) {
             product.picture = req.file.filename; // Store uploaded picture filename
         };
-        
+
         product.save(function(err, product) {
             if (err) throw err;
             console.log('Product added, id = ' + product._id);
@@ -96,11 +112,22 @@ module.exports = function(app, passport, exphbs) {
 
     // Display product with ID
     app.get('/admin/product/update/:id', isLoggedIn, function(req, res) {
+
         Product.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
         }, function(err, product) {
+
+            req.breadcrumbs([{
+                name: 'Products',
+                url: '/admin/product/index'
+            }, {
+                name: product.name
+            }]);
+
             res.render('product/create', {
-                product: product
+                breadcrumbs: req.breadcrumbs(),
+                product: product,
+                pictUrl: pictUrl
             });
         });
     })

@@ -26,6 +26,9 @@ var upload = multer({
 module.exports = function(app, passport, exphbs) {
 
     app.get('/admin/category/index', isLoggedIn, function(req, res) {
+
+        req.breadcrumbs('Categories');
+
         // Using paginate for simplier pagination
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
@@ -34,6 +37,7 @@ module.exports = function(app, passport, exphbs) {
         }, function(err, result) {
             if (!err) {
                 res.render('category/index', {
+                    breadcrumbs: req.breadcrumbs(),
                     categories: result.docs,
                     pagination: {
                         page: result.page,
@@ -51,7 +55,16 @@ module.exports = function(app, passport, exphbs) {
     });
 
     app.get('/admin/category/create', isLoggedIn, function(req, res) {
-        res.render('category/create');
+        req.breadcrumbs([{
+            name: 'Categories',
+            url: '/admin/category/index'
+        }, {
+            name: 'New category'
+        }]);
+
+        res.render('category/create', {
+            breadcrumbs: req.breadcrumbs()
+        });
     });
 
     app.post('/admin/category/create', isLoggedIn, upload.single('image'), function(req, res) {
@@ -70,7 +83,16 @@ module.exports = function(app, passport, exphbs) {
         Category.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
         }, function(err, category) {
+
+            req.breadcrumbs([{
+                name: 'Categories',
+                url: '/admin/category/index'
+            }, {
+                name: category.name
+            }]);
+
             res.render('category/create', {
+                breadcrumbs: req.breadcrumbs(),
                 category: category
             });
         });
@@ -108,6 +130,7 @@ module.exports = function(app, passport, exphbs) {
     });
 
     app.get('/admin/category/delete/:id', isLoggedIn, function(req, res) {
+
         Category.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
         }, function(err, category) {

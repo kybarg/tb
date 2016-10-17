@@ -70,19 +70,19 @@
                     <input class="form-control" type="text" placeholder="Search">
                 </form> -->
             </nav>
-            {{#if breadcrumb}}
+            {{#if breadcrumbs}}
                 <ol class="breadcrumb">
-                    {{#each breadcrumb}}
+                    {{#each breadcrumbs}}
                         {{#unless @last}}
-                            <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-                                <a href="{{this.url}}" itemprop="url">
-                                    <span itemprop="title">{{this.label}}</span>
+                            <li class="breadcrumb-item">
+                                <a href="{{url}}" itemprop="url">
+                                    <span itemprop="title">{{name}}</span>
                                 </a>
                             </li>
-            {{else}}
-                <li>
-                    <span>{{this.label}}</span>
-                </li>
+                        {{else}}
+                            <li class="breadcrumb-item active">
+                                <span>{{name}}</span>
+                            </li>
                         {{/unless}}
                     {{/each}}
                 </ol>

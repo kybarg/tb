@@ -1,9 +1,21 @@
 var handlebarsPaginate = require('handlebars-paginate');
+var breadcrumbs = require('express-breadcrumbs');
 var mongoose = require('mongoose');
 var fs = require('fs');
 var path = require('path');
 
 module.exports = function(app, passport, exphbs) {
+
+    app.use(breadcrumbs.init());
+
+    // Set Breadcrumbs home information
+    app.use(breadcrumbs.setHome());
+
+    // Mount the breadcrumbs at `/admin`
+    app.use('/admin', breadcrumbs.setHome({
+        name: 'Dashboard',
+        url: '/admin'
+    }));
 
     // Defines rules for all /admin* requests
     app.all('/admin*', function(req, res, next) {
