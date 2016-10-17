@@ -9,7 +9,7 @@ var pictPath = require('../../config/path.js').categoryPictPath;
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, pictPath) 
+        cb(null, pictPath)
     },
     filename: function(req, file, cb) {
         crypto.pseudoRandomBytes(16, function(err, raw) {
@@ -26,12 +26,12 @@ var upload = multer({
 module.exports = function(app, passport, exphbs) {
 
     app.get('/admin/category/index', isLoggedIn, function(req, res) {
-     // Using paginate for simplier pagination
+        // Using paginate for simplier pagination
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: '-_id',
             limit: 50
-        },  function(err, result) {
+        }, function(err, result) {
             if (!err) {
                 res.render('category/index', {
                     categories: result.docs,
@@ -56,7 +56,7 @@ module.exports = function(app, passport, exphbs) {
 
     app.post('/admin/category/create', isLoggedIn, upload.single('image'), function(req, res) {
         category = new Category(req.body.category);
-        if (req.file){
+        if (req.file) {
             category.picture = req.file.filename; // Store uploaded picture filename
         };
         category.save(function(err, category) {
@@ -76,12 +76,12 @@ module.exports = function(app, passport, exphbs) {
         });
     });
 
-     // Update category with ID
+    // Update category with ID
     app.post('/admin/category/update/:id', isLoggedIn, upload.single('image'), function(req, res) {
         var category = req.body.category;
         // Check if posting new picture
         if (req.file) {
-        // Check if posting new picture
+            // Check if posting new picture
             fs.access(pictPath, fs.F_OK, function(err) {
                 if (!err) {
                     // Delete old picture
@@ -94,7 +94,7 @@ module.exports = function(app, passport, exphbs) {
             // Save filename of new picture
             category.picture = req.file.filename;
         }
-        
+
         Category.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {
             $set: category
         }, {
@@ -106,7 +106,7 @@ module.exports = function(app, passport, exphbs) {
             });
         });
     });
-    
+
     app.get('/admin/category/delete/:id', isLoggedIn, function(req, res) {
         Category.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
@@ -114,24 +114,29 @@ module.exports = function(app, passport, exphbs) {
             if (err) throw err;
             category.remove(function(err) {
                 if (err) throw err;
-            
+
                 res.redirect('/admin/category/index');
             });
         });
     });
 
     app.post('/admin/category/search', function(req, res) {
-        Category.find({$text: {$search: req.body.searchString}},  {score: {$meta: "textScore"}}).sort({score:{$meta:"textScore"}})
-        .limit(parseInt(req.body.limit))
-        .exec(function(err, docs) {
-            if (err) throw err;
-            res.send(docs);
-        });
+        Category.find({
+                name: {
+                    $regex: req.body.searchString,
+                    $options: 'i'
+                }
+            })
+            .limit(parseInt(req.body.limit))
+            .exec(function(err, docs) {
+                if (err) throw err;
+                res.send(docs);
+            });
     });
 
 }
 
-    function isLoggedIn(req, res, next) {
+function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
