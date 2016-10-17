@@ -48,6 +48,7 @@
                         </th>
                         <th scope="row">{{@index}}</th>
                         <td>
+                            <img {{#if this.picture}} src="{{../pictUrl}}{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="Product image" class="img-rounded" style="height:40px; width: 40px;" />
                         </td>
                         <td><a href="/admin/product/update/{{this._id}}">{{this.name}}</a></td>
                         <!-- <td>Женщине, Одежжда, Верхняя одежда, Шубы</td> -->
