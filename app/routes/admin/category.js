@@ -157,7 +157,7 @@ module.exports = function (app, passport, exphbs) {
     app.post('/admin/category/search', function (req, res) {
         Category.find({
                 name: {
-                    $regex: req.body.searchString,
+                    $regex: req.body.searchString ? req.body.searchString : '',
                     $options: 'i'
                 }
             })
