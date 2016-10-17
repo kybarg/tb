@@ -159,11 +159,11 @@
                         };
                     },
                     processResults: function(data, page) {
-                        console.log(data)
+                        console.log(data);
 
                         $.each(data, function(index, element) {
                             data[index].id = element._id;
-                            if (element.ancestors > 0) {
+                            if (element.ancestors.length > 0) {
                                 data[index].text = element.ancestors[0].name + ' ' + element.name;
                             } else {
                                 data[index].text = element.name;
