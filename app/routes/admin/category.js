@@ -90,7 +90,10 @@ module.exports = function (app, passport, exphbs) {
     app.get('/admin/category/update/:id', isLoggedIn, function (req, res) {
         Category.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
-        }, function (err, category) {
+        })
+        .populate('ancestors')
+        .populate('parent')
+        .exec(function(err, category) {
 
             req.breadcrumbs([{
                 name: 'Categories',
