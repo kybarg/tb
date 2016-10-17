@@ -82,7 +82,9 @@ module.exports = function(app, passport, exphbs) {
     app.get('/admin/category/update/:id', isLoggedIn, function(req, res) {
         Category.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
-        }, function(err, category) {
+        })
+        .populate('parent')
+        .exec(function(err, category) {
 
             req.breadcrumbs([{
                 name: 'Categories',
@@ -144,9 +146,10 @@ module.exports = function(app, passport, exphbs) {
     });
 
     app.post('/admin/category/search', function(req, res) {
+        console.log(req.body);
         Category.find({
                 name: {
-                    $regex: req.body.searchString,
+                    $regex: req.body.searchString ? req.body.searchString : '',
                     $options: 'i'
                 }
             })

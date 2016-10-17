@@ -3,7 +3,6 @@ var mongoosePaginate = require('mongoose-paginate');
 var fs = require('fs');
 var pictPath = require('../config/path.js').categoryPictPath;
 
-
 var categorySchema = mongoose.Schema({
     name: String,
     description: String,

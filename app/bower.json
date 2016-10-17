@@ -17,6 +17,7 @@
   "dependencies": {
     "bootstrap": "v4.0.0-alpha.4",
     "mdi": "^1.7.22",
-    "holderjs": "^2.9.4"
+    "holderjs": "^2.9.4",
+    "select2": "^4.0.3"
   }
 }
