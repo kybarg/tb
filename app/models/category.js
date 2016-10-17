@@ -11,6 +11,10 @@ var categorySchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
     },
+    ancestors: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+    }],
     picture: String,
     popularity: [],
     meta: {
@@ -19,9 +23,7 @@ var categorySchema = mongoose.Schema({
     }
 });
 
-categorySchema.index({name: 'text'});
-
-categorySchema.post('remove', function(doc) {
+categorySchema.post('remove', function (doc) {
     console.log('Category removed, id = ' + doc._id);
     if (doc.picture)
         fs.unlink(pictPath + doc.picture);
