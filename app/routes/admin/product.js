@@ -98,7 +98,7 @@ module.exports = function(app, passport, exphbs) {
 
     // Save new product
     app.post('/admin/product/create', isLoggedIn, upload.single('image'), function(req, res) {
-        product = new Product(req.body.product);
+        var product = new Product(req.body.product);
         if (req.file) {
             product.picture = req.file.filename; // Store uploaded picture filename
         };
