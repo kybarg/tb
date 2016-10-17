@@ -6,7 +6,10 @@ var pictPath = require('../config/path.js').productPictPath;
 var productSchema = mongoose.Schema({
     name: String,
     description: String,
-    category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
+    category: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+    }],
     price: Number,
     oldPrice: Number,
     alias: String,
@@ -43,4 +46,3 @@ productSchema.post('remove', function(doc) {
 productSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Product', productSchema);
-
