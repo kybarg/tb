@@ -1,0 +1,80 @@
+<form method="POST" enctype="multipart/form-data">
+    <div class="m-b-1">
+        <div class="pull-xs-left">
+            <a href="/admin/vendor/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+        </div>
+
+        <div class="pull-xs-right">
+            <a href="#" data-href="/admin/vendor/delete/{{vendor._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputVendorName">Name</label>
+                <input name="vendor[name]" type="text" class="form-control" id="inputVendorName" placeholder="Vendor name" value="{{vendor.name}}">
+            </div>
+            <div class="form-group">
+                <label for="inputVendorDescription">Description</label>
+                <textarea name="vendor[description]" class="form-control js-summernote-control" id="inputVendorDescription" rows="3">{{{vendor.description}}}</textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputVendorSlug">Slug</label>
+                <input name="vendor[slug]" type="text" class="form-control" id="inputVendorSlug" placeholder="vendor-name-vendor-id" value="{{vendor.slug}}">
+            </div>
+            <div class="form-group">
+                <label for="inputVendorMetaTitle">Meta Title</label>
+                <input name="vendor[meta][title]" type="text" class="form-control" id="inputVendorMetaTitle" placeholder="Title" value="{{vendor.meta.title}}">
+            </div>
+            <div class="form-group">
+                <label for="inputVendorMetaDescription">Meta Description</label>
+                <textarea name="vendor[meta][description]" class="form-control" id="inputVendorMetaDescription" rows="3">{{vendor.meta.description}}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Picture</label>
+                {{#if vendor.picture}}
+                    <div class="clearfix m-y-1">
+                        <img src="/public/uploads/{{vendor.picture}}" style="max-height: 320px;" />
+                    </div>
+                {{else}}
+                    <div class="clearfix"></div>
+                {{/if}}
+                <input type="hidden" name="vendor[picture]" value="{{vendor.picture}}" />
+                <label class="custom-file">
+                    <input name="image" type="file" id="image" class="custom-file-input">
+                    <span class="custom-file-control"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                You are about to delete this vendor!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-primary btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
