@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 var fs = require('fs');
 var pictPath = require('../config/path.js').productPictPath;
+var slugify = require('transliteration').slugify;
 
 var productSchema = mongoose.Schema({
     name: String,
@@ -14,7 +15,10 @@ var productSchema = mongoose.Schema({
     oldPrice: Number,
     slug: String,
     url: String,
-    vendor: String,
+    vendor: {
+        type: String,
+      //  ref: 'Vendor'
+    },
     age: {
         type: Number,
         enum: [null, 1, 2, 3],
@@ -37,11 +41,20 @@ var productSchema = mongoose.Schema({
     }
 });
 
-productSchema.post('remove', function(doc) {
+productSchema.post('remove', function (doc) {
     console.log('Product removed, id = ' + doc._id);
     if (doc.picture)
         fs.unlink(pictPath + doc.picture);
 });
+
+//productSchema.pre('save', function (doc) {
+  //  if (!doc.slug || doc.slug.length === 0) {
+    //    mongoose.model('Vendor').findById(doc._id, function (err, vendor){
+      //      if (!err || vendor){
+        //        doc.slug = 'product-' + slugify(doc.name + '-' + vendor.name) + '-' + doc._id;
+          //  }
+       // })}
+//});
 
 productSchema.plugin(mongoosePaginate);
 
