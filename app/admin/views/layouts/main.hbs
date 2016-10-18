@@ -16,6 +16,9 @@
     <link href="/admin/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/admin/assets/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/admin/assets/css/select2.min.css" rel="stylesheet">
+    <link href="/admin/assets/css/select2-bootstrap.min.css" rel="stylesheet">
+
+    <link href="/admin/assets/summernote/bs4/summernote.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/admin/assets/css/simple-sidebar.css" rel="stylesheet">
@@ -114,6 +117,7 @@
     <script src="/admin/assets/js/bootstrap.min.js"></script>
     <script src="/admin/assets/js/holder.min.js"></script>
     <script src="/admin/assets/js/select2.full.min.js"></script>
+    <script src="/admin/assets/summernote/bs4/summernote.min.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <!-- <script src="/admin/assets/js/holder.min.js"></script> -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -144,6 +148,9 @@
                 fontweight: 'normal'
             })
 
+
+            $.fn.select2.defaults.set("theme", "bootstrap");
+
             $('#inputCategoryCategory').select2({
                 ajax: {
                     url: "/admin/category/search",
@@ -163,10 +170,9 @@
 
                         $.each(data, function(index, element) {
                             data[index].id = element._id;
+                            data[index].text = element.name;
                             if (element.ancestors.length > 0) {
-                                data[index].text = element.ancestors[0].name + ' ' + element.name;
-                            } else {
-                                data[index].text = element.name;
+                                data[index].text += ' (' + element.ancestors[0].name + ')';
                             }
                         });
 
@@ -177,6 +183,13 @@
                     method: 'POST'
                 }
             });
+
+            $('.js-summernote-control').summernote()
+                // Hide the initial popovers that display
+            $('.note-popover').css({
+                'display': 'none'
+            });
+
         });
     </script>
 

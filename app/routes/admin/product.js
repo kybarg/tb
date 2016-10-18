@@ -62,11 +62,6 @@ module.exports = function(app, passport, exphbs) {
             res.redirect('/admin/product/index');
         }
 
-        // Converting all IDs from String to ObjectID
-        for (var i = 0; i < products.length; i++) {
-            productsIds.push(mongoose.Types.ObjectId(products[i]));
-        }
-
         // Removes all products with IDs
         Product.find({
             _id: {
@@ -114,7 +109,7 @@ module.exports = function(app, passport, exphbs) {
     app.get('/admin/product/update/:id', isLoggedIn, function(req, res) {
 
         Product.findOne({
-            _id: mongoose.Types.ObjectId(req.params.id)
+            _id: req.params.id
         }, function(err, product) {
 
             req.breadcrumbs([{
@@ -156,15 +151,13 @@ module.exports = function(app, passport, exphbs) {
         }
 
         // Get product by ID and update with new data
-        Product.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {
+        Product.findByIdAndUpdate(req.params.id, {
             $set: product
         }, {
             new: true // return new model
         }, function(err, product) {
             if (err) throw err;
-            res.render('product/create', {
-                product: product
-            });
+            res.redirect('/admin/product/update/' + product._id);
         });
     });
 
@@ -173,7 +166,7 @@ module.exports = function(app, passport, exphbs) {
 
         // Need to read prodcut to be able to delete picture in the future
         Product.findOne({
-            _id: mongoose.Types.ObjectId(req.params.id)
+            _id: req.params.id
         }, function(err, product) {
             if (err) throw err;
 

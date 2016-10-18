@@ -4,7 +4,7 @@ var mongoosePaginate = require('mongoose-paginate');
 var textPageSchema = mongoose.Schema({
     name: String,
     body: String,
-    alias: String,
+    slug: String,
     meta: {
         title: String,
         description: String

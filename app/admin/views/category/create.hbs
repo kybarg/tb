@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label for="inputCategoryDescription">Description</label>
-                <textarea name="category[description]" class="form-control" id="inputCategoryDescription" rows="3">{{{category.description}}}</textarea>
+                <textarea name="category[description]" class="form-control js-summernote-control" id="inputCategoryDescription" rows="3">{{{category.description}}}</textarea>
             </div>
             <div class="form-group">
                 <label for="inputCategoryCategory">Parent category</label>
@@ -36,8 +36,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputCategoryAlias">Alias</label>
-                <input name="category[alias]" type="text" class="form-control" id="inputCategoryAlias" placeholder="category-name-vendor-id" value="{{category.alias}}">
+                <label for="inputCategorySlug">Slug</label>
+                <input name="category[slug]" type="text" class="form-control" id="inputCategorySlug" placeholder="category-name-vendor-id" value="{{category.slug}}">
             </div>
             <div class="form-group">
                 <label for="inputCategoryMetaTitle">Meta Title</label>
