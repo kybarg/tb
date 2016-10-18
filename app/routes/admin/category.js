@@ -32,7 +32,7 @@ module.exports = function(app, passport, exphbs) {
         // Using paginate for simplier pagination
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
-            sort: '-_id',
+            sort: '_id',
             limit: 50
         }, function(err, result) {
             if (!err) {
@@ -74,15 +74,13 @@ module.exports = function(app, passport, exphbs) {
         }
 
         if (category.parent) {
-            console.log('1');
-            category.ancestors = [category.parent];
-            Category.findById(category.parent, function (err, doc) {
-                if(doc.ancestors.length > 0)
+            Category.findById(category.parent, function(err, doc) {
+                console.log(doc);
+                if (doc.ancestors.length > 0)
                     category.ancestors.push(doc.ancestors);
                 category.ancestors.push(doc._id);
 
                 category.save(function(err, category) {
-                    console.log('2');
                     if (err) throw err;
                     console.log('Category added, id = ' + category._id);
                     res.redirect('/admin/category/update/' + category._id);
@@ -104,10 +102,10 @@ module.exports = function(app, passport, exphbs) {
                 _id: mongoose.Types.ObjectId(req.params.id)
             })
             // .populate('ancestors')
-            // .populate('parent')
+            .populate('parent')
             .exec(function(err, category) {
 
-                // console.log(category)
+                console.log(category.ancestors)
 
                 req.breadcrumbs([{
                     name: 'Categories',
@@ -142,16 +140,45 @@ module.exports = function(app, passport, exphbs) {
             category.picture = req.file.filename;
         }
 
-        Category.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {
-            $set: category
-        }, {
-            new: true // return new model
-        }, function(err, category) {
-            if (err) throw err;
-            res.render('category/create', {
-                category: category
+        if (category.parent) {
+            Category.findById(category.parent, function(err, doc) {
+                category.ancestors = [];
+                if (doc.ancestors.length > 0)
+                    category.ancestors.push(doc.ancestors);
+                category.ancestors.push(doc._id);
+
+                Category.findByIdAndUpdate(req.params.id, {
+                    $set: category
+                }, {
+                    new: true // return new model
+                }, function(err, category) {
+                    if (err) throw err;
+                    res.redirect('/admin/category/update/' + category._id);
+                });
             });
-        });
+        } else {
+            Category.findByIdAndUpdate(req.params.id, {
+                $set: category
+            }, {
+                new: true // return new model
+            }, function(err, category) {
+                if (err) throw err;
+                res.redirect('/admin/category/update/' + category._id);
+            });
+        }
+
+
+
+        // Category.findByIdAndUpdate(req.params.id, {
+        //     $set: category
+        // }, {
+        //     new: true // return new model
+        // }, function(err, category) {
+        //     if (err) throw err;
+        //     res.render('category/create', {
+        //         category: category
+        //     });
+        // });
     });
 
     app.get('/admin/category/delete/:id', isLoggedIn, function(req, res) {

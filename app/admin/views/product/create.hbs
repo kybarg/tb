@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label for="inputProductDescription">Description</label>
-                <textarea name="product[description]" class="form-control" id="inputProductDescription" rows="3">{{{product.description}}}</textarea>
+                <textarea name="product[description]" class="form-control js-summernote-control" id="inputProductDescription" rows="3">{{{product.description}}}</textarea>
             </div>
             <div class="form-group">
                 <label for="inputProductCategory">Categories</label>
@@ -226,8 +226,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputProductAlias">Alias</label>
-                <input name="product[alias]" type="text" class="form-control" id="inputProductAlias" placeholder="product-name-vendor-id" value="{{product.alias}}">
+                <label for="inputProductSlug">Slug</label>
+                <input name="product[slug]" type="text" class="form-control" id="inputProductSlug" placeholder="product-name-vendor-id" value="{{product.slug}}">
             </div>
             <div class="form-group">
                 <label for="inputProductMetaTitle">Meta Title</label>
@@ -271,7 +271,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <a href="#" class="btn btn-primary btn-ok">Ok</a>
+                <a href="#" class="btn btn-danger btn-ok">Delete</a>
             </div>
         </div>
     </div>

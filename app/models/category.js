@@ -6,7 +6,7 @@ var pictPath = require('../config/path.js').categoryPictPath;
 var categorySchema = mongoose.Schema({
     name: String,
     description: String,
-    alias: String,
+    slug: String,
     parent: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
