@@ -88,7 +88,6 @@ module.exports = function(app, passport, exphbs) {
             });
         } else {
             category.save(function(err, category) {
-                console.log('2');
                 if (err) throw err;
                 console.log('Category added, id = ' + category._id);
                 res.redirect('/admin/category/update/' + category._id);
