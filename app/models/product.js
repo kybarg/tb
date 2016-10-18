@@ -12,7 +12,7 @@ var productSchema = mongoose.Schema({
     }],
     price: Number,
     oldPrice: Number,
-    alias: String,
+    slug: String,
     url: String,
     vendor: String,
     age: {
