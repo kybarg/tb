@@ -72,6 +72,7 @@ require('./routes/routes.js')(app, passport, exphbs); // load our routes and pas
 require('./routes/admin.js')(app, passport, exphbs);
 require('./routes/admin/product.js')(app, passport, exphbs);
 require('./routes/admin/category.js')(app, passport, exphbs);
+require('./routes/admin/vendor.js')(app, passport, exphbs);
 
 // Defines folders with static files
 app.use('/admin', express.static('admin'));
