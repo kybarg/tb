@@ -26,6 +26,7 @@ var static = require('express-static');
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
+mongoose.Promise = global.Promise;
 mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration

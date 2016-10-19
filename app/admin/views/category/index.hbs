@@ -50,7 +50,12 @@
                         <td>
                             <img {{#if this.picture}} src="/public/uploads/{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="category image" class="img-rounded" style="height:40px; width: 40px;" />
                         </td>
-                        <td><a href="/admin/category/update/{{this._id}}">{{this.name}}</a></td>
+                        <td>
+                            {{#each ancestors}}
+                                <span class="tree-line"></span>
+                            {{/each}}
+                            <a href="/admin/category/update/{{this._id}}">{{this.name}}</a>
+                        </td>
                         <!-- <td>Женщине, Одежжда, Верхняя одежда, Шубы</td> -->
                         <!-- <td>Otto</td> -->
                         <td>
