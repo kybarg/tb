@@ -157,17 +157,68 @@
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
-                        // console.log(params)
                         return {
                             searchString: params.term,
                             limit: 10
-                                // c_id: initial_creditor_id,
-                                // page: params.page
                         };
                     },
                     processResults: function(data, page) {
-                        console.log(data);
+                        $.each(data, function(index, element) {
+                            data[index].id = element._id;
+                            data[index].text = element.name;
+                            if (element.ancestors.length > 0) {
+                                data[index].text += ' (' + element.ancestors[0].name + ')';
+                            }
+                        });
 
+                        return {
+                            results: data
+                        };
+                    },
+                    method: 'POST'
+                }
+            });
+
+            $('#inputProductCategory').select2({
+                ajax: {
+                    url: "/admin/category/search",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            searchString: params.term,
+                            limit: 10
+                        };
+                    },
+                    processResults: function(data, page) {
+                        $.each(data, function(index, element) {
+                            data[index].id = element._id;
+                            data[index].text = element.name;
+                            if (element.ancestors.length > 0) {
+                                data[index].text += ' (' + element.ancestors[0].name + ')';
+                            }
+                        });
+
+                        return {
+                            results: data
+                        };
+                    },
+                    method: 'POST'
+                }
+            });
+
+            $('#inputProductVendor').select2({
+                ajax: {
+                    url: "/admin/vendor/search",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            searchString: params.term,
+                            limit: 10
+                        };
+                    },
+                    processResults: function(data, page) {
                         $.each(data, function(index, element) {
                             data[index].id = element._id;
                             data[index].text = element.name;

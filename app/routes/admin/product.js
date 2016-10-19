@@ -107,24 +107,24 @@ module.exports = function(app, passport, exphbs) {
 
     // Display product with ID
     app.get('/admin/product/update/:id', isLoggedIn, function(req, res) {
-
         Product.findOne({
-            _id: req.params.id
-        }, function(err, product) {
-
-            req.breadcrumbs([{
-                name: 'Products',
-                url: '/admin/product/index'
-            }, {
-                name: product.name
-            }]);
-
-            res.render('product/create', {
-                breadcrumbs: req.breadcrumbs(),
-                product: product,
-                pictUrl: pictUrl
+                _id: req.params.id
+            })
+            .populate('category')
+            .populate('vendor')
+            .exec(function(err, product) {
+                req.breadcrumbs([{
+                    name: 'Products',
+                    url: '/admin/product/index'
+                }, {
+                    name: product.name
+                }]);
+                res.render('product/create', {
+                    breadcrumbs: req.breadcrumbs(),
+                    product: product,
+                    pictUrl: pictUrl
+                });
             });
-        });
     })
 
     // Update product with ID

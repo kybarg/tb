@@ -1,5 +1,5 @@
 <form method="POST">
-    {{#if categories}}
+    {{#if vendors}}
         <div class="m-b-1">
             <div class="pull-xs-left">
                 <div class="dropdown">
@@ -38,11 +38,11 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each categories}}
+                {{#each vendors}}
                     <tr>
                         <th>
                             <label class="custom-control custom-checkbox">
-                                <input name="categories[]" class="custom-control-input" type="checkbox" value="{{this._id}}">
+                                <input name="vendors[]" class="custom-control-input" type="checkbox" value="{{this._id}}">
                                 <span class="custom-control-indicator"></span>
                             </label>
                         </th>
@@ -90,7 +90,7 @@
 
     {{else}}
         <div class="jumbotron text-xs-center m-x-auto" style="background-color: transparent; max-width: 728px;">
-            <h1 class="display-4">No categories are found.</h1>
+            <h1 class="display-4">No vendors are found.</h1>
             <p class="lead">You can create new one.</p>
             <a href="/admin/vendor/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> New vendor</a>
         </div>

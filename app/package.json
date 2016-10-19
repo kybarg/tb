@@ -9,6 +9,7 @@
   "author": "Trendberry Team",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.1.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "connect-flash": "^0.1.1",
@@ -34,6 +35,10 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "stream-worker": "^2.0.1",
     "transliteration": "^1.1.11"
+  },
+  "devDependencies": {
+    "mongoose-atree": "0.0.3"
   }
 }
