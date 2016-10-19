@@ -5,7 +5,9 @@ var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
 var Vendor = require('../../models/vendor');
-var pictPath = require('../../config/path.js').vendorPictPath;
+var pathConfig = require('../../config/path.js');
+var pictPath = pathConfig.productPictPath;
+var pictUrl = pathConfig.productPictUrl;
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -67,25 +69,25 @@ module.exports = function(app, passport, exphbs) {
         });
     });
 
-     app.post('/admin/vendor/create', isLoggedIn, upload.single('image'), function(req, res) {
+    app.post('/admin/vendor/create', isLoggedIn, upload.single('image'), function(req, res) {
         var vendor = new Vendor(req.body.vendor);
         if (req.file) {
             vendor.picture = req.file.filename; // Store uploaded picture filename
         }
-        
+
         vendor.save(function(err, vendor) {
-                if (err) throw err;
-                console.log('Vendor added, id = ' + vendor._id);
-                res.redirect('/admin/vendor/update/' + vendor._id);
-            });
+            if (err) throw err;
+            console.log('Vendor added, id = ' + vendor._id);
+            res.redirect('/admin/vendor/update/' + vendor._id);
         });
+    });
 
     app.get('/admin/vendor/update/:id', isLoggedIn, function(req, res) {
         Vendor.findOne({
                 _id: mongoose.Types.ObjectId(req.params.id)
             })
-           .exec(function(err, vendor) {
-            req.breadcrumbs([{
+            .exec(function(err, vendor) {
+                req.breadcrumbs([{
                     name: 'Vendors',
                     url: '/admin/vendor/index'
                 }, {
@@ -99,7 +101,48 @@ module.exports = function(app, passport, exphbs) {
             });
     });
 
-      app.post('/admin/vendor/search', isLoggedIn, function(req, res) {
+    // Update vendor with ID
+    app.post('/admin/vendor/update/:id', isLoggedIn, upload.single('image'), function(req, res) {
+        var vendor = req.body.vendor;
+        // Check if posting new picture
+        if (req.file) {
+            // Check if posting new picture
+            fs.access(pictPath, fs.F_OK, function(err) {
+                if (!err) {
+                    // Delete old picture
+                    fs.unlink(pictureOldPath);
+                } else {
+                    // It isn't accessible
+                }
+            });
+
+            // Save filename of new picture
+            vendor.picture = req.file.filename;
+        }
+
+        Vendor.findByIdAndUpdate(req.params.id, {
+            $set: vendor
+        }, {
+            new: true // return new model
+        }, function(err, vendor) {
+            if (err) throw err;
+            res.redirect('/admin/vendor/update/' + vendor._id);
+        });
+    });
+
+    app.get('/admin/vendor/delete/:id', isLoggedIn, function(req, res) {
+        Vendor.findOne({
+            _id: mongoose.Types.ObjectId(req.params.id)
+        }, function(err, vendor) {
+            if (err) throw err;
+            vendor.remove(function(err) {
+                if (err) throw err;
+                res.redirect('/admin/vendor/index');
+            });
+        });
+    });
+
+    app.post('/admin/vendor/search', isLoggedIn, function(req, res) {
         Vendor.find({
                 name: {
                     $regex: req.body.searchString ? req.body.searchString : '',
@@ -119,7 +162,7 @@ module.exports = function(app, passport, exphbs) {
 
 
 
-    function isLoggedIn(req, res, next) {
+function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())

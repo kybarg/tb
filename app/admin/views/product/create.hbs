@@ -27,12 +27,12 @@
             </div>
             <div class="form-group">
                 <label for="inputProductCategory">Categories</label>
-                <select name="product[category]" class="form-control" id="inputProductCategory" multiple="multiple">
-                <option value="Женщине">Женщине</option>
-                <option value="Одежда">Одежда</option>
-                <option value="Блузки">Блузки</option>
-                <option value="Свитера">Свитера</option>
-                <option value="Колготки">Колготки</option>
+                <select name="product[category][]" class="form-control" id="inputProductCategory" multiple="multiple" size="1" style="width: 100%">
+                    {{#if product.category}}
+                        {{#each product.category}}
+                            <option value="{{_id}}" selected="selected">{{name}}</option>
+                        {{/each}}
+                    {{/if}}
             </select>
             </div>
             <div class="row">
@@ -40,12 +40,10 @@
                     <div class="form-group">
                         <label for="inputProductVendor">Vendor</label>
                         <select name="product[vendor]" class="form-control" id="inputProductVendor">
-                        <option value="Adidas">Adidas</option>
-                        <option value="Oodji">Oodji</option>
-                        <option value="Reebok">Reebok</option>
-                        <option value="Puma">Puma</option>
-                        <option value="s'Olives">s'Olives</option>
-                    </select>
+                            {{#if product.vendor}}
+                                    <option value="{{product.vendor._id}}" selected="selected">{{product.vendor.name}}</option>
+                            {{/if}}
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">

@@ -30,9 +30,13 @@ module.exports = function(app, passport, exphbs) {
         req.breadcrumbs('Categories');
 
         // Using paginate for simplier pagination
+
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
-            sort: '_id',
+            sort: {
+                root: 1,
+                ancestors: 1,
+            },
             limit: 50
         }, function(err, result) {
             if (!err) {
@@ -73,39 +77,17 @@ module.exports = function(app, passport, exphbs) {
             category.picture = req.file.filename; // Store uploaded picture filename
         }
 
-        if (category.parent) {
-            Category.findById(category.parent, function(err, doc) {
-                console.log(doc);
-                if (doc.ancestors.length > 0)
-                    category.ancestors.push(doc.ancestors);
-                category.ancestors.push(doc._id);
-
-                category.save(function(err, category) {
-                    if (err) throw err;
-                    console.log('Category added, id = ' + category._id);
-                    res.redirect('/admin/category/update/' + category._id);
-                });
-            });
-        } else {
-            category.save(function(err, category) {
-                if (err) throw err;
-                console.log('Category added, id = ' + category._id);
-                res.redirect('/admin/category/update/' + category._id);
-            });
-        }
-
+        category.save(function(err, category) {
+            if (err) throw err;
+            res.redirect('/admin/category/update/' + category._id);
+        });
     });
 
     app.get('/admin/category/update/:id', isLoggedIn, function(req, res) {
-        Category.findOne({
-                _id: mongoose.Types.ObjectId(req.params.id)
-            })
+        Category.findById(req.params.id)
             // .populate('ancestors')
             .populate('parent')
             .exec(function(err, category) {
-
-                console.log(category.ancestors)
-
                 req.breadcrumbs([{
                     name: 'Categories',
                     url: '/admin/category/index'
@@ -122,7 +104,6 @@ module.exports = function(app, passport, exphbs) {
 
     // Update category with ID
     app.post('/admin/category/update/:id', isLoggedIn, upload.single('image'), function(req, res) {
-        var category = req.body.category;
         // Check if posting new picture
         if (req.file) {
             // Check if posting new picture
@@ -136,48 +117,21 @@ module.exports = function(app, passport, exphbs) {
             });
 
             // Save filename of new picture
-            category.picture = req.file.filename;
+            req.body.category.picture = req.file.filename;
         }
 
-        if (category.parent) {
-            Category.findById(category.parent, function(err, doc) {
-                category.ancestors = [];
-                if (doc.ancestors.length > 0)
-                    category.ancestors.push(doc.ancestors);
-                category.ancestors.push(doc._id);
+        Category.findById(req.params.id, function(err, category) {
+            if (err) throw err;
 
-                Category.findByIdAndUpdate(req.params.id, {
-                    $set: category
-                }, {
-                    new: true // return new model
-                }, function(err, category) {
-                    if (err) throw err;
-                    res.redirect('/admin/category/update/' + category._id);
-                });
-            });
-        } else {
-            Category.findByIdAndUpdate(req.params.id, {
-                $set: category
-            }, {
-                new: true // return new model
-            }, function(err, category) {
+            // Update category object with new values
+            category = Object.assign(category, req.body.category);
+
+            category.save(function(err) {
                 if (err) throw err;
-                res.redirect('/admin/category/update/' + category._id);
+                res.redirect('/admin/category/update/' + req.params.id);
             });
-        }
+        });
 
-
-
-        // Category.findByIdAndUpdate(req.params.id, {
-        //     $set: category
-        // }, {
-        //     new: true // return new model
-        // }, function(err, category) {
-        //     if (err) throw err;
-        //     res.render('category/create', {
-        //         category: category
-        //     });
-        // });
     });
 
     app.get('/admin/category/delete/:id', isLoggedIn, function(req, res) {
