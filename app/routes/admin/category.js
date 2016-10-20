@@ -34,9 +34,8 @@ module.exports = function(app, passport, exphbs) {
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: {
-              //  root: 1,
-               // path: 1,
-                //ancestors: 1,
+                root: 1,
+                ancestors: 1,
             },
             limit: 50
         }, function(err, result) {
@@ -78,7 +77,7 @@ module.exports = function(app, passport, exphbs) {
             category.picture = req.file.filename; // Store uploaded picture filename
         }
 
-        category.updateAndSave(function(err, category) {
+        category.save(function(err, category) {
             if (err) throw err;
             res.redirect('/admin/category/update/' + category._id);
         });
@@ -127,7 +126,7 @@ module.exports = function(app, passport, exphbs) {
             // Update category object with new values
             category = Object.assign(category, req.body.category);
 
-            category.updateAndSave(function(err) {
+            category.save(function(err) {
                 if (err) throw err;
                 res.redirect('/admin/category/update/' + req.params.id);
             });
