@@ -13,6 +13,8 @@ var categorySchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         index: true
+            //set: 
+            //  }
     },
     ancestors: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -38,7 +40,7 @@ var categorySchema = mongoose.Schema({
 
 categorySchema.plugin(mongoosePaginate);
 
-categorySchema.post('remove', function(doc) {
+categorySchema.post('remove', function (doc) {
     console.log('Category removed, id = ' + doc._id);
     if (doc.picture)
         fs.unlink(pictPath + doc.picture);
@@ -50,7 +52,7 @@ categorySchema.post('remove', function(doc) {
  *
  * @param  {Function} next
  */
-categorySchema.pre('save', function preSave(next) {
+/**categorySchema.pre('save', function preSave(next) {
     var isParentChange = this.isModified('parent');
     var pathSeparator = '#';
     var pathSeparatorRegex = '[' + pathSeparator + ']';
@@ -121,7 +123,7 @@ categorySchema.pre('save', function preSave(next) {
     } else {
         next();
     }
-});
+});*/
 
 // categorySchema.pre('save', function(next, done) {
 //
@@ -166,12 +168,32 @@ categorySchema.pre('save', function preSave(next) {
 //
 // });
 
-categorySchema.pre('save', function(next, done) {
+categorySchema.pre('save', function (next, done) {
     if (!this.slug || !this.slug.lengt === 0) {
         this.slug = slugify(this.name);
     }
     next();
 });
+
+
+// temp solution
+categorySchema.methods.updateAndSave = function (callback) {
+    var category = this;
+    if (this.isModified('parent')) {
+        this.ancestors = [this.parent];
+        mongoose.model('Category').findById(this.parent, function (err, doc) {
+            if (doc.ancestors.lngth > 0)
+                category.ancestors.push(doc.ancestors);
+            category.save(function (err) {
+                callback(err, category);
+            });
+        })
+    } else {
+        this.save(function (err) {
+            callback(err, category)
+        });
+    }
+}
 
 
 
