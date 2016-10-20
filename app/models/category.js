@@ -169,7 +169,7 @@ categorySchema.post('remove', function (doc) {
 // });
 
 categorySchema.pre('save', function (next, done) {
-    if (!this.slug || !this.slug.length === 0) {
+    if (!this.slug || !this.slug.lengt === 0) {
         this.slug = slugify(this.name);
     }
     next();
@@ -182,7 +182,7 @@ categorySchema.methods.updateAndSave = function (callback) {
     if (this.isModified('parent')) {
         this.ancestors = [this.parent];
         mongoose.model('Category').findById(this.parent, function (err, doc) {
-            if (doc.ancestors.length > 0)
+            if (doc.ancestors.lngth > 0)
                 category.ancestors.push(doc.ancestors);
             category.save(function (err) {
                 callback(err, category);
