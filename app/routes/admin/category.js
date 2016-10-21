@@ -93,8 +93,16 @@ module.exports = function(app, passport, exphbs) {
         }
 
         category.save(function(err, category) {
-            if (err) throw err;
-            res.redirect('/admin/category/update/' + category._id);
+            if (err) {
+                var c = new Category(req.body.category)
+                res.render('category/create', {
+                    breadcrumbs: req.breadcrumbs(),
+                    category: c,
+                    errors: err.errors.name.path
+                });
+
+            } else
+                res.redirect('/admin/category/update/' + category._id);
         });
     });
 
