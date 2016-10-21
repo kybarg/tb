@@ -1,10 +1,10 @@
 <form method="POST" enctype="multipart/form-data">
-    <div class="m-b-1">
-        <div class="pull-xs-left">
+    <div class="mb-1">
+        <div class="float-xs-left">
             <a href="/admin/category/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
         </div>
 
-        <div class="pull-xs-right">
+        <div class="float-xs-right">
             <a href="#" data-href="/admin/category/delete/{{category._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
             <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
         </div>
@@ -17,7 +17,7 @@
 
 
         <div class="col-md-6">
-            <div class="form-group">
+            <div class="form-group{{#if errors.nameHasError}} has-danger{{/if}}">
                 <label for="inputCategoryName">Name</label>
                 <input name="category[name]" type="text" class="form-control" id="inputCategoryName" placeholder="Category name" value="{{category.name}}">
             </div>

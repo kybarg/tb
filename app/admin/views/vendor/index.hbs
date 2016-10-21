@@ -1,7 +1,7 @@
 <form method="POST">
     {{#if vendors}}
-        <div class="m-b-1">
-            <div class="pull-xs-left">
+        <div class="mb-1">
+            <div class="float-xs-left">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Bulk actions
@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="pull-xs-right">
+            <div class="float-xs-right">
                 <a href="/admin/vendor/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> New vendor</a>
             </div>
             <div class="clearfix"></div>
@@ -48,7 +48,7 @@
                         </th>
                         <th scope="row">{{@index}}</th>
                         <td>
-                            <img {{#if this.picture}} src="/public/uploads/{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="vendor image" class="img-rounded" style="height:40px; width: 40px;" />
+                            <img {{#if this.picture}} src="/public/uploads/{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="vendor image" class="rounded" style="height:40px; width: 40px;" />
                         </td>
                         <td><a href="/admin/vendor/update/{{this._id}}">{{this.name}}</a></td>
                         <!-- <td>Женщине, Одежжда, Верхняя одежда, Шубы</td> -->
