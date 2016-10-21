@@ -6,7 +6,6 @@ var path = require('path');
 var crypto = require('crypto');
 var Category = require('../../models/category');
 var pictPath = require('../../config/path.js').categoryPictPath;
-var math = require('mathjs');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
