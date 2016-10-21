@@ -24,7 +24,7 @@
     <link href="/admin/assets/css/simple-sidebar.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="preload">
 
     <div id="wrapper">
 
@@ -45,7 +45,10 @@
                         <a class="nav-link" href="/admin/vendor/index">Vendors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/store/index">Stores</a>
+                        <a class="nav-link" href="/admin/store/index">Shops</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/settings/index">Settings</a>
                     </li>
                 </ul>
             </div>
@@ -222,9 +225,6 @@
                         $.each(data, function(index, element) {
                             data[index].id = element._id;
                             data[index].text = element.name;
-                            if (element.ancestors.length > 0) {
-                                data[index].text += ' (' + element.ancestors[0].name + ')';
-                            }
                         });
 
                         return {
@@ -240,6 +240,8 @@
             $('.note-popover').css({
                 'display': 'none'
             });
+
+            $('body').removeClass('preload');
 
         });
     </script>

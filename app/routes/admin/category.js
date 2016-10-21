@@ -87,6 +87,13 @@ module.exports = function(app, passport, exphbs) {
     });
 
     app.post('/admin/category/create', isLoggedIn, upload.single('image'), function(req, res) {
+        req.breadcrumbs([{
+            name: 'Categories',
+            url: '/admin/category/index'
+        }, {
+            name: 'New category'
+        }]);
+
         var category = new Category(req.body.category);
         if (req.file) {
             category.picture = req.file.filename; // Store uploaded picture filename
@@ -94,11 +101,18 @@ module.exports = function(app, passport, exphbs) {
 
         category.save(function(err, category) {
             if (err) {
-                var c = new Category(req.body.category)
+                // var c = new Category(req.body.category)
+
+                // res.send(JSON.stringify(err, null, " "));
+
+                var errors = {
+                    [err.errors.name.path + 'HasError']: true
+                }
+
                 res.render('category/create', {
                     breadcrumbs: req.breadcrumbs(),
-                    category: c,
-                    errors: err.errors.name.path
+                    category: req.body.category,
+                    errors: errors
                 });
 
             } else
