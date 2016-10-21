@@ -24,9 +24,9 @@
             <thead>
                 <tr>
                     <th style="width: 1%;">
-                        <label class="custom-control custom-checkbox">
+                        <label class="custom-control custom-checkbox m-0">
                             <input class="custom-control-input" type="checkbox" id="select-all-toggle">
-                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-indicator"></span>&nbsp;
                         </label>
                     </th>
                     <th style="width: 1%;">#</th>
@@ -41,9 +41,9 @@
                 {{#each vendors}}
                     <tr>
                         <th>
-                            <label class="custom-control custom-checkbox">
-                                <input name="vendors[]" class="custom-control-input" type="checkbox" value="{{this._id}}">
-                                <span class="custom-control-indicator"></span>
+                            <label class="custom-control custom-checkbox m-0">
+                                <input name="vendors[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
+                                <span class="custom-control-indicator"></span>&nbsp;
                             </label>
                         </th>
                         <th scope="row">{{@index}}</th>
