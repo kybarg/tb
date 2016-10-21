@@ -49,12 +49,15 @@ productSchema.post('remove', function(doc) {
 
 productSchema.pre('save', function(next) {
     if (!this.slug || this.slug.length === 0) {
-        mongoose.model('Vendor').findById(doc._id, function(err, vendor) {
+
+        var self = this;
+        mongoose.model('Vendor').findById(this.vendor, function(err, vendor) {
             if (!err || vendor) {
-                doc.slug = 'product-' + slugify(doc.name + '-' + vendor.name) + '-' + doc._id;
+                this.slug = 'product-' + slugify(self.name + '-' + vendor.name) + '-' + self._id;
             }
         });
     }
+    next();
 });
 
 
