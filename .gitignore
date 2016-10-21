@@ -61,6 +61,10 @@ bower_components/
 .vscode/
 jsconfig.json
 
-app/logfile.txt
-
+# Uploads
 app/public/uploads/
+
+# Logs
+logs
+*.log
+npm-debug.log*
