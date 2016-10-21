@@ -6,6 +6,7 @@ var path = require('path');
 var crypto = require('crypto');
 var Category = require('../../models/category');
 var pictPath = require('../../config/path.js').categoryPictPath;
+var math = require('mathjs');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -29,33 +30,47 @@ module.exports = function(app, passport, exphbs) {
 
         req.breadcrumbs('Categories');
 
-        // Using paginate for simplier pagination
-
-        Category.paginate({}, {
-            page: req.query.page ? req.query.page : 1,
-            sort: {
-                root: 1,
+        Category.find()
+            .select({
                 ancestors: 1,
-            },
-            limit: 50
-        }, function(err, result) {
-            if (!err) {
+                name: 1,
+                parent: 1
+            })
+            .sort('name')
+            .lean()
+            .exec(function(err, categories) {
+                if (err) throw err;
+
+                categories = treeify(categories, '_id', 'parent', 'children')
+
+                var page = parseInt(req.query.page ? req.query.page : 1);
+                var limit = parseInt(50);
+
+
+                var result = [];
+                bfs({
+                    "children": categories
+                }, 'children', result);
+
+                var pages = Math.ceil(result.length / limit);
+
+                var start = ((page - 1) * limit);
+                result = result.slice(start, (start + limit));
+
                 res.render('category/index', {
                     breadcrumbs: req.breadcrumbs(),
-                    categories: result.docs,
+                    categories: result,
                     pagination: {
-                        page: result.page,
-                        pageCount: result.pages
+                        page: page,
+                        pageCount: pages
                     },
-                    showPagination: result.pages > 1 ? true : false,
+                    showPagination: (pages > 1) ? true : false,
                     helpers: {
                         paginate: handlebarsPaginate
                     }
                 });
-            } else {
-                throw err;
-            }
-        });
+
+            });
     });
 
     app.get('/admin/category/create', isLoggedIn, function(req, res) {
@@ -175,3 +190,37 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 };
+
+function treeify(list, idAttr, parentAttr, childrenAttr) {
+    if (!idAttr) idAttr = 'id';
+    if (!parentAttr) parentAttr = 'parent';
+    if (!childrenAttr) childrenAttr = 'children';
+    var treeList = [];
+    var lookup = {};
+
+    var tmpList = [];
+
+    list.forEach(function(obj) {
+        lookup[obj[idAttr]] = obj;
+        obj[childrenAttr] = [];
+    });
+
+    list.forEach(function(obj) {
+        if (typeof obj[parentAttr] !== 'undefined' && obj[parentAttr] != null) {
+            lookup[obj[parentAttr]][childrenAttr].push(obj);
+        } else {
+            treeList.push(obj);
+        }
+    });
+    return treeList;
+};
+
+function bfs(tree, key, collection) {
+    if (!tree[key] || tree[key].length === 0) return;
+    for (var i = 0; i < tree[key].length; i++) {
+        var child = tree[key][i]
+        collection.push(child);
+        bfs(child, key, collection);
+    }
+    return;
+}
