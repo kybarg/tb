@@ -6,7 +6,10 @@ var slugify = require('transliteration').slugify;
 var streamWorker = require('stream-worker');
 
 var categorySchema = mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     slug: String,
     parent: {
@@ -167,7 +170,7 @@ categorySchema.pre('save', function preSave(next) {
 // });
 
 categorySchema.pre('save', function(next, done) {
-    if (!this.slug || !this.slug.lengt === 0) {
+    if (!this.slug || this.slug.length === 0) {
         this.slug = slugify(this.name);
     }
     next();
