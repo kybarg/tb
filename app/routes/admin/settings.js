@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var pathConfig = require('../../config/path.js');
 var pictPath = pathConfig.productPictPath;
 var pictUrl = pathConfig.productPictUrl;
+var upload = multer()
 
 
 module.exports = function(app, passport, exphbs) {
@@ -18,6 +19,10 @@ module.exports = function(app, passport, exphbs) {
         res.render('settings/index', {
             breadcrumbs: req.breadcrumbs(),
         });
+    });
+
+    app.post('/admin/settings/index', isLoggedIn, upload.array(), function(req, res) {
+        console.log(req.body);
     });
 
 }

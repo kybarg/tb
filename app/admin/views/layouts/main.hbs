@@ -136,8 +136,8 @@
             });
 
             $('#select-all-toggle').click(function() {
-                var checkBoxes = $('input[name=products\\[\\]]');
-                checkBoxes.prop('checked', !checkBoxes.prop('checked'));
+                var checkBoxes = $('input.select-all');
+                checkBoxes.prop('checked', $(this).prop('checked'));
             });
 
             $('#deleteConfirmModal').on('show.bs.modal', function(e) {
