@@ -18,9 +18,7 @@
     "express": "^4.14.0",
     "express-breadcrumbs": "0.0.2",
     "express-handlebars": "^3.0.0",
-    "express-logger": "0.0.3",
     "express-session": "^1.14.1",
-    "express-sessions": "^1.0.6",
     "express-static": "^1.0.3",
     "express-url-breadcrumb": "0.0.7",
     "fs": "0.0.1-security",
@@ -38,8 +36,5 @@
     "path": "^0.12.7",
     "stream-worker": "^2.0.1",
     "transliteration": "^1.1.11"
-  },
-  "devDependencies": {
-    "mongoose-atree": "0.0.3"
   }
 }
