@@ -21,7 +21,7 @@
     "express-session": "^1.14.1",
     "express-static": "^1.0.3",
     "express-url-breadcrumb": "0.0.7",
-    "fs": "0.0.1-security",
+    "fs": "^0.0.1-security",
     "handlebars": "^4.0.5",
     "handlebars-paginate": "^0.1.0",
     "mongodb": "^2.2.10",
