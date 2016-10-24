@@ -8,18 +8,7 @@ var Vendor = require('../../models/vendor');
 var pathConfig = require('../../config/path.js');
 var pictPath = pathConfig.productPictPath;
 var pictUrl = pathConfig.productPictUrl;
-
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, pictPath)
-    },
-    filename: function(req, file, cb) {
-        crypto.pseudoRandomBytes(16, function(err, raw) {
-            if (err) return cb(err)
-            cb(null, raw.toString('hex') + Date.now().toString() + path.extname(file.originalname))
-        })
-    }
-});
+var storage = require('../../lib/pictStorage.js')(pictPath);
 
 var upload = multer({
     storage: storage
