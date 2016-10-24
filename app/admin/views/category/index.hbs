@@ -30,7 +30,7 @@
                         </label>
                     </th>
                     <th style="width: 1%;">#</th>
-                    <th style="width: 71px;">Image</th>
+                    <!--<th style="width: 71px;">Image</th>-->
                     <th>Name</th>
                     <!-- <th style="width: 1%;">Category</th>
                 <th style="width: 1%;">Vendor</th> -->
@@ -47,12 +47,16 @@
                             </label>
                         </th>
                         <th scope="row">{{@index}}</th>
-                        <td>
+                        <!--<td>
                             <img {{#if this.picture}} src="/public/uploads/{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="category image" class="rounded" style="height:40px; width: 40px;" />
-                        </td>
+                        </td>-->
                         <td>
                             {{#each ancestors}}
-                                <span class="tree-line"></span>
+                                {{#if @last}}
+                                    <span class="tree-line"></span>
+                                {{else}}
+                                    <span class="tree-line" data-toggle="tooltip" data-placement="left" title="{{this.name}}"></span>
+                                {{/if}}
                             {{/each}}
                             <a href="/admin/category/update/{{this._id}}">{{this.name}}</a>
                         </td>
@@ -94,7 +98,7 @@
         {{/if}}
 
     {{else}}
-        <div class="jumbotron text-xs-center m-x-auto" style="background-color: transparent; max-width: 728px;">
+        <div class="jumbotron text-xs-center mx-auto" style="background-color: transparent; max-width: 728px;">
             <h1 class="display-4">No categories are found.</h1>
             <p class="lead">You can create new one.</p>
             <a href="/admin/category/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> New category</a>

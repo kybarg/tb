@@ -1,5 +1,6 @@
 var handlebarsPaginate = require('handlebars-paginate');
 var mongoose = require('mongoose');
+var pagination = require('mongoose-pagination');
 var multer = require('multer');
 var fs = require('fs');
 var path = require('path');
@@ -29,47 +30,51 @@ module.exports = function(app, passport, exphbs) {
 
         req.breadcrumbs('Categories');
 
-        Category.find()
-            .select({
-                ancestors: 1,
-                name: 1,
-                parent: 1
-            })
-            .sort('name')
-            .lean()
-            .exec(function(err, categories) {
-                if (err) throw err;
+        var page = req.query.page ? req.query.page : 1;
 
-                categories = treeify(categories, '_id', 'parent', 'children')
-
-                var page = parseInt(req.query.page ? req.query.page : 1);
-                var limit = parseInt(50);
-
-
-                var result = [];
-                bfs({
-                    "children": categories
-                }, 'children', result);
-
-                var pages = Math.ceil(result.length / limit);
-
-                var start = ((page - 1) * limit);
-                result = result.slice(start, (start + limit));
-
+        Category.paginate({}, {
+            page: req.query.page ? req.query.page : 1,
+            sort: 'ancestors.0.name ancestors.1.name ancestors.2.name ancestors.3.name ancestors.4.name',
+            limit: 50
+        }, function(err, result) {
+            if (!err) {
                 res.render('category/index', {
                     breadcrumbs: req.breadcrumbs(),
-                    categories: result,
+                    categories: result.docs,
                     pagination: {
-                        page: page,
-                        pageCount: pages
+                        page: result.page,
+                        pageCount: result.pages
                     },
-                    showPagination: (pages > 1) ? true : false,
+                    showPagination: result.pages > 1 ? true : false,
                     helpers: {
                         paginate: handlebarsPaginate
                     }
                 });
+            } else {
+                throw err;
+            }
+        });
 
+    });
+
+    app.post('/admin/category/delete', isLoggedIn, function(req, res) {
+        var categoriesIds = req.body.categories;
+        if (!categoriesIds) {
+            res.redirect('/admin/category/index');
+        }
+
+        // Removes all categories with IDs
+        Category.find({
+            _id: {
+                $in: categoriesIds
+            }
+        }, function(err, categories) {
+            if (err) throw err;
+            categories.forEach(function(category) {
+                category.remove();
             });
+            res.redirect('/admin/category/index');
+        });
     });
 
     app.get('/admin/category/create', isLoggedIn, function(req, res) {
@@ -210,38 +215,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
-};
-
-function treeify(list, idAttr, parentAttr, childrenAttr) {
-    if (!idAttr) idAttr = 'id';
-    if (!parentAttr) parentAttr = 'parent';
-    if (!childrenAttr) childrenAttr = 'children';
-    var treeList = [];
-    var lookup = {};
-
-    var tmpList = [];
-
-    list.forEach(function(obj) {
-        lookup[obj[idAttr]] = obj;
-        obj[childrenAttr] = [];
-    });
-
-    list.forEach(function(obj) {
-        if (typeof obj[parentAttr] !== 'undefined' && obj[parentAttr] != null) {
-            lookup[obj[parentAttr]][childrenAttr].push(obj);
-        } else {
-            treeList.push(obj);
-        }
-    });
-    return treeList;
-};
-
-function bfs(tree, key, collection) {
-    if (!tree[key] || tree[key].length === 0) return;
-    for (var i = 0; i < tree[key].length; i++) {
-        var child = tree[key][i]
-        collection.push(child);
-        bfs(child, key, collection);
-    }
-    return;
 }
