@@ -78,7 +78,7 @@ require('./routes/admin/setting.js')(app, passport, exphbs);
 
 // Defines folders with static files
 app.use('/admin', express.static('admin'));
-app.use('/public', express.static('public'));
+app.use('/public', express.static('public')); 
 
 // launch ======================================================================
 app.listen(port);

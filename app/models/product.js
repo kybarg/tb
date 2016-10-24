@@ -3,6 +3,7 @@ var mongoosePaginate = require('mongoose-paginate');
 var fs = require('fs');
 var pictPath = require('../config/path.js').productPictPath;
 var slugify = require('transliteration').slugify;
+var picture = require('../models/picture.js');
 
 var productSchema = mongoose.Schema({
     name: String,
@@ -32,7 +33,7 @@ var productSchema = mongoose.Schema({
         enum: [null, 1, 2, 3],
         default: null
     },
-    picture: String,
+    picture: picture,
     season: String,
     shop: String,
     meta: {
@@ -41,19 +42,21 @@ var productSchema = mongoose.Schema({
     }
 });
 
-productSchema.post('remove', function(doc) {
+productSchema.post('remove', function (doc) {
     console.log('Product removed, id = ' + doc._id);
     if (doc.picture)
-        fs.unlink(pictPath + doc.picture);
+        fs.unlink(pictPath + doc.picture.name, function (err) {
+
+        });
 });
 
-productSchema.pre('save', function(next) {
+productSchema.pre('save', function (next) {
     if (!this.slug || this.slug.length === 0) {
 
         var self = this;
-        mongoose.model('Vendor').findById(this.vendor, function(err, vendor) {
-            if (!err || vendor) {
-                this.slug = 'product-' + slugify(self.name + '-' + vendor.name) + '-' + self._id;
+        mongoose.model('Vendor').findById(this.vendor, function (err, vendor) {
+            if (!err && vendor) {
+                self.slug = 'product-' + slugify(self.name + '-' + vendor.name) + '-' + self._id;
             }
         });
     }

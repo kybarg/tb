@@ -8,18 +8,8 @@ var Product = require('../../models/product');
 var pathConfig = require('../../config/path.js');
 var pictPath = pathConfig.productPictPath;
 var pictUrl = pathConfig.productPictUrl;
-
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, pictPath)
-    },
-    filename: function(req, file, cb) {
-        crypto.pseudoRandomBytes(16, function(err, raw) {
-            if (err) return cb(err)
-            cb(null, raw.toString('hex') + Date.now().toString() + path.extname(file.originalname))
-        })
-    }
-});
+var pictStorage = require('../../lib/pictStorage.js');
+var storage = pictStorage(pictPath);
 
 var upload = multer({
     storage: storage
@@ -27,9 +17,8 @@ var upload = multer({
 
 module.exports = function(app, passport, exphbs) {
     app.get('/admin/product/index', isLoggedIn, function(req, res) {
-
+  
         req.breadcrumbs('Products');
-
         Product.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: '-_id',
@@ -58,10 +47,10 @@ module.exports = function(app, passport, exphbs) {
     app.post('/admin/product/delete', isLoggedIn, function(req, res) {
         var products = req.body.products;
         var productsIds = [];
-        if (!products) {
-            res.redirect('/admin/product/index');
+        if (!products) {  
+            res.redirect('/admin/product/index'); 
         }
-
+        
         // Removes all products with IDs
         Product.find({
             _id: {
@@ -95,7 +84,7 @@ module.exports = function(app, passport, exphbs) {
     app.post('/admin/product/create', isLoggedIn, upload.single('image'), function(req, res) {
         var product = new Product(req.body.product);
         if (req.file) {
-            product.picture = req.file.filename; // Store uploaded picture filename
+            product.picture.file = req.file; // Store uploaded picture filename 
         };
 
         product.save(function(err, product) {
