@@ -1,10 +1,10 @@
 <form method="POST" enctype="multipart/form-data">
     <ul class="nav nav-tabs pt-1" role="tablist">
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#main">Main</a>
+            <a class="nav-link active" data-toggle="tab" href="#main">Main</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#catalog">Catalog</a>
+            <a class="nav-link" data-toggle="tab" href="#catalog">Catalog</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#import">Link</a>
@@ -15,10 +15,25 @@
     </ul>
 
     <div class="tab-content py-1">
-        <div class="tab-pane" id="main" role="tabpanel">
-
+        <div class="tab-pane active" id="main" role="tabpanel">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputSettingsGlobalSitename">Site Name</label>
+                        <input name="settings[global][sitename]" type="text" class="form-control" id="inputSettingsGlobalSitename" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSettingsGlobalContactEmail">Contact Email</label>
+                        <input name="settings[global][contact][email]" type="email" class="form-control" id="inputSettingsGlobalContactEmail" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSettingsGlobalContactAddress">Contact Address</label>
+                        <input name="settings[global][contact][address]" type="email" class="form-control" id="inputSettingsGlobalContactAddress" placeholder="">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="tab-pane active" id="catalog" role="tabpanel">
+        <div class="tab-pane" id="catalog" role="tabpanel">
             <h4>Product</h4>
             <div class="row">
                 <div class="col-md-6">
