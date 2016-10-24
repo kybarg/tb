@@ -63,7 +63,7 @@ module.exports = function(app, passport, exphbs) {
             });
             res.redirect('/admin/product/index');
         });
-    })
+    });
 
 
     // View from for addign new product

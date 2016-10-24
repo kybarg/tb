@@ -18,19 +18,12 @@ var categorySchema = mongoose.Schema({
         index: true
     },
     ancestors: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
+        _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Category'
+        },
+        name: String
     }],
-    path: {
-        type: String,
-        index: true
-    },
-    root: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        index: true
-    },
-    depth: Number,
     picture: String,
     popularity: [],
     meta: {
@@ -53,62 +46,57 @@ categorySchema.post('remove', function(doc) {
  *
  * @param  {Function} next
  */
-categorySchema.pre('save', function preSave(next) {
+categorySchema.pre('save', function(next) {
     var isParentChange = this.isModified('parent');
-    var pathSeparator = '#';
-    var pathSeparatorRegex = '[' + pathSeparator + ']';
+    var isNameChange = this.isModified('name');
     var numWorkers = 5;
 
-    if (this.isNew || isParentChange) {
+    if (this.isNew || isParentChange || isNameChange) {
         if (!this.parent) {
-            this.path = this._id.toString();
-            this.root = this._id;
+            // this.ancestors = [];
+            this.ancestors = [{
+                _id: this._id,
+                name: this.name
+            }];
             return next();
         }
 
         var self = this;
         this.collection.findOne({
             _id: this.parent
-        }, function(err, doc) {
+        }, function(err, parent) {
 
             if (err) {
                 return next(err);
             }
 
-            var previousPath = self.path;
-            self.path = doc.path + pathSeparator + self._id.toString();
-            self.ancestors = self.path.split(pathSeparator);
-            self.ancestors.pop();
-            self.root = self.ancestors[0];
-            self.depth = self.ancestors.length;
+            var previousAncestor = self.ancestors;
+            // self.ancestors = [].concat(parent.ancestors, parent._id);
+            self.ancestors = [].concat(parent.ancestors, {
+                _id: self._id,
+                name: self.name
+            });
 
-            if (isParentChange) {
+            if (isParentChange || isNameChange) {
                 // When the parent is changed we must rewrite all children paths as well
                 self.collection.find({
-                    path: {
-                        '$regex': '^' + previousPath + pathSeparatorRegex
-                    }
+                    ancestors: self._id
                 }, function(err, cursor) {
 
                     if (err) {
                         return next(err);
                     }
 
-                    streamWorker(cursor.stream(), function streamOnData(doc, done) {
+                    streamWorker(cursor.stream(), function streamOnData(child, done) {
 
-                            var newPath = self.path + doc.path.substr(previousPath.length);
-                            var newAncestors = newPath.split(pathSeparator);
-                            newAncestors.pop();
-                            var root = newAncestors[0];
-                            var depth = newAncestors.length;
+                            // var newAncestors = [].concat(self.ancestors, child.ancestors.slice(previousAncestor.length));
+                            var newAncestors = [].concat(self.ancestors, child.ancestors.slice((previousAncestor.length - 1)));
+
                             self.collection.update({
-                                _id: doc._id
+                                _id: child._id
                             }, {
                                 $set: {
-                                    path: newPath,
                                     ancestors: newAncestors,
-                                    root: root,
-                                    depth: depth,
                                 }
                             }, done);
                         }, {

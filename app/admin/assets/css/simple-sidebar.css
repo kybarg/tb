@@ -75,7 +75,7 @@ body {
     margin-right: -250px;
 }
 
-#wrapper.toggled ~ .footer{
+#wrapper.toggled ~ .footer {
     margin-right: -250px;
 }
 
@@ -83,7 +83,6 @@ body {
     .footer {
         margin-left: 250px;
     }
-
     #wrapper.toggled ~ .footer {
         margin-left: 0;
     }
@@ -134,18 +133,54 @@ body {
 }
 
 .tree-line {
-    background: #ccc;
-    border-radius: 50%;
     display: block;
-    height: .5rem;
     float: left;
-    width: .5rem;
-    margin: .5rem 1rem .5rem 0;
+    border-left: 2px dotted #ddd;
+    height: 54px;
+    width: 20px;
+    margin-top: -40px;
+}
+
+.tree-line:last-of-type {
+    border-bottom: 2px dotted #ddd;
+}
+
+tr:first-child .tree-line {
+    height: 26px;
+    margin-top: -12px;
+}
+
+.tree-line:first-child {
+    border-left-width: 0;
+}
+
+tbody .tree-1 ~ tr .tree-line:first-child {
+ border-left-width: 2px;
+}
+
+tbody .tree-2.last ~ tr .tree-line:first-child {
+    border-left-width: 0;
+}
+
+tbody .tree-3.last ~ tr .tree-line:nth-child(2) {
+    border-left-width: 0;
+}
+
+tbody .tree-4.last ~ tr .tree-line:nth-child(3) {
+    border-left-width: 0;
+}
+
+tbody .tree-5.last ~ tr .tree-line:nth-child(4) {
+    border-left-width: 0;
+}
+
+tbody .tree-6.last ~ tr .tree-line:nth-child(5) {
+    border-left-width: 0;
 }
 
 .preload * {
- -webkit-transition: none !important;
- -moz-transition: none !important;
- -ms-transition: none !important;
- -o-transition: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
 }
