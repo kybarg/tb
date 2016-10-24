@@ -75,7 +75,7 @@ body {
     margin-right: -250px;
 }
 
-#wrapper.toggled ~ .footer{
+#wrapper.toggled ~ .footer {
     margin-right: -250px;
 }
 
@@ -83,7 +83,6 @@ body {
     .footer {
         margin-left: 250px;
     }
-
     #wrapper.toggled ~ .footer {
         margin-left: 0;
     }
@@ -151,9 +150,37 @@ tr:first-child .tree-line {
     margin-top: -12px;
 }
 
+.tree-line:first-child {
+    border-left-width: 0;
+}
+
+tbody .tree-1 ~ tr .tree-line:first-child {
+ border-left-width: 2px;
+}
+
+tbody .tree-2.last ~ tr .tree-line:first-child {
+    border-left-width: 0;
+}
+
+tbody .tree-3.last ~ tr .tree-line:nth-child(2) {
+    border-left-width: 0;
+}
+
+tbody .tree-4.last ~ tr .tree-line:nth-child(3) {
+    border-left-width: 0;
+}
+
+tbody .tree-5.last ~ tr .tree-line:nth-child(4) {
+    border-left-width: 0;
+}
+
+tbody .tree-6.last ~ tr .tree-line:nth-child(5) {
+    border-left-width: 0;
+}
+
 .preload * {
- -webkit-transition: none !important;
- -moz-transition: none !important;
- -ms-transition: none !important;
- -o-transition: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
 }

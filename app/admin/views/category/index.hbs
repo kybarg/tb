@@ -37,9 +37,17 @@
                     <th style="width: 130px;">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            
                 {{#each categories}}
-                    <tr>
+                    {{#unless this.parent}}
+                        {{#if @index}}
+                            </tbody>
+                            <tbody>
+                        {{else}}
+                            <tbody>
+                        {{/if}}
+                    {{/unless}}
+                    <tr class="tree-{{this.ancestors.length}} {{this.class}}">
                         <th>
                             <label class="custom-control custom-checkbox m-0">
                                 <input name="categories[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
@@ -52,11 +60,10 @@
                         </td>-->
                         <td>
                             {{#each ancestors}}
-                                {{#if @last}}
+                                {{#unless @last}}
                                     <span class="tree-line"></span>
-                                {{else}}
-                                    <span class="tree-line" data-toggle="tooltip" data-placement="left" title="{{this.name}}"></span>
-                                {{/if}}
+                                    <!-- <span class="tree-line" data-toggle="tooltip" data-placement="left" title="{{this.name}}"></span> -->
+                                {{/unless}}
                             {{/each}}
                             <a href="/admin/category/update/{{this._id}}">{{this.name}}</a>
                         </td>

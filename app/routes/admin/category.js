@@ -35,9 +35,24 @@ module.exports = function(app, passport, exphbs) {
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: 'ancestors.0.name ancestors.1.name ancestors.2.name ancestors.3.name ancestors.4.name',
-            limit: 50
+            // Maybe there less ugly way to solve sorting
+            limit: 50,
+            lean: 1
         }, function(err, result) {
             if (!err) {
+
+                var lasts = [];
+                for (var i = 0; i < result.docs.length; i++) {
+                    lasts[result.docs[i].ancestors.length] = i;
+
+                    if( i == (result.docs.length-1) || result.docs[i].ancestors.length == 1 ) {
+                        lasts.forEach(function(k){
+                           result.docs[k].class = 'last';
+                        });
+                        lasts = [];
+                    }
+                }
+
                 res.render('category/index', {
                     breadcrumbs: req.breadcrumbs(),
                     categories: result.docs,
