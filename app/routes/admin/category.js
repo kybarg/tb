@@ -7,18 +7,7 @@ var path = require('path');
 var crypto = require('crypto');
 var Category = require('../../models/category');
 var pictPath = require('../../config/path.js').categoryPictPath;
-
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, pictPath)
-    },
-    filename: function(req, file, cb) {
-        crypto.pseudoRandomBytes(16, function(err, raw) {
-            if (err) return cb(err)
-            cb(null, raw.toString('hex') + Date.now().toString() + path.extname(file.originalname))
-        })
-    }
-});
+var storage = require('../../lib/pictStorage.js')(pictPath);
 
 var upload = multer({
     storage: storage
@@ -29,8 +18,6 @@ module.exports = function(app, passport, exphbs) {
     app.get('/admin/category/index', isLoggedIn, function(req, res) {
 
         req.breadcrumbs('Categories');
-
-        var page = req.query.page ? req.query.page : 1;
 
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
@@ -114,14 +101,14 @@ module.exports = function(app, passport, exphbs) {
         }]);
 
         var category = new Category(req.body.category);
-        if (req.file) {
+        if (req.file) { 
             category.picture = req.file.filename; // Store uploaded picture filename
         }
 
         category.save(function(err, category) {
             if (err) {
                 // var c = new Category(req.body.category)
-
+                
                 // res.send(JSON.stringify(err, null, " "));
 
                 var errors = {
@@ -133,7 +120,7 @@ module.exports = function(app, passport, exphbs) {
                     category: req.body.category,
                     errors: errors
                 });
-
+               
             } else
                 res.redirect('/admin/category/update/' + category._id);
         });

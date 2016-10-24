@@ -68,3 +68,13 @@ app/public/uploads/
 logs
 *.log
 npm-debug.log*
+*.gyp
+app/build/binding.sln
+*.vcxproj
+app/build/binding.vcxproj.filters
+*.gypi
+*.map
+*.pdb
+*.node
+*.obj
+*.tlog

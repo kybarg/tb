@@ -5,9 +5,7 @@ var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
 var pathConfig = require('../../config/path.js');
-var pictPath = pathConfig.productPictPath;
-var pictUrl = pathConfig.productPictUrl;
-var upload = multer()
+var upload = multer();
 
 
 module.exports = function(app, passport, exphbs) {
