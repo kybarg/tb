@@ -8,26 +8,31 @@ nconf.use('file', {
     file: './config/setting.json'
 })
 
-module.exports = function (app, passport, exphbs) {
-    app.get('/admin/settings/index', isLoggedIn, function (req, res) {
+module.exports = function(app, passport, exphbs) {
+    app.get('/admin/settings/index', isLoggedIn, function(req, res) {
         req.breadcrumbs('Settings');
+
         res.render('settings/index', {
             breadcrumbs: req.breadcrumbs(),
-            admin : fs.readFile('./config/admin_settings.json'),  //it's bla bla bla
-            public : fs.readFile('./config/admin_settings.json'),
-            global : fs.readFile('./config/admin_settings.json')
+            settings: {
+                admin: JSON.parse(fs.readFileSync('./config/admin_settings.json')),
+                public: JSON.parse(fs.readFileSync('./config/public_settings.json')),
+                global: JSON.parse(fs.readFileSync('./config/global_settings.json'))
+            }
         });
 
-        
+
     });
 
-    app.post('/admin/settings/index', isLoggedIn, upload.array(), function (req, res) {
+    app.post('/admin/settings/index', isLoggedIn, upload.array(), function(req, res) {
         var admin = JSON.stringify(req.body.settings.admin);
         var public = JSON.stringify(req.body.settings.public);
         var global = JSON.stringify(req.body.settings.global);
         fs.writeFile('./config/admin_settings.json', admin);
         fs.writeFile('./config/public_settings.json', public);
         fs.writeFile('./config/global_settings.json', global);
+
+        res.redirect('/admin/settings/index');
     });
 }
 
