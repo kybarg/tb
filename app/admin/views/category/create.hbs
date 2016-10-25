@@ -3,19 +3,14 @@
         <div class="float-xs-left">
             <a href="/admin/category/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
         </div>
-
         <div class="float-xs-right">
             <a href="#" data-href="/admin/category/delete/{{category._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
             <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
         </div>
         <div class="clearfix"></div>
     </div>
-
     <hr />
-
     <div class="row">
-
-
         <div class="col-md-6">
             <div class="form-group{{#if errors.nameHasError}} has-danger{{/if}}">
                 <label for="inputCategoryName">Name</label>
@@ -28,7 +23,6 @@
             <div class="form-group">
                 <label for="inputCategoryCategory">Parent category</label>
                 <select name="category[parent]" class="form-control" id="inputCategoryCategory">
-                    <option value=""{{#unless category.parent}} selected{{/unless}}>None</option>
                     {{#if category.parent}}
                     <option value="{{category.parent._id}}" selected>{{category.parent.name}}</option>
                     {{/if}}
@@ -49,13 +43,12 @@
                 <textarea name="category[meta][description]" class="form-control" id="inputCategoryMetaDescription" rows="3">{{category.meta.description}}</textarea>
             </div>
             <div class="form-group">
-                <label>Picture</label>
-                {{#if category.picture}}
-                    <div class="clearfix m-y-1">
-                        <img src="/public/uploads/{{category.picture}}" style="max-height: 320px;" />
-                    </div>
+                <label>Picture</label> {{#if category.picture}}
+                <div class="clearfix m-y-1">
+                    <img src="/public/uploads/{{category.picture}}" style="max-height: 320px;" />
+                </div>
                 {{else}}
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
                 {{/if}}
                 <input type="hidden" name="category[picture]" value="{{category.picture}}" />
                 <label class="custom-file">
@@ -66,7 +59,6 @@
         </div>
     </div>
 </form>
-
 <!-- Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

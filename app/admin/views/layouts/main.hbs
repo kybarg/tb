@@ -9,25 +9,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
-
     <title>Dashboard Template for Bootstrap</title>
-
     <!-- Bootstrap core CSS -->
     <link href="/admin/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/admin/assets/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/admin/assets/css/select2.min.css" rel="stylesheet">
     <link href="/admin/assets/css/select2-bootstrap.min.css" rel="stylesheet">
-
     <link href="/admin/assets/summernote/bs4/summernote.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <link href="/admin/assets/css/simple-sidebar.css" rel="stylesheet">
 </head>
 
 <body class="preload">
-
     <div id="wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper" class="bg-inverse">
             <div class="navbar navbar-dark">
@@ -51,7 +45,7 @@
                         <a class="nav-link" href="/admin/menu/index">Menus</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/store/index">Shops</a>
+                        <a class="nav-link" href="/admin/shop/index">Shops</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/settings/index">Settings</a>
@@ -60,54 +54,42 @@
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
-
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <nav class="navbar navbar-static-top navbar-dark bg-inverse">
                 <a href="#menu-toggle" class="navbar-brand" id="menu-toggle"><i class="mdi mdi-menu"></i></a>
-                <!-- <ul class="nav navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="/">Live</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul> -->
+                </ul>
                 <!-- <form class="form-inline pull-xs-right">
                     <input class="form-control" type="text" placeholder="Search">
                 </form> -->
             </nav>
             {{#if breadcrumbs}}
-                <ol class="breadcrumb">
-                    {{#each breadcrumbs}}
-                        {{#unless @last}}
-                            <li class="breadcrumb-item">
-                                <a href="{{url}}" itemprop="url">
-                                    <span itemprop="title">{{name}}</span>
-                                </a>
-                            </li>
-            {{else}}
+            <ol class="breadcrumb">
+                {{#each breadcrumbs}} {{#unless @last}}
+                <li class="breadcrumb-item">
+                    <a href="{{url}}" itemprop="url">
+                        <span itemprop="title">{{name}}</span>
+                    </a>
+                </li>
+                {{else}}
                 <li class="breadcrumb-item active">
                     <span>{{name}}</span>
                 </li>
-                        {{/unless}}
-                    {{/each}}
-                </ol>
+                {{/unless}} {{/each}}
+            </ol>
             {{/if}}
             <div class="container-fluid">
                 {{{body}}}
             </div>
-
-
         </div>
         <!-- /#page-content-wrapper -->
-
     </div>
     <!-- /#wrapper -->
     <footer class="footer">
@@ -115,8 +97,6 @@
             <span class="text-muted">Trendberry</span>
         </div>
     </footer>
-
-
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -131,7 +111,6 @@
     <!-- <script src="/admin/assets/js/holder.min.js"></script> -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
-
     <!-- Menu Toggle Script -->
     <script>
         $(document).ready(function() {
@@ -175,7 +154,7 @@
                         $.each(data, function(index, element) {
                             data[index].id = element._id;
                             data[index].text = element.name;
-                            if (element.ancestors.length > 0) {
+                            if (element.ancestors.length > 0 && element.ancestors[0]._id != element._id) {
                                 data[index].text += ' (' + element.ancestors[0].name + ')';
                             }
                         });
@@ -246,6 +225,32 @@
                 }
             });
 
+            $('#inputProductShop').select2({
+                ajax: {
+                    url: "/admin/shop/search",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            searchString: params.term,
+                            limit: 10
+                        };
+                    },
+                    processResults: function(data, page) {
+                        $.each(data, function(index, element) {
+                            data[index].id = element._id;
+                            data[index].text = element.name;
+                        });
+
+                        return {
+                            results: data
+                        };
+                    },
+                    method: 'POST'
+                }
+            });
+
+
             $('.js-summernote-control').summernote()
                 // Hide the initial popovers that display
             $('.note-popover').css({
@@ -259,7 +264,6 @@
 
         });
     </script>
-
 </body>
 
 </html>

@@ -4,8 +4,8 @@ var mongoosePaginate = require('mongoose-paginate');
 var shopSchema = mongoose.Schema({
     name: String,
     description: String,
-    feedUrl: String,
     picture: String,
+    slug: String,
     meta: {
         title: String,
         description: String

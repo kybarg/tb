@@ -75,6 +75,7 @@ require('./routes/admin/product.js')(app, passport, exphbs);
 require('./routes/admin/category.js')(app, passport, exphbs);
 require('./routes/admin/vendor.js')(app, passport, exphbs);
 require('./routes/admin/setting.js')(app, passport, exphbs);
+require('./routes/admin/shop.js')(app, passport, exphbs);
 
 // Defines folders with static files
 app.use('/admin', express.static('admin'));

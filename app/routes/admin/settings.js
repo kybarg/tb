@@ -8,9 +8,9 @@ var pathConfig = require('../../config/path.js');
 var upload = multer();
 
 
-module.exports = function(app, passport, exphbs) {
+module.exports = function (app, passport, exphbs) {
 
-    app.get('/admin/settings/index', isLoggedIn, function(req, res) {
+    app.get('/admin/settings/index', isLoggedIn, function (req, res) {
 
         req.breadcrumbs('Settings');
 
@@ -19,7 +19,7 @@ module.exports = function(app, passport, exphbs) {
         });
     });
 
-    app.post('/admin/settings/index', isLoggedIn, upload.array(), function(req, res) {
+    app.post('/admin/settings/index', isLoggedIn, upload.array(), function (req, res) {
         console.log(req.body);
     });
 

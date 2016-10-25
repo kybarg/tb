@@ -8,8 +8,8 @@ nconf.use('file', {
     file: './config/setting.json'
 })
 
-module.exports = function(app, passport, exphbs) {
-    app.get('/admin/settings/index', isLoggedIn, function(req, res) {
+module.exports = function (app, passport, exphbs) {
+    app.get('/admin/settings/index', isLoggedIn, function (req, res) {
         req.breadcrumbs('Settings');
 
         res.render('settings/index', {
@@ -24,7 +24,7 @@ module.exports = function(app, passport, exphbs) {
 
     });
 
-    app.post('/admin/settings/index', isLoggedIn, upload.array(), function(req, res) {
+    app.post('/admin/settings/index', isLoggedIn, upload.array(), function (req, res) {
         var admin = JSON.stringify(req.body.settings.admin);
         var public = JSON.stringify(req.body.settings.public);
         var global = JSON.stringify(req.body.settings.global);

@@ -34,12 +34,6 @@ var categorySchema = mongoose.Schema({
 
 categorySchema.plugin(mongoosePaginate);
 
-categorySchema.post('remove', function(doc) {
-    console.log('Category removed, id = ' + doc._id);
-    if (doc.picture)
-        fs.unlink(pictPath + doc.picture);
-});
-
 /**
  * Pre-save middleware
  * Build or rebuild path when needed
@@ -53,7 +47,6 @@ categorySchema.pre('save', function(next) {
 
     if (this.isNew || isParentChange || isNameChange) {
         if (!this.parent) {
-            // this.ancestors = [];
             this.ancestors = [{
                 _id: this._id,
                 name: this.name
@@ -94,10 +87,7 @@ categorySchema.pre('save', function(next) {
 
                     streamWorker(cursor.stream(), function streamOnData(child, done) {
 
-                            // var newAncestors = [].concat(self.ancestors, child.ancestors.slice(previousAncestor.length));
                             var newAncestors = [].concat(self.ancestors, child.ancestors.slice(previousAncestor.length));
-
-                            console.log(newAncestors);
 
                             self.collection.update({
                                 _id: child._id
@@ -121,49 +111,12 @@ categorySchema.pre('save', function(next) {
     }
 });
 
-// categorySchema.pre('save', function(next, done) {
-//
-//     var self = this;
-//     var isParentChanged = self.isModified('parent');
-//
-//     // updates do not affect structure
-//     if (!self.isNew && !isParentChanged) {
-//         return next();
-//     }
-//
-//     // if create new element
-//     if ((self.isNew && self.parent) || (!self.isNew && isParentChanged)) {
-//         self.constructor.findById(self.parent)
-//             .populate('ancestors')
-//             .exec(function(err, parent) {
-//                 if (err || !parent) {
-//                     self.invalidate('parent', 'Parent not found!');
-//                     return done(new Error('Parent not found!'));
-//                 }
-//                 // self.path = ",";
-//                 if (parent.ancestors && parent.ancestors.length > 0) {
-//                     self.ancestors = [];
-//                     parent.ancestors.forEach(function(element) {
-//                         self.ancestors.push(element._id);
-//                         // self.path += element.name + ",";
-//                     });
-//                     self.ancestors.push(parent._id);
-//                 } else {
-//                     self.ancestors = [parent._id];
-//                 }
-//                 // self.path += self.name + ",";
-//                 next();
-//             });
-//         return;
-//     } else if (!self.parent || self.parent.length === 0) {
-//         // self.path = "," + self.name + ",";
-//         next();
-//     } else {
-//         next();
-//     }
-//
-// });
-
+/**
+ * Pre-save middleware
+ * Generate slug if empty
+ *
+ * @param  {Function} next
+ */
 categorySchema.pre('save', function(next, done) {
     if (!this.slug || this.slug.length === 0) {
         this.slug = slugify(this.name);
@@ -171,6 +124,15 @@ categorySchema.pre('save', function(next, done) {
     next();
 });
 
-
+/**
+ * Post-remove middleware
+ * Remove picture from server after product deleted
+ *
+ * @param  {Function} next
+ */
+categorySchema.post('remove', function(doc) {
+    if (doc.picture)
+        fs.unlink(pictPath + doc.picture);
+});
 
 module.exports = mongoose.model('Category', categorySchema);
