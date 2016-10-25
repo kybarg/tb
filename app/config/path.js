@@ -6,4 +6,5 @@ module.exports = {
     productPictUrl: baseUrl + 'pictures/product/',
     categoryPictPath: basepath + 'pictures/category/',
     vendorPictPath: basepath + 'pictures/vendor/',
+    shopPictPath: basepath + 'pictures/shop/',
 };

@@ -90,7 +90,7 @@ module.exports = function (app, passport, exphbs) {
 
         var category = new Category(req.body.category);
         if (req.file) {
-            category.picture = req.file.filename; // Store uploaded picture filename
+            category.pictureFile = req.file;
         }
 
         category.save(function (err, category) {
@@ -135,20 +135,8 @@ module.exports = function (app, passport, exphbs) {
 
     // Update category with ID
     app.post('/admin/category/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        // Check if posting new picture
         if (req.file) {
-            // Check if posting new picture
-            fs.access(pictPath, fs.F_OK, function (err) {
-                if (!err) {
-                    // Delete old picture
-                    fs.unlink(pictureOldPath);
-                } else {
-                    // It isn't accessible
-                }
-            });
-
-            // Save filename of new picture
-            req.body.category.picture = req.file.filename;
+            category.pictureFile = req.file;
         }
 
         Category.findById(req.params.id, function (err, category) {

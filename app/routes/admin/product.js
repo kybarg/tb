@@ -84,9 +84,8 @@ module.exports = function (app, passport, exphbs) {
     app.post('/admin/product/create', isLoggedIn, upload.single('image'), function (req, res) {
         var product = new Product(req.body.product);
         if (req.file) {
-            product.picture.file = req.file; // Store uploaded picture filename 
+            product.pictureFile = req.file;
         };
-
         product.save(function (err, product) {
             if (err) throw err;
             console.log('Product added, id = ' + product._id);
@@ -119,25 +118,9 @@ module.exports = function (app, passport, exphbs) {
 
     // Update product with ID
     app.post('/admin/product/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-
         var product = req.body.product;
-
-        // Check if posting new picture
         if (req.file) {
-            var pictureOldPath = __dirname + '/../public/uploads/' + product.picture;
-
-            // Check if posting new picture
-            fs.access(pictureOldPath, fs.F_OK, function (err) {
-                if (!err) {
-                    // Delete old picture
-                    fs.unlink(pictureOldPath);
-                } else {
-                    // It isn't accessible
-                }
-            });
-
-            // Save filename of new picture
-            product.picture = req.file.filename;
+            product.pictureFile = req.file;
         }
 
         // Get product by ID and update with new data

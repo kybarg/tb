@@ -61,7 +61,7 @@ module.exports = function (app, passport, exphbs) {
     app.post('/admin/vendor/create', isLoggedIn, upload.single('image'), function (req, res) {
         var vendor = new Vendor(req.body.vendor);
         if (req.file) {
-            vendor.picture = req.file.filename; // Store uploaded picture filename
+            vendor.pictureFile = req.file;
         }
 
         vendor.save(function (err, vendor) {
@@ -93,20 +93,8 @@ module.exports = function (app, passport, exphbs) {
     // Update vendor with ID
     app.post('/admin/vendor/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
         var vendor = req.body.vendor;
-        // Check if posting new picture
         if (req.file) {
-            // Check if posting new picture
-            fs.access(pictPath, fs.F_OK, function (err) {
-                if (!err) {
-                    // Delete old picture
-                    fs.unlink(pictureOldPath);
-                } else {
-                    // It isn't accessible
-                }
-            });
-
-            // Save filename of new picture
-            vendor.picture = req.file.filename;
+            vendor.pictureFile = req.file;
         }
 
         Vendor.findByIdAndUpdate(req.params.id, {
