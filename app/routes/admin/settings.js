@@ -1,33 +1,40 @@
-var handlebarsPaginate = require('handlebars-paginate');
-var mongoose = require('mongoose');
-var multer = require('multer');
 var fs = require('fs');
-var path = require('path');
-var crypto = require('crypto');
-var pathConfig = require('../../config/path.js');
+var nconf = require('nconf');
+var multer = require('multer');
 var upload = multer();
 
+nconf.env().argv();
+nconf.use('file', {
+    file: './config/setting.json'
+})
 
 module.exports = function (app, passport, exphbs) {
-
     app.get('/admin/settings/index', isLoggedIn, function (req, res) {
-
         req.breadcrumbs('Settings');
 
         res.render('settings/index', {
             breadcrumbs: req.breadcrumbs(),
+            settings: {
+                admin: JSON.parse(fs.readFileSync('./config/admin_settings.json')),
+                public: JSON.parse(fs.readFileSync('./config/public_settings.json')),
+                global: JSON.parse(fs.readFileSync('./config/global_settings.json'))
+            }
         });
+
+
     });
 
     app.post('/admin/settings/index', isLoggedIn, upload.array(), function (req, res) {
-        console.log(req.body);
+        var admin = JSON.stringify(req.body.settings.admin);
+        var public = JSON.stringify(req.body.settings.public);
+        var global = JSON.stringify(req.body.settings.global);
+        fs.writeFile('./config/admin_settings.json', admin);
+        fs.writeFile('./config/public_settings.json', public);
+        fs.writeFile('./config/global_settings.json', global);
+
+        res.redirect('/admin/settings/index');
     });
-
 }
-
-
-
-
 
 
 function isLoggedIn(req, res, next) {
