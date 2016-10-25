@@ -29,8 +29,16 @@ module.exports = function(app, passport, exphbs) {
             if (!err) {
 
                 var lasts = [];
+                var prev = 0;
+
                 for (var i = 0; i < result.docs.length; i++) {
                     lasts[result.docs[i].ancestors.length] = i;
+
+                    if((prev - result.docs[i].ancestors.length) == 2) {
+                        result.docs[lasts[prev-1]].class = 'last';
+                    }
+
+                    prev = result.docs[i].ancestors.length;
 
                     if( i == (result.docs.length-1) || result.docs[i].ancestors.length == 1 ) {
                         lasts.forEach(function(k){
@@ -38,6 +46,7 @@ module.exports = function(app, passport, exphbs) {
                         });
                         lasts = [];
                     }
+
                 }
 
                 res.render('category/index', {

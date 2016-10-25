@@ -71,16 +71,21 @@ categorySchema.pre('save', function(next) {
             }
 
             var previousAncestor = self.ancestors;
-            // self.ancestors = [].concat(parent.ancestors, parent._id);
+
             self.ancestors = [].concat(parent.ancestors, {
                 _id: self._id,
                 name: self.name
             });
 
             if (isParentChange || isNameChange) {
+
                 // When the parent is changed we must rewrite all children paths as well
                 self.collection.find({
-                    ancestors: self._id
+                    ancestors: {
+                        $elemMatch: {
+                            _id: self._id
+                        }
+                    }
                 }, function(err, cursor) {
 
                     if (err) {
@@ -90,7 +95,9 @@ categorySchema.pre('save', function(next) {
                     streamWorker(cursor.stream(), function streamOnData(child, done) {
 
                             // var newAncestors = [].concat(self.ancestors, child.ancestors.slice(previousAncestor.length));
-                            var newAncestors = [].concat(self.ancestors, child.ancestors.slice((previousAncestor.length - 1)));
+                            var newAncestors = [].concat(self.ancestors, child.ancestors.slice(previousAncestor.length));
+
+                            console.log(newAncestors);
 
                             self.collection.update({
                                 _id: child._id

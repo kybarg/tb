@@ -28,8 +28,9 @@
             <div class="form-group">
                 <label for="inputCategoryCategory">Parent category</label>
                 <select name="category[parent]" class="form-control" id="inputCategoryCategory">
+                    <option value=""{{#unless category.parent}} selected{{/unless}}>None</option>
                     {{#if category.parent}}
-                    <option value="{{category.parent._id}}">{{category.parent.name}}</option>
+                    <option value="{{category.parent._id}}" selected>{{category.parent.name}}</option>
                     {{/if}}
                 </select>
             </div>

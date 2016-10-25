@@ -141,10 +141,6 @@ body {
     margin-top: -40px;
 }
 
-.tree-line:last-of-type {
-    border-bottom: 2px dotted #ddd;
-}
-
 tr:first-child .tree-line {
     height: 26px;
     margin-top: -12px;
@@ -176,6 +172,11 @@ tbody .tree-5.last ~ tr .tree-line:nth-child(4) {
 
 tbody .tree-6.last ~ tr .tree-line:nth-child(5) {
     border-left-width: 0;
+}
+
+.tree-line:last-of-type {
+    border-left: 2px dotted #ddd !important;
+    border-bottom: 2px dotted #ddd !important;
 }
 
 .preload * {
