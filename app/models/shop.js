@@ -7,6 +7,7 @@ var shopSchema = mongoose.Schema({
     name: String,
     description: String,
     feedUrl: String,
+    slug: String,
     meta: {
         title: String,
         description: String
@@ -14,7 +15,8 @@ var shopSchema = mongoose.Schema({
 });
 
 shopSchema.plugin(mongoosePaginate);
-shopSchema.plugin(picturePlugin, {pictPath: pictPath});
+shopSchema.plugin(picturePlugin, {
+    pictPath: pictPath
+});
 
-module.exports = mongoose.model('Shop', shopSchema); 
-
+module.exports = mongoose.model('Shop', shopSchema);
