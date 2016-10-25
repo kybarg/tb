@@ -26,7 +26,8 @@ module.exports = function(app, passport, exphbs) {
         app.engine('.hbs', exphbs({
             defaultLayout: 'main',
             extname: '.hbs',
-            layoutsDir: 'admin/views/layouts/'
+            layoutsDir: 'admin/views/layouts/',
+            partialsDir: 'admin/views/partials/'
         }));
         next(); // pass control to the next handler
     });

@@ -38,8 +38,9 @@ var categorySchema = mongoose.Schema({
 });
 
 categorySchema.plugin(mongoosePaginate);
-categorySchema.plugin(picturePlugin, {pictPath: pictPath});
-
+categorySchema.plugin(picturePlugin, {
+    pictPath: pictPath
+});
 
 /**
  * Pre-save middleware
@@ -47,14 +48,13 @@ categorySchema.plugin(picturePlugin, {pictPath: pictPath});
  *
  * @param  {Function} next
  */
-categorySchema.pre('save', function(next) {
+categorySchema.pre('save', function (next) {
     var isParentChange = this.isModified('parent');
     var isNameChange = this.isModified('name');
     var numWorkers = 5;
 
     if (this.isNew || isParentChange || isNameChange) {
         if (!this.parent) {
-            // this.ancestors = [];
             this.ancestors = [{
                 _id: this._id,
                 name: this.name
@@ -65,24 +65,29 @@ categorySchema.pre('save', function(next) {
         var self = this;
         this.collection.findOne({
             _id: this.parent
-        }, function(err, parent) {
+        }, function (err, parent) {
 
             if (err) {
                 return next(err);
             }
 
             var previousAncestor = self.ancestors;
-            // self.ancestors = [].concat(parent.ancestors, parent._id);
+
             self.ancestors = [].concat(parent.ancestors, {
                 _id: self._id,
                 name: self.name
             });
 
             if (isParentChange || isNameChange) {
+
                 // When the parent is changed we must rewrite all children paths as well
                 self.collection.find({
-                    ancestors: self._id
-                }, function(err, cursor) {
+                    ancestors: {
+                        $elemMatch: {
+                            _id: self._id
+                        }
+                    }
+                }, function (err, cursor) {
 
                     if (err) {
                         return next(err);
@@ -90,8 +95,7 @@ categorySchema.pre('save', function(next) {
 
                     streamWorker(cursor.stream(), function streamOnData(child, done) {
 
-                            // var newAncestors = [].concat(self.ancestors, child.ancestors.slice(previousAncestor.length));
-                            var newAncestors = [].concat(self.ancestors, child.ancestors.slice((previousAncestor.length - 1)));
+                            var newAncestors = [].concat(self.ancestors, child.ancestors.slice(previousAncestor.length));
 
                             self.collection.update({
                                 _id: child._id
@@ -115,56 +119,17 @@ categorySchema.pre('save', function(next) {
     }
 });
 
-// categorySchema.pre('save', function(next, done) {
-//
-//     var self = this;
-//     var isParentChanged = self.isModified('parent');
-//
-//     // updates do not affect structure
-//     if (!self.isNew && !isParentChanged) {
-//         return next();
-//     }
-//
-//     // if create new element
-//     if ((self.isNew && self.parent) || (!self.isNew && isParentChanged)) {
-//         self.constructor.findById(self.parent)
-//             .populate('ancestors')
-//             .exec(function(err, parent) {
-//                 if (err || !parent) {
-//                     self.invalidate('parent', 'Parent not found!');
-//                     return done(new Error('Parent not found!'));
-//                 }
-//                 // self.path = ",";
-//                 if (parent.ancestors && parent.ancestors.length > 0) {
-//                     self.ancestors = [];
-//                     parent.ancestors.forEach(function(element) {
-//                         self.ancestors.push(element._id);
-//                         // self.path += element.name + ",";
-//                     });
-//                     self.ancestors.push(parent._id);
-//                 } else {
-//                     self.ancestors = [parent._id];
-//                 }
-//                 // self.path += self.name + ",";
-//                 next();
-//             });
-//         return;
-//     } else if (!self.parent || self.parent.length === 0) {
-//         // self.path = "," + self.name + ",";
-//         next();
-//     } else {
-//         next();
-//     }
-//
-// });
-
-categorySchema.pre('save', function(next) {
+/**
+ * Pre-save middleware
+ * Generate slug if empty
+ *
+ * @param  {Function} next
+ */
+categorySchema.pre('save', function (next, done) {
     if (!this.slug || this.slug.length === 0) {
         this.slug = slugify(this.name);
     }
     next();
 });
-
-
 
 module.exports = mongoose.model('Category', categorySchema);

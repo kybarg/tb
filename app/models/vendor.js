@@ -16,13 +16,13 @@ var vendorSchema = mongoose.Schema({
     }
 });
 
-vendorSchema.post('remove', function(doc) {
+vendorSchema.post('remove', function (doc) {
     console.log('Category removed, id = ' + doc._id);
     if (doc.picture)
         fs.unlink(pictPath + doc.picture);
 });
 
-vendorSchema.pre('save', function(next) {
+vendorSchema.pre('save', function (next) {
     if (!this.slug || this.slug.length === 0) {
         this.slug = slugify(this.name);
     }
@@ -30,6 +30,8 @@ vendorSchema.pre('save', function(next) {
 });
 
 vendorSchema.plugin(mongoosePaginate);
-vendorSchema.plugin(picturePlugin, {pictPath: pictPath});
+vendorSchema.plugin(picturePlugin, {
+    pictPath: pictPath
+});
 
 module.exports = mongoose.model('Vendor', vendorSchema);

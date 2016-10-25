@@ -4,7 +4,7 @@ var multer = require('multer');
 var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
-var Vendor = require('../../models/vendor');
+var Shop = require('../../models/shop');
 var pathConfig = require('../../config/path.js');
 var pictPath = pathConfig.productPictPath;
 var pictUrl = pathConfig.productPictUrl;
@@ -16,20 +16,20 @@ var upload = multer({
 
 module.exports = function (app, passport, exphbs) {
 
-    app.get('/admin/vendor/index', isLoggedIn, function (req, res) {
+    app.get('/admin/shop/index', isLoggedIn, function (req, res) {
 
-        req.breadcrumbs('Vendors');
+        req.breadcrumbs('Shops');
 
         // Using paginate for simplier pagination
-        Vendor.paginate({}, {
+        Shop.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: '_id',
             limit: 50
         }, function (err, result) {
             if (!err) {
-                res.render('vendor/index', {
+                res.render('shop/index', {
                     breadcrumbs: req.breadcrumbs(),
-                    vendors: result.docs,
+                    shops: result.docs,
                     pagination: {
                         page: result.page,
                         pageCount: result.pages
@@ -45,82 +45,94 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.get('/admin/vendor/create', isLoggedIn, function (req, res) {
+    app.get('/admin/shop/create', isLoggedIn, function (req, res) {
         req.breadcrumbs([{
-            name: 'Vendors',
-            url: '/admin/vendor/index'
+            name: 'Shops',
+            url: '/admin/shop/index'
         }, {
-            name: 'New vendor'
+            name: 'New shop'
         }]);
 
-        res.render('vendor/create', {
+        res.render('shop/create', {
             breadcrumbs: req.breadcrumbs()
         });
     });
 
-    app.post('/admin/vendor/create', isLoggedIn, upload.single('image'), function (req, res) {
-        var vendor = new Vendor(req.body.vendor);
+    app.post('/admin/shop/create', isLoggedIn, upload.single('image'), function (req, res) {
+        var shop = new Shop(req.body.shop);
         if (req.file) {
-            vendor.pictureFile = req.file;
+            shop.picture = req.file.filename; // Store uploaded picture filename
         }
 
-        vendor.save(function (err, vendor) {
+        shop.save(function (err, shop) {
             if (err) throw err;
-            console.log('Vendor added, id = ' + vendor._id);
-            res.redirect('/admin/vendor/update/' + vendor._id);
+            console.log('Shop added, id = ' + shop._id);
+            res.redirect('/admin/shop/update/' + shop._id);
         });
     });
 
-    app.get('/admin/vendor/update/:id', isLoggedIn, function (req, res) {
-        Vendor.findOne({
+    app.get('/admin/shop/update/:id', isLoggedIn, function (req, res) {
+        Shop.findOne({
                 _id: mongoose.Types.ObjectId(req.params.id)
             })
-            .exec(function (err, vendor) {
+            .exec(function (err, shop) {
                 req.breadcrumbs([{
-                    name: 'Vendors',
-                    url: '/admin/vendor/index'
+                    name: 'Shops',
+                    url: '/admin/shop/index'
                 }, {
-                    name: vendor.name
+                    name: shop.name
                 }]);
 
-                res.render('vendor/create', {
+                res.render('shop/create', {
                     breadcrumbs: req.breadcrumbs(),
-                    vendor: vendor
+                    shop: shop
                 });
             });
     });
 
-    // Update vendor with ID
-    app.post('/admin/vendor/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        var vendor = req.body.vendor;
+    // Update shop with ID
+    app.post('/admin/shop/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
+        var shop = req.body.shop;
+        // Check if posting new picture
         if (req.file) {
-            vendor.pictureFile = req.file;
+            // Check if posting new picture
+            fs.access(pictPath, fs.F_OK, function (err) {
+                if (!err) {
+                    // Delete old picture
+                    fs.unlink(pictureOldPath);
+                } else {
+                    // It isn't accessible
+                }
+            });
+
+            // Save filename of new picture
+            shop.picture = req.file.filename;
         }
 
-        Vendor.findByIdAndUpdate(req.params.id, {
-            $set: vendor
+        Shop.findByIdAndUpdate(req.params.id, {
+            $set: shop
         }, {
             new: true // return new model
-        }, function (err, vendor) {
+        }, function (err, shop) {
             if (err) throw err;
-            res.redirect('/admin/vendor/update/' + vendor._id);
+            res.redirect('/admin/shop/update/' + shop._id);
         });
     });
 
-    app.get('/admin/vendor/delete/:id', isLoggedIn, function (req, res) {
-        Vendor.findOne({
+    app.get('/admin/shop/delete/:id', isLoggedIn, function (req, res) {
+        Shop.findOne({
             _id: mongoose.Types.ObjectId(req.params.id)
-        }, function (err, vendor) {
+        }, function (err, shop) {
             if (err) throw err;
-            vendor.remove(function (err) {
+            shop.remove(function (err) {
                 if (err) throw err;
-                res.redirect('/admin/vendor/index');
+                res.redirect('/admin/shop/index');
             });
         });
     });
 
-    app.post('/admin/vendor/search', isLoggedIn, function (req, res) {
-        Vendor.find({
+    app.post('/admin/shop/search', isLoggedIn, function (req, res) {
+        Shop.find({
                 name: {
                     $regex: req.body.searchString ? req.body.searchString : '',
                     $options: 'i'

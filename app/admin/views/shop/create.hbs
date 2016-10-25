@@ -1,10 +1,10 @@
 <form method="POST" enctype="multipart/form-data">
     <div class="mb-1">
         <div class="float-xs-left">
-            <a href="/admin/vendor/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+            <a href="/admin/shop/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
         </div>
         <div class="float-xs-right">
-            <a href="#" data-href="/admin/vendor/delete/{{vendor._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
+            <a href="#" data-href="/admin/shop/delete/{{shop._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
             <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
         </div>
         <div class="clearfix"></div>
@@ -13,36 +13,36 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputVendorName">Name</label>
-                <input name="vendor[name]" type="text" class="form-control" id="inputVendorName" placeholder="Vendor name" value="{{vendor.name}}">
+                <label for="inputShopName">Name</label>
+                <input name="shop[name]" type="text" class="form-control" id="inputShopName" placeholder="Shop name" value="{{shop.name}}">
             </div>
             <div class="form-group">
-                <label for="inputVendorDescription">Description</label>
-                <textarea name="vendor[description]" class="form-control js-summernote-control" id="inputVendorDescription" rows="3">{{{vendor.description}}}</textarea>
+                <label for="inputShopDescription">Description</label>
+                <textarea name="shop[description]" class="form-control js-summernote-control" id="inputShopDescription" rows="3">{{{shop.description}}}</textarea>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputVendorSlug">Slug</label>
-                <input name="vendor[slug]" type="text" class="form-control" id="inputVendorSlug" placeholder="vendor-name-vendor-id" value="{{vendor.slug}}">
+                <label for="inputShopSlug">Slug</label>
+                <input name="shop[slug]" type="text" class="form-control" id="inputShopSlug" placeholder="shop-name-shop-id" value="{{shop.slug}}">
             </div>
             <div class="form-group">
-                <label for="inputVendorMetaTitle">Meta Title</label>
-                <input name="vendor[meta][title]" type="text" class="form-control" id="inputVendorMetaTitle" placeholder="Title" value="{{vendor.meta.title}}">
+                <label for="inputShopMetaTitle">Meta Title</label>
+                <input name="shop[meta][title]" type="text" class="form-control" id="inputShopMetaTitle" placeholder="Title" value="{{shop.meta.title}}">
             </div>
             <div class="form-group">
-                <label for="inputVendorMetaDescription">Meta Description</label>
-                <textarea name="vendor[meta][description]" class="form-control" id="inputVendorMetaDescription" rows="3">{{vendor.meta.description}}</textarea>
+                <label for="inputShopMetaDescription">Meta Description</label>
+                <textarea name="shop[meta][description]" class="form-control" id="inputShopMetaDescription" rows="3">{{shop.meta.description}}</textarea>
             </div>
             <div class="form-group">
-                <label>Picture</label> {{#if vendor.picture}}
+                <label>Picture</label> {{#if shop.picture}}
                 <div class="clearfix m-y-1">
-                    <img src="/public/uploads/{{vendor.picture}}" style="max-height: 320px;" />
+                    <img src="/public/uploads/{{shop.picture}}" style="max-height: 320px;" />
                 </div>
                 {{else}}
                 <div class="clearfix"></div>
                 {{/if}}
-                <input type="hidden" name="vendor[picture]" value="{{vendor.picture}}" />
+                <input type="hidden" name="shop[picture]" value="{{shop.picture}}" />
                 <label class="custom-file">
                     <input name="image" type="file" id="image" class="custom-file-input">
                     <span class="custom-file-control"></span>
@@ -62,7 +62,7 @@
                 <h4 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h4>
             </div>
             <div class="modal-body">
-                You are about to delete this vendor!
+                You are about to delete this shop!
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

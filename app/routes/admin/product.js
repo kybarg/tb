@@ -15,15 +15,15 @@ var upload = multer({
     storage: storage
 });
 
-module.exports = function(app, passport, exphbs) {
-    app.get('/admin/product/index', isLoggedIn, function(req, res) {
-  
+module.exports = function (app, passport, exphbs) {
+    app.get('/admin/product/index', isLoggedIn, function (req, res) {
+
         req.breadcrumbs('Products');
         Product.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: '-_id',
             limit: 50
-        }, function(err, result) {
+        }, function (err, result) {
             if (!err) {
                 res.render('product/index', {
                     breadcrumbs: req.breadcrumbs(),
@@ -44,21 +44,21 @@ module.exports = function(app, passport, exphbs) {
         });
     });
 
-    app.post('/admin/product/delete', isLoggedIn, function(req, res) {
+    app.post('/admin/product/delete', isLoggedIn, function (req, res) {
         var products = req.body.products;
         var productsIds = [];
-        if (!products) {  
-            res.redirect('/admin/product/index'); 
+        if (!products) {
+            res.redirect('/admin/product/index');
         }
-        
+
         // Removes all products with IDs
         Product.find({
             _id: {
                 $in: productsIds
             }
-        }, function(err, products) {
+        }, function (err, products) {
             if (err) throw err;
-            products.forEach(function(product) {
+            products.forEach(function (product) {
                 product.remove();
             });
             res.redirect('/admin/product/index');
@@ -67,7 +67,7 @@ module.exports = function(app, passport, exphbs) {
 
 
     // View from for addign new product
-    app.get('/admin/product/create', isLoggedIn, function(req, res) {
+    app.get('/admin/product/create', isLoggedIn, function (req, res) {
         req.breadcrumbs([{
             name: 'Products',
             url: '/admin/product/index'
@@ -81,13 +81,12 @@ module.exports = function(app, passport, exphbs) {
     });
 
     // Save new product
-    app.post('/admin/product/create', isLoggedIn, upload.single('image'), function(req, res) {
+    app.post('/admin/product/create', isLoggedIn, upload.single('image'), function (req, res) {
         var product = new Product(req.body.product);
         if (req.file) {
-            product.pictureFile = req.file; 
+            product.pictureFile = req.file;
         };
-       
-        product.save(function(err, product) {
+        product.save(function (err, product) {
             if (err) throw err;
             console.log('Product added, id = ' + product._id);
             res.redirect('/admin/product/update/' + product._id);
@@ -95,13 +94,14 @@ module.exports = function(app, passport, exphbs) {
     });
 
     // Display product with ID
-    app.get('/admin/product/update/:id', isLoggedIn, function(req, res) {
+    app.get('/admin/product/update/:id', isLoggedIn, function (req, res) {
         Product.findOne({
                 _id: req.params.id
             })
             .populate('category')
             .populate('vendor')
-            .exec(function(err, product) {
+            .populate('shop')
+            .exec(function (err, product) {
                 req.breadcrumbs([{
                     name: 'Products',
                     url: '/admin/product/index'
@@ -117,33 +117,33 @@ module.exports = function(app, passport, exphbs) {
     })
 
     // Update product with ID
-    app.post('/admin/product/update/:id', isLoggedIn, upload.single('image'), function(req, res) {
+    app.post('/admin/product/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
         var product = req.body.product;
         if (req.file) {
             product.pictureFile = req.file;
         }
 
-    // Get product by ID and update with new data
+        // Get product by ID and update with new data
         Product.findByIdAndUpdate(req.params.id, {
             $set: product
         }, {
             new: true // return new model
-        }, function(err, product) {
+        }, function (err, product) {
             if (err) throw err;
             res.redirect('/admin/product/update/' + product._id);
         });
     });
 
     // Remove product with ID
-    app.get('/admin/product/delete/:id', isLoggedIn, function(req, res) {
+    app.get('/admin/product/delete/:id', isLoggedIn, function (req, res) {
 
         // Need to read prodcut to be able to delete picture in the future
         Product.findOne({
             _id: req.params.id
-        }, function(err, product) {
+        }, function (err, product) {
             if (err) throw err;
 
-            product.remove(function(err) {
+            product.remove(function (err) {
                 if (err) throw err;
 
                 // Redirect to all products list
