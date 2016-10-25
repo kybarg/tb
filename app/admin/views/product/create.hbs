@@ -3,19 +3,14 @@
         <div class="float-xs-left">
             <a href="/admin/product/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
         </div>
-
         <div class="float-xs-right">
             <a href="#" data-href="/admin/product/delete/{{product._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
             <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
         </div>
         <div class="clearfix"></div>
     </div>
-
     <hr />
-
     <div class="row">
-
-
         <div class="col-md-6">
             <div class="form-group">
                 <label for="inputProductName">Name</label>
@@ -41,7 +36,7 @@
                         <label for="inputProductVendor">Vendor</label>
                         <select name="product[vendor]" class="form-control" id="inputProductVendor">
                             {{#if product.vendor}}
-                                    <option value="{{product.vendor._id}}" selected="selected">{{product.vendor.name}}</option>
+                                <option value="{{product.vendor._id}}" selected="selected">{{product.vendor.name}}</option>
                             {{/if}}
                         </select>
                     </div>
@@ -50,16 +45,13 @@
                     <div class="form-group">
                         <label for="inputProductShop">Shop</label>
                         <select name="product[shop]" class="form-control" id="inputProductShop">
-                        <option value="Lamoda">Lamoda</option>
-                        <option value="Wildberries">Wildberries</option>
-                        <option value="Quelle">Quelle</option>
-                        <option value="La Redoute">La Redoute</option>
-                        <option value="KupiVip">KupiVip</option>
-                    </select>
+                            {{#if product.shop}}
+                                <option value="{{product.shop._id}}" selected="selected">{{product.shop.name}}</option>
+                            {{/if}}
+                        </select>
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -80,12 +72,10 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="inputProductUrl">Url</label>
                 <input name="product[url]" type="text" class="form-control" id="inputProductUrl" placeholder="URL" value="{{product.url}}">
             </div>
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -236,13 +226,12 @@
                 <textarea name="product[meta][description]" class="form-control" id="inputProductMetaDescription" rows="3">{{product.meta.description}}</textarea>
             </div>
             <div class="form-group">
-                <label>Picture</label>
-                {{#if product.picture}}
-                    <div class="clearfix m-y-1">
-                        <img src="{{pictUrl}}{{product.picture}}" style="max-height: 320px;" />
-                    </div>
+                <label>Picture</label> {{#if product.picture}}
+                <div class="clearfix m-y-1">
+                    <img src="{{pictUrl}}{{product.picture}}" style="max-height: 320px;" />
+                </div>
                 {{else}}
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
                 {{/if}}
                 <input type="hidden" name="product[picture]" value="{{product.picture}}" />
                 <label class="custom-file">
@@ -253,7 +242,6 @@
         </div>
     </div>
 </form>
-
 <!-- Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

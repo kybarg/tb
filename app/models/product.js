@@ -35,7 +35,10 @@ var productSchema = mongoose.Schema({
     },
     picture: picture,
     season: String,
-    shop: String,
+    shop: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Shop'
+    },
     meta: {
         title: String,
         description: String
