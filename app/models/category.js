@@ -4,6 +4,7 @@ var fs = require('fs');
 var pictPath = require('../config/path.js').categoryPictPath;
 var slugify = require('transliteration').slugify;
 var streamWorker = require('stream-worker');
+var picturePlugin = require('../models/picture.js');
 
 var categorySchema = mongoose.Schema({
     name: {
@@ -31,7 +32,6 @@ var categorySchema = mongoose.Schema({
         index: true
     },
     depth: Number,
-    picture: String,
     popularity: [],
     meta: {
         title: String,
@@ -40,12 +40,8 @@ var categorySchema = mongoose.Schema({
 });
 
 categorySchema.plugin(mongoosePaginate);
+categorySchema.plugin(picturePlugin, {pictPath: pictPath});
 
-categorySchema.post('remove', function(doc) {
-    console.log('Category removed, id = ' + doc._id);
-    if (doc.picture)
-        fs.unlink(pictPath + doc.picture);
-});
 
 /**
  * Pre-save middleware
@@ -169,7 +165,7 @@ categorySchema.pre('save', function preSave(next) {
 //
 // });
 
-categorySchema.pre('save', function(next, done) {
+categorySchema.pre('save', function(next) {
     if (!this.slug || this.slug.length === 0) {
         this.slug = slugify(this.name);
     }

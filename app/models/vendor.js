@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 var fs = require('fs');
-var pictPath = require('../config/path.js').categoryPictPath;
+var pictPath = require('../config/path.js').vendorPictPath;
 var slugify = require('transliteration').slugify;
+var picturePlugin = require('../models/picture.js');
 
 var vendorSchema = mongoose.Schema({
     name: String,
     description: String,
     synonyms: [String],
-    picture: String,
     slug: String,
     meta: {
         title: String,
@@ -30,5 +30,6 @@ vendorSchema.pre('save', function(next) {
 });
 
 vendorSchema.plugin(mongoosePaginate);
+vendorSchema.plugin(picturePlugin, {pictPath: pictPath});
 
 module.exports = mongoose.model('Vendor', vendorSchema);

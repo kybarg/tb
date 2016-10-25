@@ -1,18 +1,21 @@
 var mongoose = require('mongoose');
 var fs = require('fs');
 
-var pictureSchema = mongoose.Schema({
-    name: String,
-    color: String
-});
-
-pictureSchema.virtual('file').set(function (f) {
-    if (this.name != f.filename) {
-        if (this.name) {
-            fs.unlink(pictPath + doc.picture.name, function (err) {});
+module.exports = function picturePlugin(schema, opts) {
+    schema.add({picture: {name: String, color: String}})
+  
+    schema.virtual('pictureFile').set(function (f) {
+        if (this.picture.name) {
+            fs.unlink(opts.pictPath + this.picture.name, function (err) {});
         }
-        this.name = f.filename
-    }
-})
+        if (f.filename) {
+            this.picture.name = f.filename
+        }
+        
+    })
 
-module.exports = pictureSchema;
+    schema.post('remove', function (doc) {
+        if (doc.picture.name)
+            fs.unlink(opts.pictPath + doc.picture.name, function (err) {});
+    });
+}
