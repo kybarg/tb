@@ -4,6 +4,7 @@ var fs = require('fs');
 var pictPath = require('../config/path.js').categoryPictPath;
 var slugify = require('transliteration').slugify;
 var streamWorker = require('stream-worker');
+var picturePlugin = require('../models/picture.js');
 
 var categorySchema = mongoose.Schema({
     name: {
@@ -24,7 +25,11 @@ var categorySchema = mongoose.Schema({
         },
         name: String
     }],
-    picture: String,
+    root: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        index: true
+    },
     popularity: [],
     meta: {
         title: String,
@@ -33,6 +38,9 @@ var categorySchema = mongoose.Schema({
 });
 
 categorySchema.plugin(mongoosePaginate);
+categorySchema.plugin(picturePlugin, {
+    pictPath: pictPath
+});
 
 /**
  * Pre-save middleware
@@ -40,7 +48,7 @@ categorySchema.plugin(mongoosePaginate);
  *
  * @param  {Function} next
  */
-categorySchema.pre('save', function(next) {
+categorySchema.pre('save', function (next) {
     var isParentChange = this.isModified('parent');
     var isNameChange = this.isModified('name');
     var numWorkers = 5;
@@ -57,7 +65,7 @@ categorySchema.pre('save', function(next) {
         var self = this;
         this.collection.findOne({
             _id: this.parent
-        }, function(err, parent) {
+        }, function (err, parent) {
 
             if (err) {
                 return next(err);
@@ -79,7 +87,7 @@ categorySchema.pre('save', function(next) {
                             _id: self._id
                         }
                     }
-                }, function(err, cursor) {
+                }, function (err, cursor) {
 
                     if (err) {
                         return next(err);
@@ -117,22 +125,11 @@ categorySchema.pre('save', function(next) {
  *
  * @param  {Function} next
  */
-categorySchema.pre('save', function(next, done) {
+categorySchema.pre('save', function (next, done) {
     if (!this.slug || this.slug.length === 0) {
         this.slug = slugify(this.name);
     }
     next();
-});
-
-/**
- * Post-remove middleware
- * Remove picture from server after product deleted
- *
- * @param  {Function} next
- */
-categorySchema.post('remove', function(doc) {
-    if (doc.picture)
-        fs.unlink(pictPath + doc.picture);
 });
 
 module.exports = mongoose.model('Category', categorySchema);
