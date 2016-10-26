@@ -1,13 +1,10 @@
 var handlebarsPaginate = require('handlebars-paginate');
 var mongoose = require('mongoose');
 var multer = require('multer');
-var fs = require('fs');
-var path = require('path');
-var crypto = require('crypto');
 var Vendor = require('../../models/vendor');
 var pathConfig = require('../../config/path.js');
-var pictPath = pathConfig.productPictPath;
-var pictUrl = pathConfig.productPictUrl;
+var pictPath = pathConfig.vendorPictPath;
+var pictUrl = pathConfig.vendorPictUrl;
 var storage = require('../../lib/pictStorage.js')(pictPath);
 
 var upload = multer({

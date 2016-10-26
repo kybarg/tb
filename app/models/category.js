@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
-var fs = require('fs');
 var pictPath = require('../config/path.js').categoryPictPath;
 var slugify = require('transliteration').slugify;
 var streamWorker = require('stream-worker');
@@ -25,11 +24,6 @@ var categorySchema = mongoose.Schema({
         },
         name: String
     }],
-    root: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        index: true
-    },
     popularity: [],
     meta: {
         title: String,

@@ -1,13 +1,10 @@
 var handlebarsPaginate = require('handlebars-paginate');
 var mongoose = require('mongoose');
 var multer = require('multer');
-var fs = require('fs');
-var path = require('path');
-var crypto = require('crypto');
 var Shop = require('../../models/shop');
 var pathConfig = require('../../config/path.js');
-var pictPath = pathConfig.productPictPath;
-var pictUrl = pathConfig.productPictUrl;
+var pictPath = pathConfig.shopPictPath;
+var pictUrl = pathConfig.shopPictUrl;
 var storage = require('../../lib/pictStorage.js')(pictPath);
 
 var upload = multer({
@@ -15,7 +12,7 @@ var upload = multer({
 });
 
 module.exports = function (app, passport, exphbs) {
-
+    
     app.get('/admin/shop/index', isLoggedIn, function (req, res) {
 
         req.breadcrumbs('Shops');
@@ -61,10 +58,10 @@ module.exports = function (app, passport, exphbs) {
     app.post('/admin/shop/create', isLoggedIn, upload.single('image'), function (req, res) {
         var shop = new Shop(req.body.shop);
         if (req.file) {
-            shop.picture = req.file.filename; // Store uploaded picture filename
+            shop.pictureFile = req.file;
         }
-
-        shop.save(function (err, shop) {
+    
+    shop.save(function (err, shop) {
             if (err) throw err;
             console.log('Shop added, id = ' + shop._id);
             res.redirect('/admin/shop/update/' + shop._id);
@@ -93,20 +90,8 @@ module.exports = function (app, passport, exphbs) {
     // Update shop with ID
     app.post('/admin/shop/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
         var shop = req.body.shop;
-        // Check if posting new picture
         if (req.file) {
-            // Check if posting new picture
-            fs.access(pictPath, fs.F_OK, function (err) {
-                if (!err) {
-                    // Delete old picture
-                    fs.unlink(pictureOldPath);
-                } else {
-                    // It isn't accessible
-                }
-            });
-
-            // Save filename of new picture
-            shop.picture = req.file.filename;
+            shop.pictureFile = req.file;
         }
 
         Shop.findByIdAndUpdate(req.params.id, {
