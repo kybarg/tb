@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
-var fs = require('fs');
 var pictPath = require('../config/path.js').productPictPath;
 var slugify = require('transliteration').slugify;
 var picturePlugin = require('../models/picture.js');
