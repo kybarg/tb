@@ -47,7 +47,7 @@
                 </th>
                 <th scope="row">{{@index}}</th>
                 <td>
-                    <img {{#if this.picture}} src="/public/uploads/{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="shop image"
+                    <img {{#if this.picture}} src="/public/uploads/pictures/shop/{{this.picture.name}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="shop image"
                         class="rounded" style="height:40px; width: 40px;" />
                 </td>
                 <td><a href="/admin/shop/update/{{this._id}}">{{this.name}}</a></td>

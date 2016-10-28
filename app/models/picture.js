@@ -16,8 +16,7 @@ module.exports = function picturePlugin(schema, opts) {
         if (f.filename) {
             this.picture.name = f.filename
         }
-
-    })
+    });
 
     schema.post('remove', function (doc) {
         if (doc.picture.name)

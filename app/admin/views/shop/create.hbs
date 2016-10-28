@@ -37,12 +37,11 @@
             <div class="form-group">
                 <label>Picture</label> {{#if shop.picture}}
                 <div class="clearfix m-y-1">
-                    <img src="/public/uploads/{{shop.picture}}" style="max-height: 320px;" />
+                    <img class="img-fluid" src="/public/uploads/pictures/shop/{{shop.picture.name}}" alt="{{shop.name}}" />
                 </div>
                 {{else}}
                 <div class="clearfix"></div>
                 {{/if}}
-                <input type="hidden" name="shop[picture]" value="{{shop.picture}}" />
                 <label class="custom-file">
                     <input name="image" type="file" id="image" class="custom-file-input">
                     <span class="custom-file-control"></span>
