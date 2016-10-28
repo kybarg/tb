@@ -15,7 +15,7 @@ var upload = multer({
 module.exports = function (app, passport, exphbs) {
     app.get('/admin/product/index', isLoggedIn, function (req, res) {
 
-        req.breadcrumbs('Products');
+        req.breadcrumbs(__('Products'));
         Product.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: '-_id',
@@ -66,10 +66,10 @@ module.exports = function (app, passport, exphbs) {
     // View from for addign new product
     app.get('/admin/product/create', isLoggedIn, function (req, res) {
         req.breadcrumbs([{
-            name: 'Products',
+            name: __('Products'),
             url: '/admin/product/index'
         }, {
-            name: 'New product'
+            name: __('New product')
         }]);
 
         res.render('product/create', {
@@ -100,7 +100,7 @@ module.exports = function (app, passport, exphbs) {
             .populate('shop')
             .exec(function (err, product) {
                 req.breadcrumbs([{
-                    name: 'Products',
+                    name: __('Products'),
                     url: '/admin/product/index'
                 }, {
                     name: product.name

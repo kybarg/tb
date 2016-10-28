@@ -5,17 +5,15 @@
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                        Bulk actions
+                        {{__ "Bulk actions"}}
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Add to vendor</a>
-                    <a class="dropdown-item" href="#">Move to vendor</a>
-                    <button class="dropdown-item" onclick="form.action='/admin/vendor/delete';">Delete</button>
+                    <button class="dropdown-item" onclick="form.action='/admin/vendor/delete';">{{__ "Delete"}}</button>
                 </div>
             </div>
         </div>
         <div class="float-xs-right">
-            <a href="/admin/vendor/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> New vendor</a>
+            <a href="/admin/vendor/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> {{__ "New vendor"}}</a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -29,11 +27,9 @@
                         </label>
                 </th>
                 <th style="width: 1%;">#</th>
-                <th style="width: 71px;">Image</th>
-                <th>Name</th>
-                <!-- <th style="width: 1%;">Vendor</th>
-                <th style="width: 1%;">Vendor</th> -->
-                <th style="width: 130px;">Actions</th>
+                <th style="width: 71px;">{{__ "Picture"}}</th>
+                <th>{{__ "Name"}}</th>
+                <th style="width: 130px;">{{__ "Actions"}}</th>
             </tr>
         </thead>
         <tbody>
@@ -41,9 +37,9 @@
             <tr>
                 <th>
                     <label class="custom-control custom-checkbox m-0">
-                                <input name="vendors[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
-                                <span class="custom-control-indicator"></span>&nbsp;
-                            </label>
+                        <input name="vendors[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
+                        <span class="custom-control-indicator"></span>&nbsp;
+                    </label>
                 </th>
                 <th scope="row">{{@index}}</th>
                 <td>
@@ -51,8 +47,6 @@
                         class="rounded" style="height:40px; width: 40px;" />
                 </td>
                 <td><a href="/admin/vendor/update/{{this._id}}">{{this.name}}</a></td>
-                <!-- <td>Женщине, Одежжда, Верхняя одежда, Шубы</td> -->
-                <!-- <td>Otto</td> -->
                 <td>
                     <a href="#" class="btn btn-info btn-sm"><i class="mdi mdi-eye"></i></a>
                     <a href="/admin/vendor/update/{{this._id}}" class="btn btn-primary btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
@@ -69,7 +63,7 @@
             <li class="page-item{{#if disabled}} disabled{{/if}}">
                 <a class="page-link" href="/admin/vendor/index?page={{n}}" tabindex="-1" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
+                    <span class="sr-only">{{__ "Previous"}}</span>
                 </a>
             </li>
             {{/paginate}} {{#paginate pagination type="middle" limit="7" }}
@@ -78,7 +72,7 @@
             <li class="page-item{{#if disabled}} disabled{{/if}}">
                 <a class="page-link" href="/admin/vendor/index?page={{n}}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
+                    <span class="sr-only">{{__ "Next"}}</span>
                 </a>
             </li>
             {{/paginate}}
@@ -86,9 +80,9 @@
     </nav>
     {{/if}} {{else}}
     <div class="jumbotron text-xs-center mx-auto" style="background-color: transparent; max-width: 728px;">
-        <h1 class="display-4">No vendors are found.</h1>
-        <p class="lead">You can create new one.</p>
-        <a href="/admin/vendor/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> New vendor</a>
+        <h1 class="display-4">{{__ "No vendors are found."}}</h1>
+        <p class="lead">{{__ "You can create new one."}}</p>
+        <a href="/admin/vendor/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> {{__ "New vendor"}}</a>
     </div>
     {{/if}}
 </form>

@@ -1,16 +1,16 @@
 <form method="POST" enctype="multipart/form-data">
     <ul class="nav nav-tabs pt-1" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#main">Main</a>
+            <a class="nav-link active" data-toggle="tab" href="#main">{{__ "Main"}}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#catalog">Catalog</a>
+            <a class="nav-link" data-toggle="tab" href="#catalog">{{__ "Catalog"}}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#import">Link</a>
         </li>
         <li class="float-xs-right" style="margin-top: -1rem;">
-            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> {{__ "Save"}}</button>
         </li>
     </ul>
     <div class="tab-content py-1">
@@ -18,16 +18,16 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputSettingsGlobalSitename">Site Name</label>
+                        <label for="inputSettingsGlobalSitename">{{__ "Site Name"}}</label>
                         <input name="settings[global][sitename]" type="text" class="form-control" id="inputSettingsGlobalSitename" placeholder=""
                             value="{{settings.global.sitename}}">
                     </div>
                     <div class="form-group">
-                        <label for="inputSettingsGlobalContactEmail">Contact Email</label>
+                        <label for="inputSettingsGlobalContactEmail">{{__ "Contact Email"}}</label>
                         <input name="settings[global][contact][email]" type="email" class="form-control" id="inputSettingsGlobalContactEmail" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="inputSettingsGlobalContactAddress">Contact Address</label>
+                        <label for="inputSettingsGlobalContactAddress">{{__ "Contact address"}}</label>
                         <input name="settings[global][contact][address]" type="email" class="form-control" id="inputSettingsGlobalContactAddress"
                             placeholder="">
                     </div>
@@ -35,17 +35,17 @@
             </div>
         </div>
         <div class="tab-pane" id="catalog" role="tabpanel">
-            <h4>Product</h4>
+            <h4>{{__ "Product"}}</h4>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputSettingsProductMetaTitleTemplate">Meta Title Template</label>
+                        <label for="inputSettingsProductMetaTitleTemplate">{{__ "Meta Title"}} {{__ "Template"}}</label>
                         <input name="settings[admin][product][meta][title][template]" type="text" class="form-control" id="inputSettingsProductMetaTitleTemplate"
                             placeholder="" value="{{settings.admin.product.meta.title.template}}">
                         <small class="form-text text-muted">This field can use <a href="#tokensProduct">tokens</a></small>
                     </div>
                     <div class="form-group">
-                        <label for="inputSettingsProductMetaDescriptionTemplate">Meta Description Template</label>
+                        <label for="inputSettingsProductMetaDescriptionTemplate">{{__ "Meta Description"}} {{__ "Template"}}</label>
                         <input name="settings[admin][product][meta][description][template]" type="text" class="form-control" id="inputSettingsProductMetaDescriptionTemplate"
                             placeholder="" value="{{settings.admin.product.meta.description.template}}">
                         <small class="form-text text-muted">This field can use <a href="#tokensProduct">tokens</a></small>
@@ -53,14 +53,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="inputSettingsProductPerPageAdmin">Products Per Page (Admin)</label>
+                                <label for="inputSettingsProductPerPageAdmin">{{__ "Products"}} {{__ "Per Page"}} ({{__ "Admin"}})</label>
                                 <input name="settings[admin][product][perPage]" type="number" class="form-control" id="inputSettingsProductPerPageAdmin"
                                     placeholder="" value="settings.admin.product.perPage">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="inputSettingsProductPerPagePublic">Products Per Page (Public)</label>
+                                <label for="inputSettingsProductPerPagePublic">{{__ "Products"}} {{__ "Per Page"}} ({{__ "Public"}})</label>
                                 <input name="settings[public][product][perPage]" type="number" class="form-control" id="inputSettingsProductPerPagePublic"
                                     placeholder="" value="settings.public.product.perPage">
                             </div>
@@ -70,48 +70,48 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a name="tokensProduct"></a>
-                        <label>Tokens</label>
+                        <label>{{__ "Tokens"}}</label>
                         <small class="form-text">
-                    Global tokens:
-                    <ul>
-                        <li>[siteName] - website name</li>
-                    </ul>
-                    Product tokens:
-                    <ul>
-                        <li>[age] - product age</li>
-                        <li>[category] - product category</li>
-                        <li>[color] - product color</li>
-                        <li>[name] - product name</li>
-                        <li>[oldPrice] - product old price</li>
-                        <li>[price] - product price</li>
-                        <li>[season] - product season</li>
-                        <li>[sex] - product sex</li>
-                        <li>[shop] - product shop</li>
-                        <li>[vendor] - product category</li>
-                    </ul>
-                    Date tokens:
-                    <ul>
-                        <li>[day] - current day</li>
-                        <li>[month] - current month</li>
-                        <li>[year] - current year</li>
-                        <li>[season] - current season (spring, summer, autumn, winter)</li>
-                    </ul>
-                </small>
+                            {{__ "Global tokens"}}:
+                            <ul>
+                                <li>[siteName] - website name</li>
+                            </ul>
+                            Product tokens:
+                            <ul>
+                                <li>[age] - product age</li>
+                                <li>[category] - product category</li>
+                                <li>[color] - product color</li>
+                                <li>[name] - product name</li>
+                                <li>[oldPrice] - product old price</li>
+                                <li>[price] - product price</li>
+                                <li>[season] - product season</li>
+                                <li>[sex] - product sex</li>
+                                <li>[shop] - product shop</li>
+                                <li>[vendor] - product category</li>
+                            </ul>
+                            Date tokens:
+                            <ul>
+                                <li>[day] - current day</li>
+                                <li>[month] - current month</li>
+                                <li>[year] - current year</li>
+                                <li>[season] - current season (spring, summer, autumn, winter)</li>
+                            </ul>
+                        </small>
                     </div>
                 </div>
             </div>
             <hr />
-            <h4>Category</h4>
+            <h4>{{__ "Category"}}</h4>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputSettingsCategoryMetaTitleTemplate">Meta Title Template</label>
+                        <label for="inputSettingsCategoryMetaTitleTemplate">{{__ "Meta Title"}} {{__ "Template"}}</label>
                         <input name="settings[admin][category][meta][title][template]" type="text" class="form-control" id="inputSettingsCategoryMetaTitleTemplate"
                             placeholder="">
                         <small class="form-text text-muted">This field can use <a href="#tokensCategory">tokens</a></small>
                     </div>
                     <div class="form-group">
-                        <label for="inputSettingsCategoryMetaDescriptionTemplate">Meta Description Template</label>
+                        <label for="inputSettingsCategoryMetaDescriptionTemplate">{{__ "Meta Description"}} {{__ "Template"}}</label>
                         <input name="settings[admin][category][meta][description][template]" type="text" class="form-control" id="inputSettingsCategoryMetaDescriptionTemplate"
                             placeholder="">
                         <small class="form-text text-muted">This field can use <a href="#tokensCategory">tokens</a></small>
@@ -119,7 +119,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="inputSettingsCategoryPerPage">Categories Per Page (Admin)</label>
+                                <label for="inputSettingsCategoryPerPage">{{__ "Categories"}} {{__ "Per Page"}} ({{__ "Admin"}})</label>
                                 <input name="settings[admin][category][perPage]" type="number" class="form-control" id="inputSettingsCategoryPerPage" placeholder="">
                             </div>
                         </div>
@@ -130,24 +130,24 @@
                         <a name="tokensCategory"></a>
                         <label>Tokens</label>
                         <small class="form-text">
-                    Global tokens:
-                    <ul>
-                        <li>[siteName] - website name</li>
-                    </ul>
-                    Category tokens:
-                    <ul>
-                        <li>[name] - category name</li>
-                        <li>[parent] - parent name</li>
-                        <li>[parents] - all parents name</li>
-                    </ul>
-                    Date tokens:
-                    <ul>
-                        <li>[day] - current day</li>
-                        <li>[month] - current month</li>
-                        <li>[year] - current year</li>
-                        <li>[season] - current season (spring, summer, autumn, winter)</li>
-                    </ul>
-                </small>
+                            {{__ "Global tokens"}}:
+                            <ul>
+                                <li>[siteName] - website name</li>
+                            </ul>
+                            Category tokens:
+                            <ul>
+                                <li>[name] - category name</li>
+                                <li>[parent] - parent name</li>
+                                <li>[parents] - all parents name</li>
+                            </ul>
+                            Date tokens:
+                            <ul>
+                                <li>[day] - current day</li>
+                                <li>[month] - current month</li>
+                                <li>[year] - current year</li>
+                                <li>[season] - current season (spring, summer, autumn, winter)</li>
+                            </ul>
+                        </small>
                     </div>
                 </div>
             </div>

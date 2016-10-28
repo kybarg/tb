@@ -1,11 +1,11 @@
 <form method="POST" enctype="multipart/form-data">
     <div class="mb-1">
         <div class="float-xs-left">
-            <a href="/admin/product/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+            <a href="/admin/product/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
         </div>
         <div class="float-xs-right">
-            <a href="#" data-href="/admin/product/delete/{{product._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
-            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
+            <a href="#" data-href="/admin/product/delete/{{product._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> {{__ "Save"}}</button>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -13,15 +13,15 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputProductName">Name</label>
+                <label for="inputProductName">{{__ "Name"}}</label>
                 <input name="product[name]" type="text" class="form-control" id="inputProductName" placeholder="Product name" value="{{product.name}}">
             </div>
             <div class="form-group">
-                <label for="inputProductDescription">Description</label>
+                <label for="inputProductDescription">{{__ "Description"}}</label>
                 <textarea name="product[description]" class="form-control js-summernote-control" id="inputProductDescription" rows="3">{{{product.description}}}</textarea>
             </div>
             <div class="form-group">
-                <label for="inputProductCategory">Categories</label>
+                <label for="inputProductCategory">{{__ "Categories"}}</label>
                 <select name="product[category][]" class="form-control" id="inputProductCategory" multiple="multiple" size="1" style="width: 100%">
                     {{#if product.category}}
                         {{#each product.category}}
@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputProductVendor">Vendor</label>
+                        <label for="inputProductVendor">{{__ "Vendor"}}</label>
                         <select name="product[vendor]" class="form-control" id="inputProductVendor">
                             {{#if product.vendor}}
                                 <option value="{{product.vendor._id}}" selected="selected">{{product.vendor.name}}</option>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputProductShop">Shop</label>
+                        <label for="inputProductShop">{{__ "Shop"}}</label>
                         <select name="product[shop]" class="form-control" id="inputProductShop">
                             {{#if product.shop}}
                                 <option value="{{product.shop._id}}" selected="selected">{{product.shop.name}}</option>
@@ -55,7 +55,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputProductPrice">Price</label>
+                        <label for="inputProductPrice">{{__ "Price"}}</label>
                         <div class="input-group">
                             <input name="product[price]" type="text" class="form-control" id="inputProductPrice" placeholder="0.00" value="{{product.price}}">
                             <span class="input-group-addon">RUB</span>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputProductOldprice">Old price</label>
+                        <label for="inputProductOldprice">{{__ "Old price"}}</label>
                         <div class="input-group">
                             <input name="product[oldPrice]" type="text" class="form-control" id="inputProductOldprice" placeholder="0.00" value="{{product.oldPrice}}">
                             <span class="input-group-addon">RUB</span>
@@ -73,13 +73,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputProductUrl">Url</label>
+                <label for="inputProductUrl">{{__ "URL"}}</label>
                 <input name="product[url]" type="text" class="form-control" id="inputProductUrl" placeholder="URL" value="{{product.url}}">
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputProductColor">Color</label>
+                        <label for="inputProductColor">{{__ "Color"}}</label>
                         <select name="product[color][]" class="form-control" id="inputProductColor" multiple="multiple">
                         <option value="Белый">Белый</option>
                         <option value="Розовый">Розовый</option>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputProductMaterial">Material</label>
+                        <label for="inputProductMaterial">{{__ "Material"}}</label>
                         <select name="product[material][]" class="form-control" id="inputProductMaterial" multiple="multiple">
                         <option value="Замш">Замш</option>
                         <option value="Кожа">Кожа</option>
@@ -103,7 +103,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputProductSize">Size</label>
+                        <label for="inputProductSize">{{__ "Size"}}</label>
                         <select name="product[size][]" class="form-control" id="inputProductSize" multiple="multiple">
                         <option value="XS">XS</option>
                         <option value="S">S</option>
@@ -117,29 +117,29 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Age</label>
+                        <label>{{__ "Age"}}</label>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
-                            None
+                            <input type="radio" class="form-check-input" name="product[sex]" value="0">
+                            {{__ "None"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="1">
-                            Toddler
+                            <input type="radio" class="form-check-input" name="product[sex]" value="1">
+                            {{__ "Toddler"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
-                            Child
+                            <input type="radio" class="form-check-input" name="product[sex]" value="2">
+                            {{__ "Child"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
-                            Adults
+                            <input type="radio" class="form-check-input" name="product[sex]" value="3">
+                            {{__ "Adult"}}
                         </label>
                         </div>
                     </div>
@@ -148,64 +148,64 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Season</label>
+                        <label>{{__ "Season"}}</label>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
-                            None
+                            <input type="radio" class="form-check-input" name="product[sex]" value="0">
+                            {{__ "None"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="1">
-                            Summer
+                            <input type="radio" class="form-check-input" name="product[sex]" value="1">
+                            {{__ "Summer"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
-                            Winter
+                            <input type="radio" class="form-check-input" name="product[sex]" value="2">
+                            {{__ "Winter"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
-                            Demi
+                            <input type="radio" class="form-check-input" name="product[sex]" value="3">
+                            {{__ "Demi"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="4">
-                            All-season
+                            <input type="radio" class="form-check-input" name="product[sex]" value="4">
+                            {{__ "All-season"}}
                         </label>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Sex</label>
+                        <label>{{__ "Sex"}}</label>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios1" value="0">
-                            None
+                            <input type="radio" class="form-check-input" name="product[sex]" value="0">
+                            {{__ "None"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="1">
-                            Women
+                            <input type="radio" class="form-check-input" name="product[sex]" value="1">
+                            {{__ "Women"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="2">
-                            Men
+                            <input type="radio" class="form-check-input" name="product[sex]" value="2">
+                            {{__ "Men"}}
                         </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="product[sex]" id="optionsRadios2" value="3">
-                            Unisex
+                            <input type="radio" class="form-check-input" name="product[sex]" value="3">
+                            {{__ "Unisex"}}
                         </label>
                         </div>
                     </div>
@@ -214,19 +214,19 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputProductSlug">Slug</label>
+                <label for="inputProductSlug">{{__ "Slug"}}</label>
                 <input name="product[slug]" type="text" class="form-control" id="inputProductSlug" placeholder="product-name-vendor-id" value="{{product.slug}}">
             </div>
             <div class="form-group">
-                <label for="inputProductMetaTitle">Meta Title</label>
+                <label for="inputProductMetaTitle">{{__ "Meta Title"}}</label>
                 <input name="product[meta][title]" type="text" class="form-control" id="inputProductMetaTitle" placeholder="Title" value="{{product.meta.title}}">
             </div>
             <div class="form-group">
-                <label for="inputProductMetaDescription">Meta Description</label>
+                <label for="inputProductMetaDescription">{{__ "Meta Description"}}</label>
                 <textarea name="product[meta][description]" class="form-control" id="inputProductMetaDescription" rows="3">{{product.meta.description}}</textarea>
             </div>
             <div class="form-group">
-                <label>Picture</label> {{#if product.picture}}
+                <label>{{__ "Picture"}}</label> {{#if product.picture}}
                 <div class="clearfix m-y-1">
                     <img src="{{pictUrl}}{{product.picture}}" style="max-height: 320px;" />
                 </div>

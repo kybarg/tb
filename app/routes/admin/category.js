@@ -13,7 +13,7 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/category/index', isLoggedIn, function (req, res) {
 
-        req.breadcrumbs('Categories');
+        req.breadcrumbs(__('Categories'));
 
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
@@ -65,10 +65,10 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/category/create', isLoggedIn, function (req, res) {
         req.breadcrumbs([{
-            name: 'Categories',
+            name: __('Categories'),
             url: '/admin/category/index'
         }, {
-            name: 'New category'
+            name: __('New category')
         }]);
 
         res.render('category/create', {
@@ -78,10 +78,10 @@ module.exports = function (app, passport, exphbs) {
 
     app.post('/admin/category/create', isLoggedIn, upload.single('image'), function (req, res) {
         req.breadcrumbs([{
-            name: 'Categories',
+            name: __('Categories'),
             url: '/admin/category/index'
         }, {
-            name: 'New category'
+            name: __('New category')
         }]);
 
         var category = new Category(req.body.category);
@@ -116,7 +116,7 @@ module.exports = function (app, passport, exphbs) {
             .populate('parent')
             .exec(function (err, category) {
                 req.breadcrumbs([{
-                    name: 'Categories',
+                    name: __('Categories'),
                     url: '/admin/category/index'
                 }, {
                     name: category.name
@@ -183,7 +183,7 @@ module.exports = function (app, passport, exphbs) {
 
 function isLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on
+    // if user is authenticated in the session, carry onf
     if (req.isAuthenticated())
         return next();
 

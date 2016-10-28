@@ -15,7 +15,7 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/shop/index', isLoggedIn, function (req, res) {
 
-        req.breadcrumbs('Shops');
+        req.breadcrumbs(__('Shops'));
 
         // Using paginate for simplier pagination
         Shop.paginate({}, {
@@ -44,10 +44,10 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/shop/create', isLoggedIn, function (req, res) {
         req.breadcrumbs([{
-            name: 'Shops',
+            name: __('Shops'),
             url: '/admin/shop/index'
         }, {
-            name: 'New shop'
+            name: __('New shop')
         }]);
 
         res.render('shop/create', {
@@ -75,7 +75,7 @@ module.exports = function (app, passport, exphbs) {
             })
             .exec(function (err, shop) {
                 req.breadcrumbs([{
-                    name: 'Shops',
+                    name: __('Shops'),
                     url: '/admin/shop/index'
                 }, {
                     name: shop.name

@@ -13,7 +13,7 @@ module.exports = function(app, passport, exphbs) {
 
     // Mount the breadcrumbs at `/admin`
     app.use('/admin', breadcrumbs.setHome({
-        name: 'Dashboard',
+        name: __('Dashboard'),
         url: '/admin'
     }));
 
@@ -37,6 +37,11 @@ module.exports = function(app, passport, exphbs) {
     // =====================================
     app.get('/admin', isLoggedIn, function(req, res) {
         res.render('index'); // load the index.hbs file
+    });
+    
+    app.get('/admin/setlocale/:locale', isLoggedIn, function(req, res) {
+        res.cookie('locale', req.param.locale, { maxAge: 900000, httpOnly: true });
+        res.redirect('/admin');
     });
 }
 
