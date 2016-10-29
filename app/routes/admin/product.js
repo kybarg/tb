@@ -8,6 +8,7 @@ var pictUrl = pathConfig.productPictUrl;
 var pictStorage = require('../../lib/pictStorage.js');
 var storage = pictStorage(pictPath);
 
+
 var upload = multer({
     storage: storage
 });
@@ -87,8 +88,8 @@ module.exports = function (app, passport, exphbs) {
             if (err) throw err;
             console.log('Product added, id = ' + product._id);
             res.redirect('/admin/product/update/' + product._id);
+         });
         });
-    });
 
     // Display product with ID
     app.get('/admin/product/update/:id', isLoggedIn, function (req, res) {
@@ -105,7 +106,7 @@ module.exports = function (app, passport, exphbs) {
                 }, {
                     name: product.name
                 }]);
-                res.render('product/create', {
+            res.render('product/create', {
                     breadcrumbs: req.breadcrumbs(),
                     product: product,
                     pictUrl: pictUrl

@@ -12,7 +12,7 @@ var upload = multer({
 });
 
 module.exports = function (app, passport, exphbs) {
-    
+
     app.get('/admin/shop/index', isLoggedIn, function (req, res) {
 
         req.breadcrumbs('Shops');
@@ -60,8 +60,7 @@ module.exports = function (app, passport, exphbs) {
         if (req.file) {
             shop.pictureFile = req.file;
         }
-    
-    shop.save(function (err, shop) {
+        shop.save(function (err, shop) {
             if (err) throw err;
             console.log('Shop added, id = ' + shop._id);
             res.redirect('/admin/shop/update/' + shop._id);
