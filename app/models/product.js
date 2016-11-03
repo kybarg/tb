@@ -3,6 +3,9 @@ var mongoosePaginate = require('mongoose-paginate');
 var pictPath = require('../config/path.js').productPictPath;
 var slugify = require('transliteration').slugify;
 var picturePlugin = require('../models/picture.js');
+var metaPlugin = require('../models/meta.js');
+var settingsMem = require('../config/admin_config.js').stores.memory;
+
 
 var productSchema = mongoose.Schema({
     name: String,
@@ -37,10 +40,6 @@ var productSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Shop'
     },
-    meta: {
-        title: String,
-        description: String
-    }
 });
 
 productSchema.pre('save', function (next) {
@@ -52,7 +51,7 @@ productSchema.pre('save', function (next) {
             }
         });
     }
-    next();
+   next();
 });
 
 
@@ -60,5 +59,6 @@ productSchema.plugin(mongoosePaginate);
 productSchema.plugin(picturePlugin, {
     pictPath: pictPath
 });
+productSchema.plugin(metaPlugin, settingsMem.get('admin.product.meta'));
 
 module.exports = mongoose.model('Product', productSchema);
