@@ -20,6 +20,8 @@ var session = require('express-session')
 var exphbs = require('express-handlebars');
 var path = require('path');
 var static = require('express-static');
+var i18n = require('i18n');
+// var i18nHelper = require('handlebars-helper-i18n');
 // var multer = require('multer');
 // var upload = multer();
 
@@ -29,6 +31,15 @@ var configDB = require('./config/database.js');
 mongoose.Promise = global.Promise;
 mongoose.connect(configDB.url); // connect to our database
 
+// Set up localization
+i18n.configure({
+    locales:['en', 'ru'],
+    cookie: 'locale',
+    defaultLocale: 'en',
+    directory: __dirname + '/locales',
+    register: global
+});
+
 require('./config/passport')(passport); // pass passport for configuration
 
 // Set up our express application
@@ -36,6 +47,10 @@ require('./config/passport')(passport); // pass passport for configuration
 //     path: "./logfile.log"
 // })); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
+
+// i18n init parses req for language headers, cookies, etc.
+app.use(i18n.init);
+
 
 // Parcing request data as json
 app.use(bodyParser.urlencoded({

@@ -6,7 +6,8 @@ var adminConfig = require('../../config/admin_config.js');
 
 module.exports = function (app, passport, exphbs) {
     app.get('/admin/settings/index', isLoggedIn, function (req, res) {
-        req.breadcrumbs('Settings');
+        req.breadcrumbs(__('Settings'));
+
         res.render('settings/index', {
             breadcrumbs: req.breadcrumbs(),
             settings: {

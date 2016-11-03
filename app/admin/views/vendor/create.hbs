@@ -1,11 +1,11 @@
 <form method="POST" enctype="multipart/form-data">
     <div class="mb-1">
         <div class="float-xs-left">
-            <a href="/admin/vendor/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+            <a href="/admin/vendor/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
         </div>
         <div class="float-xs-right">
-            <a href="#" data-href="/admin/vendor/delete/{{vendor._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
-            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
+            <a href="#" data-href="/admin/vendor/delete/{{vendor._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> {{__ "Save"}}</button>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -13,25 +13,25 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputVendorName">Name</label>
+                <label for="inputVendorName">{{__ "Name"}}</label>
                 <input name="vendor[name]" type="text" class="form-control" id="inputVendorName" placeholder="Vendor name" value="{{vendor.name}}">
             </div>
             <div class="form-group">
-                <label for="inputVendorDescription">Description</label>
+                <label for="inputVendorDescription">{{__ "Description"}}</label>
                 <textarea name="vendor[description]" class="form-control js-summernote-control" id="inputVendorDescription" rows="3">{{{vendor.description}}}</textarea>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputVendorSlug">Slug</label>
+                <label for="inputVendorSlug">{{__ "Slug"}}</label>
                 <input name="vendor[slug]" type="text" class="form-control" id="inputVendorSlug" placeholder="vendor-name-vendor-id" value="{{vendor.slug}}">
             </div>
             <div class="form-group">
-                <label for="inputVendorMetaTitle">Meta Title</label>
+                <label for="inputVendorMetaTitle">{{__ "Meta Title"}}</label>
                 <input name="vendor[meta][title]" type="text" class="form-control" id="inputVendorMetaTitle" placeholder="Title" value="{{vendor.meta.title}}">
             </div>
             <div class="form-group">
-                <label for="inputVendorMetaDescription">Meta Description</label>
+                <label for="inputVendorMetaDescription">{{__ "Meta Description"}}</label>
                 <textarea name="vendor[meta][description]" class="form-control" id="inputVendorMetaDescription" rows="3">{{vendor.meta.description}}</textarea>
             </div>
             <div class="form-group">

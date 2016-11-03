@@ -15,7 +15,7 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/vendor/index', isLoggedIn, function (req, res) {
 
-        req.breadcrumbs('Vendors');
+        req.breadcrumbs(__('Vendors'));
 
         // Using paginate for simplier pagination
         Vendor.paginate({}, {
@@ -44,10 +44,10 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/vendor/create', isLoggedIn, function (req, res) {
         req.breadcrumbs([{
-            name: 'Vendors',
+            name: __('Vendors'),
             url: '/admin/vendor/index'
         }, {
-            name: 'New vendor'
+            name: __('New vendor')
         }]);
 
         res.render('vendor/create', {
@@ -74,7 +74,7 @@ module.exports = function (app, passport, exphbs) {
             })
             .exec(function (err, vendor) {
                 req.breadcrumbs([{
-                    name: 'Vendors',
+                    name: __('Vendors'),
                     url: '/admin/vendor/index'
                 }, {
                     name: vendor.name
