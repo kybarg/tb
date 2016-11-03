@@ -1,11 +1,11 @@
 <form method="POST" enctype="multipart/form-data">
     <div class="mb-1">
         <div class="float-xs-left">
-            <a href="/admin/shop/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+            <a href="/admin/shop/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
         </div>
         <div class="float-xs-right">
-            <a href="#" data-href="/admin/shop/delete/{{shop._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
-            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
+            <a href="#" data-href="/admin/shop/delete/{{shop._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> {{__ "Save"}}</button>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -13,36 +13,35 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputShopName">Name</label>
+                <label for="inputShopName">{{__ "Name"}}</label>
                 <input name="shop[name]" type="text" class="form-control" id="inputShopName" placeholder="Shop name" value="{{shop.name}}">
             </div>
             <div class="form-group">
-                <label for="inputShopDescription">Description</label>
+                <label for="inputShopDescription">{{__ "Description"}}</label>
                 <textarea name="shop[description]" class="form-control js-summernote-control" id="inputShopDescription" rows="3">{{{shop.description}}}</textarea>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputShopSlug">Slug</label>
+                <label for="inputShopSlug">{{__ "Slug"}}</label>
                 <input name="shop[slug]" type="text" class="form-control" id="inputShopSlug" placeholder="shop-name-shop-id" value="{{shop.slug}}">
             </div>
             <div class="form-group">
-                <label for="inputShopMetaTitle">Meta Title</label>
+                <label for="inputShopMetaTitle">{{__ "Meta Title"}}</label>
                 <input name="shop[meta][title]" type="text" class="form-control" id="inputShopMetaTitle" placeholder="Title" value="{{shop.meta.title}}">
             </div>
             <div class="form-group">
-                <label for="inputShopMetaDescription">Meta Description</label>
+                <label for="inputShopMetaDescription">{{__ "Meta Description"}}</label>
                 <textarea name="shop[meta][description]" class="form-control" id="inputShopMetaDescription" rows="3">{{shop.meta.description}}</textarea>
             </div>
             <div class="form-group">
-                <label>Picture</label> {{#if shop.picture}}
+                <label>{{__ "Picture"}}</label> {{#if shop.picture}}
                 <div class="clearfix m-y-1">
-                    <img src="/public/uploads/{{shop.picture}}" style="max-height: 320px;" />
+                    <img class="img-fluid" src="/public/uploads/pictures/shop/{{shop.picture.name}}" alt="{{shop.name}}" />
                 </div>
                 {{else}}
                 <div class="clearfix"></div>
                 {{/if}}
-                <input type="hidden" name="shop[picture]" value="{{shop.picture}}" />
                 <label class="custom-file">
                     <input name="image" type="file" id="image" class="custom-file-input">
                     <span class="custom-file-control"></span>

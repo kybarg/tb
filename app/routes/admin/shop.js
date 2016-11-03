@@ -15,7 +15,7 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/shop/index', isLoggedIn, function (req, res) {
 
-        req.breadcrumbs('Shops');
+        req.breadcrumbs(__('Shops'));
 
         // Using paginate for simplier pagination
         Shop.paginate({}, {
@@ -44,10 +44,10 @@ module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/shop/create', isLoggedIn, function (req, res) {
         req.breadcrumbs([{
-            name: 'Shops',
+            name: __('Shops'),
             url: '/admin/shop/index'
         }, {
-            name: 'New shop'
+            name: __('New shop')
         }]);
 
         res.render('shop/create', {
@@ -57,9 +57,11 @@ module.exports = function (app, passport, exphbs) {
 
     app.post('/admin/shop/create', isLoggedIn, upload.single('image'), function (req, res) {
         var shop = new Shop(req.body.shop);
+
         if (req.file) {
             shop.pictureFile = req.file;
         }
+
         shop.save(function (err, shop) {
             if (err) throw err;
             console.log('Shop added, id = ' + shop._id);
@@ -73,7 +75,7 @@ module.exports = function (app, passport, exphbs) {
             })
             .exec(function (err, shop) {
                 req.breadcrumbs([{
-                    name: 'Shops',
+                    name: __('Shops'),
                     url: '/admin/shop/index'
                 }, {
                     name: shop.name
@@ -88,18 +90,20 @@ module.exports = function (app, passport, exphbs) {
 
     // Update shop with ID
     app.post('/admin/shop/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        var shop = req.body.shop;
         if (req.file) {
-            shop.pictureFile = req.file;
+            req.body.shop.pictureFile = req.file;
         }
 
-        Shop.findByIdAndUpdate(req.params.id, {
-            $set: shop
-        }, {
-            new: true // return new model
-        }, function (err, shop) {
+        Shop.findById(req.params.id, function (err, shop) {
             if (err) throw err;
-            res.redirect('/admin/shop/update/' + shop._id);
+
+            // Update category object with new values
+            shop = Object.assign(shop, req.body.shop);
+
+            shop.save(function (err) {
+                if (err) throw err;
+                res.redirect('/admin/shop/update/' + req.params.id);
+            });
         });
     });
 

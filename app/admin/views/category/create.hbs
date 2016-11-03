@@ -1,11 +1,11 @@
 <form method="POST" enctype="multipart/form-data">
     <div class="mb-1">
         <div class="float-xs-left">
-            <a href="/admin/category/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> Back</a>
+            <a href="/admin/category/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
         </div>
         <div class="float-xs-right">
-            <a href="#" data-href="/admin/category/delete/{{category._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> Delete</a>
-            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> Save</button>
+                <a href="#" data-href="/admin/category/delete/{{category._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
+            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> {{__ "Save"}}</button>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -13,15 +13,15 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group{{#if errors.nameHasError}} has-danger{{/if}}">
-                <label for="inputCategoryName">Name</label>
+                <label for="inputCategoryName">{{__ "Name"}}</label>
                 <input name="category[name]" type="text" class="form-control" id="inputCategoryName" placeholder="Category name" value="{{category.name}}">
             </div>
             <div class="form-group">
-                <label for="inputCategoryDescription">Description</label>
+                <label for="inputCategoryDescription">{{__ "Description"}}</label>
                 <textarea name="category[description]" class="form-control js-summernote-control" id="inputCategoryDescription" rows="3">{{{category.description}}}</textarea>
             </div>
             <div class="form-group">
-                <label for="inputCategoryCategory">Parent category</label>
+                <label for="inputCategoryCategory">{{__ "Parent category"}}</label>
                 <select name="category[parent]" class="form-control" id="inputCategoryCategory">
                     {{#if category.parent}}
                     <option value="{{category.parent._id}}" selected>{{category.parent.name}}</option>
@@ -31,19 +31,19 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="inputCategorySlug">Slug</label>
+                <label for="inputCategorySlug">{{__ "Slug"}}</label>
                 <input name="category[slug]" type="text" class="form-control" id="inputCategorySlug" placeholder="category-name" value="{{category.slug}}">
             </div>
             <div class="form-group">
-                <label for="inputCategoryMetaTitle">Meta Title</label>
+                <label for="inputCategoryMetaTitle">{{__ "Meta Title"}}</label>
                 <input name="category[meta][title]" type="text" class="form-control" id="inputCategoryMetaTitle" placeholder="Title" value="{{category.meta.title}}">
             </div>
             <div class="form-group">
-                <label for="inputCategoryMetaDescription">Meta Description</label>
+                <label for="inputCategoryMetaDescription">{{__ "Meta Description"}}</label>
                 <textarea name="category[meta][description]" class="form-control" id="inputCategoryMetaDescription" rows="3">{{category.meta.description}}</textarea>
             </div>
             <div class="form-group">
-                <label>Picture</label> {{#if category.picture}}
+                <label>{{__ "Picture"}}</label> {{#if category.picture}}
                 <div class="clearfix m-y-1">
                     <img src="/public/uploads/{{category.picture}}" style="max-height: 320px;" />
                 </div>
