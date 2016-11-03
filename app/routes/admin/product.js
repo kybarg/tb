@@ -99,6 +99,11 @@ module.exports = function (app, passport, exphbs) {
             .populate('vendor')
             .populate('shop')
             .exec(function (err, product) {
+                // product.getVend(function(err, val){
+                //     console.log(val);
+                // });
+
+                // console.log(product.vend);
                 req.breadcrumbs([{
                     name: __('Products'),
                     url: '/admin/product/index'

@@ -21,7 +21,7 @@ var exphbs = require('express-handlebars');
 var path = require('path');
 var static = require('express-static');
 var i18n = require('i18n');
-var i18nHelper = require('handlebars-helper-i18n');
+// var i18nHelper = require('handlebars-helper-i18n');
 // var multer = require('multer');
 // var upload = multer();
 
@@ -33,19 +33,11 @@ mongoose.connect(configDB.url); // connect to our database
 
 // Set up localization
 i18n.configure({
-    locales:['ru', 'en'],
+    locales:['en', 'ru'],
     cookie: 'locale',
-    defaultLocale: 'ru',
+    defaultLocale: 'en',
     directory: __dirname + '/locales',
     register: global
-});
-
-
-var hbs = exphbs.create({
-    // Specify helpers which are only registered on this instance.
-    helpers: {
-        '__': i18nHelper.i18n,
-    }
 });
 
 require('./config/passport')(passport); // pass passport for configuration
@@ -67,7 +59,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Define default template engine
-app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
 
 // required for passport
