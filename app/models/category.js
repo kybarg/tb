@@ -4,6 +4,8 @@ var pictPath = require('../config/path.js').categoryPictPath;
 var slugify = require('transliteration').slugify;
 var streamWorker = require('stream-worker');
 var picturePlugin = require('../models/picture.js');
+var metaPlugin = require('../models/meta.js');
+var settingsMem = require('../config/admin_config.js').stores.memory;
 
 var categorySchema = mongoose.Schema({
     name: {
@@ -24,17 +26,15 @@ var categorySchema = mongoose.Schema({
         },
         name: String
     }],
-    popularity: [],
-    meta: {
-        title: String,
-        description: String
-    }
+    popularity: []
 });
 
 categorySchema.plugin(mongoosePaginate);
 categorySchema.plugin(picturePlugin, {
     pictPath: pictPath
 });
+
+categorySchema.plugin(metaPlugin, settingsMem.get('admin.category.meta'));
 
 /**
  * Pre-save middleware

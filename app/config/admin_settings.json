@@ -1,1 +1,26 @@
-{"product":{"meta":{"title":{"template":""},"description":{"template":""}},"perPage":""},"category":{"meta":{"title":{"template":""},"description":{"template":""}},"perPage":""}}
+{
+  "admin": {
+    "product": {
+      "meta": {
+        "title": {
+          "template": "i don't like [name]"
+        },
+        "description": {
+          "template": "i don't like [name]"
+        }
+      },
+      "perPage": "50"
+    },
+    "category": {
+      "meta": {
+        "title": {
+          "template": "i don't like [name]"
+        },
+        "description": {
+          "template": "i don't like [name]"
+        }
+      },
+      "perPage": "50"
+    }
+  }
+}
