@@ -4,26 +4,24 @@ var multer = require('multer');
 var Category = require('../../models/category');
 var pictPath = require('../../config/path.js').categoryPictPath;
 var storage = require('../../lib/pictStorage.js')(pictPath);
+var settingsMem = require('../../config/admin_config.js').stores.memory;
 
 var upload = multer({
     storage: storage
 });
 
 module.exports = function (app, passport, exphbs) {
-
+    
     app.get('/admin/category/index', isLoggedIn, function (req, res) {
-
         req.breadcrumbs('Categories');
-
         Category.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: 'ancestors.0.name ancestors.1.name ancestors.2.name ancestors.3.name ancestors.4.name',
             // Maybe there less ugly way to solve sorting
-            limit: 50,
+            limit: parseInt(settingsMem.get('admin.category.perPage')),
             lean: 1
         }, function (err, result) {
             if (!err) {
-
                 res.render('category/index', {
                     breadcrumbs: req.breadcrumbs(),
                     categories: result.docs,

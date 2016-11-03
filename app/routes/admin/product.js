@@ -2,11 +2,10 @@ var handlebarsPaginate = require('handlebars-paginate');
 var mongoose = require('mongoose');
 var multer = require('multer');
 var Product = require('../../models/product');
-var pathConfig = require('../../config/path.js');
-var pictPath = pathConfig.productPictPath;
-var pictUrl = pathConfig.productPictUrl;
-var pictStorage = require('../../lib/pictStorage.js');
-var storage = pictStorage(pictPath);
+var pictPath = require('../../config/path.js').productPictPath;
+var pictUrl = require('../../config/path.js').productPictUrl;
+var storage = require('../../lib/pictStorage.js')(pictPath);
+var settingsMem = require('../../config/admin_config.js').stores.memory;
 
 
 var upload = multer({
@@ -20,7 +19,7 @@ module.exports = function (app, passport, exphbs) {
         Product.paginate({}, {
             page: req.query.page ? req.query.page : 1,
             sort: '-_id',
-            limit: 50
+            limit: parseInt(settingsMem.get('admin.product.perPage'))
         }, function (err, result) {
             if (!err) {
                 res.render('product/index', {

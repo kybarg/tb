@@ -4,6 +4,7 @@ var pictPath = require('../config/path.js').productPictPath;
 var slugify = require('transliteration').slugify;
 var picturePlugin = require('../models/picture.js');
 var metaPlugin = require('../models/meta.js');
+var settingsMem = require('../config/admin_config.js').stores.memory;
 
 
 var productSchema = mongoose.Schema({
@@ -58,7 +59,6 @@ productSchema.plugin(mongoosePaginate);
 productSchema.plugin(picturePlugin, {
     pictPath: pictPath
 });
-productSchema.plugin(metaPlugin);
-
+productSchema.plugin(metaPlugin, settingsMem.get('admin.product.meta'));
 
 module.exports = mongoose.model('Product', productSchema);

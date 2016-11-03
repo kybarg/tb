@@ -5,6 +5,7 @@ var slugify = require('transliteration').slugify;
 var streamWorker = require('stream-worker');
 var picturePlugin = require('../models/picture.js');
 var metaPlugin = require('../models/meta.js');
+var settingsMem = require('../config/admin_config.js').stores.memory;
 
 var categorySchema = mongoose.Schema({
     name: {
@@ -33,7 +34,7 @@ categorySchema.plugin(picturePlugin, {
     pictPath: pictPath
 });
 
-categorySchema.plugin(metaPlugin);
+categorySchema.plugin(metaPlugin, settingsMem.get('admin.category.meta'));
 
 /**
  * Pre-save middleware

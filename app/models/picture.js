@@ -9,6 +9,8 @@ module.exports = function picturePlugin(schema, opts) {
         }
     })
 
+   
+
     schema.virtual('pictureFile').set(function (f) {
         if (this.picture.name) {
             fs.unlink(opts.pictPath + this.picture.name, function (err) {});

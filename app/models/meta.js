@@ -2,7 +2,14 @@ var mongoose = require('mongoose');
 var async = require('async');
 
 
-var defTemplate = "it's called [name]";
+var defTemplate = {
+    title: {
+        template: "it's called [name]"
+    },
+    description: {
+        template: "it's called [name]"
+    }
+};
 var replaceWith = {}
 
 module.exports = function metaPlugin(schema, opts) {
@@ -14,36 +21,19 @@ module.exports = function metaPlugin(schema, opts) {
     })
 
     schema.virtual('meta.title.template').set(function (template) {
-        opts.title.template = template;
+        opts.title = template;
     })
 
     schema.virtual('meta.description.template').set(function (template) {
-        opts.description.template = template;
+        opts.description = template;
     })
 
-    schema.methods.generateMeta = function (options, cb) {
-        if (opts) {
-            var template = (opts.template || opts.defTemplate || defTemplate)
-        } else {
-            var template = defTemplate
-        }
-        this.meta = {
-            title: "",
-            description: ""
-        }
-
+    schema.methods.generateMetaField = function (template) {
         var replaceName = "/" + this.constructor.modelName.toLowerCase() + "./g";
         template = template.replace(replaceName, "");
-        // template.replace(/([*\[\]])/g, "") 
-        var resultString = template.replace(/\[(\w+)\]/g, function (match1, match2) {
-            return replaceWith[match2];
-        });
-
-        // var fields = this.schema.paths;
         var self = this;
         var templateArr = template.split(" ");
-        var finalTemplate = "";
-
+        var result = "";
         var replaceWithField = function (field) {
             if (field.search("]") != -1) {
                 var prop = field.replace(/([*\[\]])/g, "")
@@ -52,28 +42,42 @@ module.exports = function metaPlugin(schema, opts) {
                     field = self[props[0]]
                     props.forEach(function (item, i) {
                         if (i != 0) {
-                            field = field[item]
+                            field = field[item];
                         }
                     })
                 }
             }
-            finalTemplate = finalTemplate.concat([field + " "])
+            result = result.concat([field + " "]);
         }
-        async.each(templateArr, function (item, callback) {
+
+        templateArr.forEach(function (item) {
             replaceWithField(item);
-            callback()
-        }, function (err) {
-            self.meta.title = finalTemplate;
-            if (typeof cb === 'function') {
-                cb(err)
-            }
         })
+        return result;
+    }
+
+    schema.methods.generateMeta = function (cb) {
+        var template = (opts || defTemplate);
+        var self = this;
+        async.parallel({
+                title: function (callback) {
+                    callback(null, self.generateMetaField(template.title.template))
+                },
+                description: function (callback) {
+                    callback(null, self.generateMetaField(template.description.template))
+                }
+            },
+            function (err, result) {
+                self.meta = result;
+                if (cb) {
+                    cb(err);
+                }
+            });
     }
 
     schema.pre('save', function (next) {
-        this.generateMeta({}, function (err) {
+        this.generateMeta(function (err) {
             next()
         });
-        // next();
     })
 }

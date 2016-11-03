@@ -1,8 +1,6 @@
 var fs = require('fs')
-var os = require('os')
 var path = require('path')
 var crypto = require('crypto')
-var mkdirp = require('mkdirp')
 
 function getFilename(req, file, cb) {
   crypto.pseudoRandomBytes(16, function (err, raw) {
@@ -19,6 +17,13 @@ function pictStorage(pictPath) {
   this.pictPath = pictPath;
   this.getFilename = getFilename;
   this.getDestination = getDestination;
+  if (!(fs.existsSync(pictPath))) {
+    fs.mkdirSync(pictPath, function (err) {
+      if (err) {
+        console.log("picture path error")
+      }
+    })
+  }
 }
 
 pictStorage.prototype._handleFile = function _handleFile(req, file, cb) {
