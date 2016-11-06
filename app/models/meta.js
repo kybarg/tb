@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var async = require('async');
 
-
 var defTemplate = {
     title: {
         template: "it's called [name]"
@@ -28,32 +27,45 @@ module.exports = function metaPlugin(schema, opts) {
         opts.description = template;
     })
 
-    schema.methods.generateMetaField = function (template) {
-        var replaceName = "/" + this.constructor.modelName.toLowerCase() + "./g";
-        template = template.replace(replaceName, "");
+    schema.methods.generateMetaField = function (template, callback) {
         var self = this;
-        var templateArr = template.split(" ");
-        var result = "";
-        var replaceWithField = function (field) {
-            if (field.search("]") != -1) {
-                var prop = field.replace(/([*\[\]])/g, "")
-                var props = prop.split(".")
-                if (self[props[0]]) {
-                    field = self[props[0]]
-                    props.forEach(function (item, i) {
-                        if (i != 0) {
-                            field = field[item];
-                        }
-                    })
-                }
+        var keys = [];
+
+        template.replace(/\[([\w|\.]+)\]/g, function (match, propName) {
+            keys.push(propName);
+        })
+
+        for (i = 0; i < keys.length; i++) {
+            var key = keys[i].split(".")[0];
+            if (!(this[key] && this[key].hasOwnProperty('id'))) {
+                keys[i] = "";
+            } else {
+                keys[i] = key;
             }
-            result = result.concat([field + " "]);
         }
 
-        templateArr.forEach(function (item) {
-            replaceWithField(item);
+        this.populate(keys, function (err, doc) {
+            var resultString = template.replace(/\[([\w|\.]+)\]/g, function (match, propName) {
+                if (propName.indexOf('.') !== -1) {
+                    var paths = propName.split('.');
+
+                    var current = self;
+                    for (i = 0; i < paths.length; i++) {
+                        if (self[paths[i]] === undefined) {
+                            return undefined;
+                        } else {
+                            current = current[paths[i]];
+                        }
+                    }
+                    return current;
+                } else {
+                    if (self[propName]) {
+                        return self[propName];
+                    }
+                }
+            });
+            callback(err, resultString);
         })
-        return result;
     }
 
     schema.methods.generateMeta = function (cb) {
@@ -61,10 +73,10 @@ module.exports = function metaPlugin(schema, opts) {
         var self = this;
         async.parallel({
                 title: function (callback) {
-                    callback(null, self.generateMetaField(template.title.template))
+                    self.generateMetaField(template.title.template, callback)
                 },
                 description: function (callback) {
-                    callback(null, self.generateMetaField(template.description.template))
+                    self.generateMetaField(template.description.template, callback)
                 }
             },
             function (err, result) {

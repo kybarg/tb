@@ -68,5 +68,10 @@
 	"New vendor": "New vendor",
 	"Site Name": "Site Name",
 	"Per Page": "Per Page",
-	"Old price": "Old price"
+	"Old price": "Old price",
+	"No products are found.": "No products are found.",
+	"You can create new one.": "You can create new one.",
+	"No categories are found.": "No categories are found.",
+	"No shops are found.": "No shops are found.",
+	"No vendors are found.": "No vendors are found."
 }
