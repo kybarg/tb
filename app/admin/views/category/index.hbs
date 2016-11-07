@@ -74,7 +74,7 @@
             <li class="page-item{{#if disabled}} disabled{{/if}}">
                 <a class="page-link" href="/admin/category/index?page={{n}}" tabindex="-1" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">{{__ "Previous"}}</span>
+                    <span class="sr-only">{{../__ "Previous"}}</span>
                 </a>
             </li>
             {{/paginate}} {{#paginate pagination type="middle" limit="7" }}
@@ -83,7 +83,7 @@
             <li class="page-item{{#if disabled}} disabled{{/if}}">
                 <a class="page-link" href="/admin/category/index?page={{n}}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">{{__ "Next"}}</span>
+                    <span class="sr-only">{{../__ "Next"}}</span>
                 </a>
             </li>
             {{/paginate}}

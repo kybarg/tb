@@ -32,6 +32,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "stream-worker": "^2.0.1",
-    "transliteration": "^1.1.11"
+    "transliteration": "^1.1.11",
+    "xml-stream": "^0.4.5"
   }
 }

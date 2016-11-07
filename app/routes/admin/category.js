@@ -138,7 +138,7 @@ module.exports = function (app, passport, exphbs) {
             if (err) throw err;
 
             // Update category object with new values
-            category = Object.assign(category, req.body.category);
+            category = Object.assign({}, category, req.body.category);
 
             category.save(function (err) {
                 if (err) throw err;

@@ -3,10 +3,10 @@
     "product": {
       "meta": {
         "title": {
-          "template": "i don't like [name]"
+          "template": "title [name] [vendor.name]"
         },
         "description": {
-          "template": "i don't like [name]"
+          "template": "descr [name] [vendor.name]"
         }
       },
       "perPage": "50"
