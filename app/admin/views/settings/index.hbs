@@ -24,12 +24,12 @@
                     </div>
                     <div class="form-group">
                         <label for="inputSettingsGlobalContactEmail">{{__ "Contact Email"}}</label>
-                        <input name="settings[global][contact][email]" type="email" class="form-control" id="inputSettingsGlobalContactEmail" placeholder="">
+                        <input name="settings[global][contact][email]" type="email" class="form-control" id="inputSettingsGlobalContactEmail" placeholder="" value="{{settings.global.contact.email}}">
                     </div>
                     <div class="form-group">
                         <label for="inputSettingsGlobalContactAddress">{{__ "Contact address"}}</label>
                         <input name="settings[global][contact][address]" type="email" class="form-control" id="inputSettingsGlobalContactAddress"
-                            placeholder="">
+                            placeholder="" value="{{settings.global.contact.address}}">
                     </div>
                 </div>
             </div>
@@ -55,14 +55,14 @@
                             <div class="form-group">
                                 <label for="inputSettingsProductPerPageAdmin">{{__ "Products"}} {{__ "Per Page"}} ({{__ "Admin"}})</label>
                                 <input name="settings[admin][product][perPage]" type="number" class="form-control" id="inputSettingsProductPerPageAdmin"
-                                    placeholder="" value="settings.admin.product.perPage">
+                                    placeholder="" value="{{settings.admin.product.perPage}}">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputSettingsProductPerPagePublic">{{__ "Products"}} {{__ "Per Page"}} ({{__ "Public"}})</label>
                                 <input name="settings[public][product][perPage]" type="number" class="form-control" id="inputSettingsProductPerPagePublic"
-                                    placeholder="" value="settings.public.product.perPage">
+                                    placeholder="" value="{{settings.public.product.perPage}}">
                             </div>
                         </div>
                     </div>
@@ -107,20 +107,20 @@
                     <div class="form-group">
                         <label for="inputSettingsCategoryMetaTitleTemplate">{{__ "Meta Title"}} {{__ "Template"}}</label>
                         <input name="settings[admin][category][meta][title][template]" type="text" class="form-control" id="inputSettingsCategoryMetaTitleTemplate"
-                            placeholder="">
+                            placeholder="" value="{{settings.admin.category.meta.title.template}}">
                         <small class="form-text text-muted">This field can use <a href="#tokensCategory">tokens</a></small>
                     </div>
                     <div class="form-group">
                         <label for="inputSettingsCategoryMetaDescriptionTemplate">{{__ "Meta Description"}} {{__ "Template"}}</label>
                         <input name="settings[admin][category][meta][description][template]" type="text" class="form-control" id="inputSettingsCategoryMetaDescriptionTemplate"
-                            placeholder="">
+                            placeholder="" value="{{settings.admin.category.meta.description.template}}">
                         <small class="form-text text-muted">This field can use <a href="#tokensCategory">tokens</a></small>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="inputSettingsCategoryPerPage">{{__ "Categories"}} {{__ "Per Page"}} ({{__ "Admin"}})</label>
-                                <input name="settings[admin][category][perPage]" type="number" class="form-control" id="inputSettingsCategoryPerPage" placeholder="">
+                                <input name="settings[admin][category][perPage]" type="number" class="form-control" id="inputSettingsCategoryPerPage" placeholder="" value="{{settings.admin.category.perPage}}">
                             </div>
                         </div>
                     </div>

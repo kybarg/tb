@@ -42,16 +42,25 @@ var productSchema = mongoose.Schema({
     },
 });
 
+
+/**
+ * Pre-save middleware
+ * Generate slug if empty
+ *
+ * @param  {Function} next
+ */
 productSchema.pre('save', function (next) {
     if (!this.slug || this.slug.length === 0) {
         var self = this;
         mongoose.model('Vendor').findById(this.vendor, function (err, vendor) {
             if (!err && vendor) {
                 self.slug = 'product-' + slugify(self.name + '-' + vendor.name) + '-' + self._id;
+                next();
             }
         });
-    }
-   next();
+    } else {
+        next();
+    }    
 });
 
 
