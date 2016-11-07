@@ -42,6 +42,13 @@ var productSchema = mongoose.Schema({
     },
 });
 
+
+/**
+ * Pre-save middleware
+ * Generate slug if empty
+ *
+ * @param  {Function} next
+ */
 productSchema.pre('save', function (next) {
     if (!this.slug || this.slug.length === 0) {
         var self = this;

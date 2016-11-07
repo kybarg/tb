@@ -1,7 +1,7 @@
 {
   "public": {
     "product": {
-      "perPage": ""
+      "perPage": "50"
     }
   }
 }

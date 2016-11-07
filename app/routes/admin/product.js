@@ -42,9 +42,10 @@ module.exports = function (app, passport, exphbs) {
     });
 
     app.post('/admin/product/delete', isLoggedIn, function (req, res) {
-        var products = req.body.products;
-        var productsIds = [];
-        if (!products) {
+        var productsIds = req.body.products;
+
+        console.log('dsfgsdfg');
+        if (!productsIds) {
             res.redirect('/admin/product/index');
         }
 
@@ -61,7 +62,6 @@ module.exports = function (app, passport, exphbs) {
             res.redirect('/admin/product/index');
         });
     });
-
 
     // View from for addign new product
     app.get('/admin/product/create', isLoggedIn, function (req, res) {
@@ -87,8 +87,8 @@ module.exports = function (app, passport, exphbs) {
             if (err) throw err;
             console.log('Product added, id = ' + product._id);
             res.redirect('/admin/product/update/' + product._id);
-         });
         });
+    });
 
     // Display product with ID
     app.get('/admin/product/update/:id', isLoggedIn, function (req, res) {
@@ -110,7 +110,7 @@ module.exports = function (app, passport, exphbs) {
                 }, {
                     name: product.name
                 }]);
-            res.render('product/create', {
+                res.render('product/create', {
                     breadcrumbs: req.breadcrumbs(),
                     product: product,
                     pictUrl: pictUrl
@@ -120,19 +120,21 @@ module.exports = function (app, passport, exphbs) {
 
     // Update product with ID
     app.post('/admin/product/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        var product = req.body.product;
         if (req.file) {
-            product.pictureFile = req.file;
+            category.pictureFile = req.file;
         }
 
         // Get product by ID and update with new data
-        Product.findByIdAndUpdate(req.params.id, {
-            $set: product
-        }, {
-            new: true // return new model
-        }, function (err, product) {
+        Product.findById(req.params.id, function (err, product) {
             if (err) throw err;
-            res.redirect('/admin/product/update/' + product._id);
+
+            // Update category object with new values
+            product = Object.assign({}, product, req.body.category);
+
+            product.save(function (err) {
+                if (err) throw err;
+                res.redirect('/admin/product/update/' + req.params.id);
+            });
         });
     });
 
@@ -155,6 +157,8 @@ module.exports = function (app, passport, exphbs) {
         });
 
     });
+
+    
 }
 
 // route middleware to make sure

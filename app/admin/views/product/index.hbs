@@ -41,9 +41,9 @@
             <tr>
                 <th>
                     <label class="custom-control custom-checkbox m-0">
-                                <input name="products[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
-                                <span class="custom-control-indicator"></span>&nbsp;
-                            </label>
+                                    <input name="products[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
+                                    <span class="custom-control-indicator"></span>&nbsp;
+                                </label>
                 </th>
                 <th scope="row">{{@index}}</th>
                 <td>
@@ -69,7 +69,7 @@
             <li class="page-item{{#if disabled}} disabled{{/if}}">
                 <a class="page-link" href="/admin/product/index?page={{n}}" tabindex="-1" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">{{__ "Previous"}}</span>
+                    <span class="sr-only">{{../__ "Previous"}}</span>
                 </a>
             </li>
             {{/paginate}} {{#paginate pagination type="middle" limit="7" }}
@@ -78,7 +78,7 @@
             <li class="page-item{{#if disabled}} disabled{{/if}}">
                 <a class="page-link" href="/admin/product/index?page={{n}}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">{{__ "Next"}}</span>
+                    <span class="sr-only">{{../__ "Next"}}</span>
                 </a>
             </li>
             {{/paginate}}

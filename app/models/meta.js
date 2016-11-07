@@ -29,31 +29,51 @@ module.exports = function metaPlugin(schema, opts) {
     })
 
     schema.methods.generateMetaField = function (template) {
-        var replaceName = "/" + this.constructor.modelName.toLowerCase() + "./g";
-        template = template.replace(replaceName, "");
+        // var replaceName = "/" + this.constructor.modelName.toLowerCase() + "./g";
+        // template = template.replace(replaceName, "");
         var self = this;
-        var templateArr = template.split(" ");
-        var result = "";
-        var replaceWithField = function (field) {
-            if (field.search("]") != -1) {
-                var prop = field.replace(/([*\[\]])/g, "")
-                var props = prop.split(".")
-                if (self[props[0]]) {
-                    field = self[props[0]]
-                    props.forEach(function (item, i) {
-                        if (i != 0) {
-                            field = field[item];
-                        }
-                    })
+        // var templateArr = template.split(" ");
+        // var result = "";
+        // var replaceWithField = function (field) {
+        //     if (field.search("]") != -1) {
+        //         var prop = field.replace(/([*\[\]])/g, "")
+        //         var props = prop.split(".")
+        //         if (self[props[0]]) {
+        //             field = self[props[0]]
+        //             props.forEach(function (item, i) {
+        //                 if (i != 0) {
+        //                     field = field[item];
+        //                 }
+        //             })
+        //         }
+        //     }
+        //     result = result.concat([field + " "]);
+        // }
+
+        // templateArr.forEach(function (item) {
+        //     replaceWithField(item);
+        // })
+
+        var resultString = template.replace(/\[([\w|\.]+)\]/g, function (match, propName) {
+            if (propName.indexOf('.') !== -1) {
+                var paths = propName.split('.');
+                var current = self;
+                for (i = 0; i < paths.length; i++) {
+                    if (self[paths[i]] === undefined) {
+                        return undefined;
+                    } else {
+                        current = current[paths[i]];
+                    }
+                }
+                return current;
+            } else {
+                if (self[propName]) {
+                    return self[propName];
                 }
             }
-            result = result.concat([field + " "]);
-        }
+        });
 
-        templateArr.forEach(function (item) {
-            replaceWithField(item);
-        })
-        return result;
+        return resultString;
     }
 
     schema.methods.generateMeta = function (cb) {
@@ -77,7 +97,7 @@ module.exports = function metaPlugin(schema, opts) {
 
     schema.pre('save', function (next) {
         this.generateMeta(function (err) {
-            next()
+            next();
         });
-    })
+    });
 }
