@@ -55,10 +55,12 @@ productSchema.pre('save', function (next) {
         mongoose.model('Vendor').findById(this.vendor, function (err, vendor) {
             if (!err && vendor) {
                 self.slug = 'product-' + slugify(self.name + '-' + vendor.name) + '-' + self._id;
+                next();
             }
         });
-    }
-   next();
+    } else {
+        next();
+    }    
 });
 
 
