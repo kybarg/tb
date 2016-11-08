@@ -29,43 +29,26 @@ module.exports = function metaPlugin(schema, opts) {
 
     schema.methods.generateMetaField = function (template, callback) {
         var self = this;
-        var keys = [];
+        var resultString = template.replace(/\[([\w|\.]+)\]/g, function (match, propName) {
+            if (propName.indexOf('.') !== -1) {
+                var paths = propName.split('.');
 
-        template.replace(/\[([\w|\.]+)\]/g, function (match, propName) {
-            keys.push(propName);
-        })
-
-        for (i = 0; i < keys.length; i++) {
-            var key = keys[i].split(".")[0];
-            if (!(this[key] && this[key].hasOwnProperty('id'))) {
-                keys[i] = "";
-            } else {
-                keys[i] = key;
-            }
-        }
-
-        this.populate(keys, function (err, doc) {
-            var resultString = template.replace(/\[([\w|\.]+)\]/g, function (match, propName) {
-                if (propName.indexOf('.') !== -1) {
-                    var paths = propName.split('.');
-
-                    var current = self;
-                    for (i = 0; i < paths.length; i++) {
-                        if (self[paths[i]] === undefined) {
-                            return undefined;
-                        } else {
-                            current = current[paths[i]];
-                        }
-                    }
-                    return current;
-                } else {
-                    if (self[propName]) {
-                        return self[propName];
+                var current = self;
+                for (i = 0; i < paths.length; i++) {
+                    if (self[paths[i]] === undefined) {
+                        return undefined;
+                    } else {
+                        current = current[paths[i]];
                     }
                 }
-            });
-            callback(err, resultString);
+                return current;
+            } else {
+                if (self[propName]) {
+                    return self[propName];
+                }
+            }
         });
+        callback(err, resultString);
     }
 
     schema.methods.generateMeta = function (cb) {
