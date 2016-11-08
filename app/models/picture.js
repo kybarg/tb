@@ -15,12 +15,13 @@ module.exports = function picturePlugin(schema, opts) {
             fs.unlink(opts.pictPath + this.picture.name, function (err) {});
         }
         if (f.filename) {
-            this.picture.name = f.filename
+            this.picture.name = f.filename;
+            this.picure.color = ""; 
         }
     });
 
     schema.pre('save', function (next) {
-        if (!this.picture.name){
+        if (!this.picture.name || this.picture.name != ""){
             return next();
         }
         var self = this;

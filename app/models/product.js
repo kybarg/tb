@@ -6,7 +6,6 @@ var picturePlugin = require('../models/picture.js');
 var metaPlugin = require('../models/meta.js');
 var settingsMem = require('../config/admin_config.js').stores.memory;
 
-
 var productSchema = mongoose.Schema({
     name: String,
     description: String,
@@ -42,26 +41,20 @@ var productSchema = mongoose.Schema({
     },
 });
 
-
-/**
- * Pre-save middleware
- * Generate slug if empty
- *
- * @param  {Function} next
- */
 productSchema.pre('save', function (next) {
-    if (!this.slug || this.slug.length === 0) {
-        var self = this;
-        mongoose.model('Vendor').findById(this.vendor, function (err, vendor) {
-            if (!err && vendor) {
-                self.slug = 'product-' + slugify(self.name + '-' + vendor.name) + '-' + self._id;
-                next();
-            }
-        });
-    } else {
-        next();
-    }    
+    var self = this;
+    //populate for meta generation
+    this.populate(['category', 'vendor', 'shop'], function (err) {
+        if (!this.slug || this.slug.length === 0) {
+            var vendorName = (!self.vendor) ? "" : "-" + self.vendor.name;
+            self.slug = 'product-' + slugify(self.name + vendorName + '-' + self._id);
+            next();
+        } else {
+            next();
+        }
+    })
 });
+
 
 
 productSchema.plugin(mongoosePaginate);

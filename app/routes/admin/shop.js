@@ -14,9 +14,7 @@ var upload = multer({
 module.exports = function (app, passport, exphbs) {
 
     app.get('/admin/shop/index', isLoggedIn, function (req, res) {
-
         req.breadcrumbs(__('Shops'));
-
         // Using paginate for simplier pagination
         Shop.paginate({}, {
             page: req.query.page ? req.query.page : 1,
@@ -57,7 +55,6 @@ module.exports = function (app, passport, exphbs) {
 
     app.post('/admin/shop/create', isLoggedIn, upload.single('image'), function (req, res) {
         var shop = new Shop(req.body.shop);
-
         if (req.file) {
             shop.pictureFile = req.file;
         }
