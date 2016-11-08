@@ -46,7 +46,8 @@ productSchema.pre('save', function (next) {
     //populate for meta generation
     this.populate(['category', 'vendor', 'shop'], function (err) {
         if (!this.slug || this.slug.length === 0) {
-            self.slug = 'product-' + slugify(self.name + (vendor.name) ? "-" + vendor.name : "") + '-' + self._id;
+            var vendorName = (!self.vendor) ? "" : "-" + self.vendor.name;
+            self.slug = 'product-' + slugify(self.name + vendorName + '-' + self._id);
             next();
         } else {
             next();

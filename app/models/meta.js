@@ -48,7 +48,7 @@ module.exports = function metaPlugin(schema, opts) {
                 }
             }
         });
-        callback(err, resultString);
+        callback(null, resultString);
     }
 
     schema.methods.generateMeta = function (cb) {
