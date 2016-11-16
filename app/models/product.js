@@ -7,7 +7,10 @@ var metaPlugin = require('../models/meta.js');
 var settingsMem = require('../config/admin_config.js').stores.memory;
 
 var productSchema = mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     category: [{
         type: mongoose.Schema.Types.ObjectId,
