@@ -6,6 +6,8 @@ var pathConfig = require('../../config/path.js');
 var pictPath = pathConfig.vendorPictPath;
 var pictUrl = pathConfig.vendorPictUrl;
 var storage = require('../../lib/pictStorage.js')(pictPath);
+var errorLogger = require('log4js').getLogger('error_log');
+var dbLogger = require('log4js').getLogger('db_log');
 
 var upload = multer({
     storage: storage
@@ -37,7 +39,7 @@ module.exports = function (app, passport, exphbs) {
                     }
                 });
             } else {
-                throw err;
+                errorLogger.error(err.message);
             }
         });
     });
@@ -62,9 +64,20 @@ module.exports = function (app, passport, exphbs) {
         }
 
         vendor.save(function (err, vendor) {
-            if (err) throw err;
-            console.log('Vendor added, id = ' + vendor._id);
-            res.redirect('/admin/vendor/update/' + vendor._id);
+            if (err) {
+                var errors = {
+                    [err.errors.name.path + 'HasError']: true
+                }
+                res.render('vendor/create', {
+                    breadcrumbs: req.breadcrumbs(),
+                    vendor: req.body.vendor,
+                    errors: errors
+                });
+            } else {
+                dbLogger.info('Vendor added, id = ' + vendor._id);
+                res.redirect('/admin/vendor/update/' + vendor._id);
+            }
+
         });
     });
 
@@ -89,30 +102,43 @@ module.exports = function (app, passport, exphbs) {
 
     // Update vendor with ID
     app.post('/admin/vendor/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        var vendor = req.body.vendor;
-        if (req.file) {
-            vendor.pictureFile = req.file;
-        }
+        Vendor.findById(req.params.id, function (err, vendor) {
+            if (err) {
+                res.redirect('/admin/vendor/update/' + req.params.id);
+                return errorLogger.error(err.message);
+            }
 
-        Vendor.findByIdAndUpdate(req.params.id, {
-            $set: vendor
-        }, {
-            new: true // return new model
-        }, function (err, vendor) {
-            if (err) throw err;
-            res.redirect('/admin/vendor/update/' + vendor._id);
+            // Update vendor object with new values
+            if (req.file) {
+                vendor.pictureFile = req.file;
+            }
+            vendor = Object.assign(vendor, req.body.vendor);
+
+            vendor.save(function (err) {
+                if (err) {
+                    var errors = {
+                        [err.errors.name.path + 'HasError']: true
+                    }
+                    res.render('vendor/update/' + req.params.id, {
+                        breadcrumbs: req.breadcrumbs(),
+                        vendor: req.body.vendor,
+                        errors: errors
+                    });
+                } else {
+                    dbLogger.info('Vendor updated, id = ' + vendor._id);
+                    res.redirect('/admin/vendor/update/' + req.params.id);
+                }
+            });
         });
     });
 
     app.get('/admin/vendor/delete/:id', isLoggedIn, function (req, res) {
-        Vendor.findOne({
-            _id: mongoose.Types.ObjectId(req.params.id)
-        }, function (err, vendor) {
-            if (err) throw err;
-            vendor.remove(function (err) {
-                if (err) throw err;
-                res.redirect('/admin/vendor/index');
-            });
+        Vendor.findById(req.params.id).exec(function (err, vendor) {
+            if (vendor) {
+                vendor.remove();
+                dbLogger.info('Vendor removed, id = ' + vendor._id);
+            }
+            res.redirect('/admin/vendor/index');
         });
     });
 
@@ -125,7 +151,7 @@ module.exports = function (app, passport, exphbs) {
             })
             .limit(parseInt(req.body.limit))
             .exec(function (err, docs) {
-                if (err) throw err;
+                if (err) errorLogger.error(err.message);
                 res.send(docs);
             });
     });

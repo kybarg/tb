@@ -24,12 +24,17 @@ var i18n = require('i18n');
 // var i18nHelper = require('handlebars-helper-i18n');
 // var multer = require('multer');
 // var upload = multer();
+var log4js = require('log4js');
+
+
 
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
+log4js.configure('./config/logger.json');
 mongoose.Promise = global.Promise;
 mongoose.connect(configDB.url); // connect to our database
+
 
 // Set up localization
 i18n.configure({

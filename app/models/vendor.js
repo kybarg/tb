@@ -6,7 +6,10 @@ var picturePlugin = require('../models/picture.js');
 var metaPlugin = require('../models/meta.js');
 
 var vendorSchema = mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     synonyms: [String],
     slug: String,

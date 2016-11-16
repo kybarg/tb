@@ -5,13 +5,15 @@ var Category = require('../../models/category');
 var pictPath = require('../../config/path.js').categoryPictPath;
 var storage = require('../../lib/pictStorage.js')(pictPath);
 var settingsMem = require('../../config/admin_config.js').stores.memory;
+var errorLogger = require('log4js').getLogger('error_log');
+var dbLogger = require('log4js').getLogger('db_log');
 
 var upload = multer({
     storage: storage
 });
 
 module.exports = function (app, passport, exphbs) {
-    
+
     app.get('/admin/category/index', isLoggedIn, function (req, res) {
         req.breadcrumbs(__('Categories'));
 
@@ -36,7 +38,7 @@ module.exports = function (app, passport, exphbs) {
                     }
                 });
             } else {
-                throw err;
+                errorLogger.error(err.message);
             }
         });
 
@@ -54,7 +56,10 @@ module.exports = function (app, passport, exphbs) {
                 $in: categoriesIds
             }
         }, function (err, categories) {
-            if (err) throw err;
+            if (err) {
+                res.redirect('/admin/category/index');
+                return errorLogger.error(err.message);
+            }
             categories.forEach(function (category) {
                 category.remove();
             });
@@ -90,10 +95,6 @@ module.exports = function (app, passport, exphbs) {
 
         category.save(function (err, category) {
             if (err) {
-                // var c = new Category(req.body.category)
-
-                // res.send(JSON.stringify(err, null, " "));
-
                 var errors = {
                     [err.errors.name.path + 'HasError']: true
                 }
@@ -104,8 +105,10 @@ module.exports = function (app, passport, exphbs) {
                     errors: errors
                 });
 
-            } else
+            } else {
+                dbLogger.info('Category added, id = ' + category._id);
                 res.redirect('/admin/category/update/' + category._id);
+            }
         });
     });
 
@@ -130,36 +133,44 @@ module.exports = function (app, passport, exphbs) {
 
     // Update category with ID
     app.post('/admin/category/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        if (req.file) {
-            category.pictureFile = req.file;
-        }
-
         Category.findById(req.params.id, function (err, category) {
-            if (err) throw err;
+            if (err) {
+                res.redirect('/admin/category/update/' + req.params.id);
+                return errorLogger.error(err.message);
+            }
 
             // Update category object with new values
+            if (req.file) {
+                category.pictureFile = req.file;
+            }
+
             category = Object.assign({}, category, req.body.category);
 
             category.save(function (err) {
-                if (err) throw err;
-                res.redirect('/admin/category/update/' + req.params.id);
+                if (err) {
+                    var errors = {
+                        [err.errors.name.path + 'HasError']: true
+                    }
+                    res.render('category/update/' + req.params.id, {
+                        breadcrumbs: req.breadcrumbs(),
+                        category: req.body.category,
+                        errors: errors
+                    });
+                } else
+                    res.redirect('/admin/category/update/' + req.params.id);
             });
         });
 
     });
 
     app.get('/admin/category/delete/:id', isLoggedIn, function (req, res) {
-
-        Category.findOne({
-            _id: mongoose.Types.ObjectId(req.params.id)
-        }, function (err, category) {
-            if (err) throw err;
-            category.remove(function (err) {
-                if (err) throw err;
-
-                res.redirect('/admin/category/index');
-            });
-        });
+        Category.findById(req.params.id).exec(function (err, category) {
+            if (category) {
+                category.remove();
+                dbLogger.info('category removed, id = ' + category._id);
+            }
+            res.redirect('/admin/category/index');
+        })
     });
 
     app.post('/admin/category/search', function (req, res) {
@@ -173,7 +184,7 @@ module.exports = function (app, passport, exphbs) {
             .populate('parent')
             .limit(parseInt(req.body.limit))
             .exec(function (err, docs) {
-                if (err) throw err;
+                if (err) errorLogger.error(err.message);
                 res.send(docs);
             });
     });

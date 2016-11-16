@@ -6,6 +6,8 @@ var pictPath = require('../../config/path.js').productPictPath;
 var pictUrl = require('../../config/path.js').productPictUrl;
 var storage = require('../../lib/pictStorage.js')(pictPath);
 var settingsMem = require('../../config/admin_config.js').stores.memory;
+var errorLogger = require('log4js').getLogger('error_log');
+var dbLogger = require('log4js').getLogger('db_log');
 
 
 var upload = multer({
@@ -36,15 +38,13 @@ module.exports = function (app, passport, exphbs) {
                     }
                 });
             } else {
-                throw err;
+                errorLogger.error(err.message);
             }
         });
     });
 
     app.post('/admin/product/delete', isLoggedIn, function (req, res) {
         var productsIds = req.body.products;
-
-        console.log('dsfgsdfg');
         if (!productsIds) {
             res.redirect('/admin/product/index');
         }
@@ -55,7 +55,11 @@ module.exports = function (app, passport, exphbs) {
                 $in: productsIds
             }
         }, function (err, products) {
-            if (err) throw err;
+            if (err) {
+                res.redirect('/admin/product/index');
+                return errorLogger.error(err.message);
+            }
+
             products.forEach(function (product) {
                 product.remove();
             });
@@ -84,9 +88,20 @@ module.exports = function (app, passport, exphbs) {
             product.pictureFile = req.file;
         };
         product.save(function (err, product) {
-            if (err) throw err;
-            console.log('Product added, id = ' + product._id);
-            res.redirect('/admin/product/update/' + product._id);
+            if (err) {
+                var errors = {
+                    [err.errors.name.path + 'HasError']: true
+                }
+
+                res.render('product/create', {
+                    breadcrumbs: req.breadcrumbs(),
+                    product: req.body.product,
+                    errors: errors
+                });
+            } else {
+                dbLogger.info('Product added, id = ' + product._id);
+                res.redirect('/admin/product/update/' + product._id);
+            }
         });
     });
 
@@ -99,11 +114,6 @@ module.exports = function (app, passport, exphbs) {
             .populate('vendor')
             .populate('shop')
             .exec(function (err, product) {
-                // product.getVend(function(err, val){
-                //     console.log(val);
-                // });
-
-                // console.log(product.vend);
                 req.breadcrumbs([{
                     name: __('Products'),
                     url: '/admin/product/index'
@@ -120,45 +130,46 @@ module.exports = function (app, passport, exphbs) {
 
     // Update product with ID
     app.post('/admin/product/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        if (req.file) {
-            category.pictureFile = req.file;
-        }
-
         // Get product by ID and update with new data
         Product.findById(req.params.id, function (err, product) {
-            if (err) throw err;
+            if (err) {
+                res.redirect('/admin/product/update/' + req.params.id);
+                return errorLogger.error(err.message);
+            }
 
-            // Update category object with new values
-            product = Object.assign({}, product, req.body.category);
+            // Update product object with new values
+            if (req.file) {
+                product.pictureFile = req.file;
+            }
+            product = Object.assign({}, product, req.body.product);
 
             product.save(function (err) {
-                if (err) throw err;
-                res.redirect('/admin/product/update/' + req.params.id);
+                if (err) {
+                    var errors = {
+                        [err.errors.name.path + 'HasError']: true
+                    }
+                    res.render('product/update/' + req.params.id, {
+                        breadcrumbs: req.breadcrumbs(),
+                        product: req.body.product,
+                        errors: errors
+                    });
+                } else {
+                    res.redirect('/admin/product/update/' + req.params.id);
+                }
             });
         });
     });
 
     // Remove product with ID
     app.get('/admin/product/delete/:id', isLoggedIn, function (req, res) {
-
-        // Need to read prodcut to be able to delete picture in the future
-        Product.findOne({
-            _id: req.params.id
-        }, function (err, product) {
-            if (err) throw err;
-
-            product.remove(function (err) {
-                if (err) throw err;
-
-                // Redirect to all products list
-                res.redirect('/admin/product/index');
-            });
-
+        Product.findById(req.params.id).exec(function (err, product) {
+            if (product) {
+                product.remove();
+                dbLogger.info('product removed, id = ' + product._id);
+            }
+            res.redirect('/admin/product/index');
         });
-
     });
-
-    
 }
 
 // route middleware to make sure

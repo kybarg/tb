@@ -6,6 +6,8 @@ var pathConfig = require('../../config/path.js');
 var pictPath = pathConfig.shopPictPath;
 var pictUrl = pathConfig.shopPictUrl;
 var storage = require('../../lib/pictStorage.js')(pictPath);
+var errorLogger = require('log4js').getLogger('error_log');
+var dbLogger = require('log4js').getLogger('db_log');
 
 var upload = multer({
     storage: storage
@@ -35,7 +37,7 @@ module.exports = function (app, passport, exphbs) {
                     }
                 });
             } else {
-                throw err;
+                errorLogger.error(err.message);
             }
         });
     });
@@ -60,9 +62,20 @@ module.exports = function (app, passport, exphbs) {
         }
 
         shop.save(function (err, shop) {
-            if (err) throw err;
-            console.log('Shop added, id = ' + shop._id);
-            res.redirect('/admin/shop/update/' + shop._id);
+            if (err) {
+                var errors = {
+                    [err.errors.name.path + 'HasError']: true
+                }
+                res.render('shop/create', {
+                    breadcrumbs: req.breadcrumbs(),
+                    shop: req.body.shop,
+                    errors: errors
+                });
+            } else {
+                dbLogger.info('Shop added, id = ' + shop._id);
+                res.redirect('/admin/shop/update/' + shop._id);
+            }
+
         });
     });
 
@@ -87,32 +100,44 @@ module.exports = function (app, passport, exphbs) {
 
     // Update shop with ID
     app.post('/admin/shop/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
-        if (req.file) {
-            req.body.shop.pictureFile = req.file;
-        }
-
         Shop.findById(req.params.id, function (err, shop) {
-            if (err) throw err;
+            if (err) {
+                res.redirect('/admin/shop/update/' + req.params.id);
+                return errorLogger.error(err.message);
+            }
 
-            // Update category object with new values
+            // Update shop object with new values
+            if (req.file) {
+                shop.pictureFile = req.file;
+            }
             shop = Object.assign(shop, req.body.shop);
 
             shop.save(function (err) {
-                if (err) throw err;
-                res.redirect('/admin/shop/update/' + req.params.id);
+                if (err) {
+                    var errors = {
+                        [err.errors.name.path + 'HasError']: true
+                    }
+                    res.render('shop/update/' + req.params.id, {
+                        breadcrumbs: req.breadcrumbs(),
+                        shop: req.body.shop,
+                        errors: errors
+                    });
+                } else {
+                    dbLogger.info('Shop updated, id = ' + shop._id);
+                    res.redirect('/admin/shop/update/' + req.params.id);
+                }
+                
             });
         });
     });
 
     app.get('/admin/shop/delete/:id', isLoggedIn, function (req, res) {
-        Shop.findOne({
-            _id: mongoose.Types.ObjectId(req.params.id)
-        }, function (err, shop) {
-            if (err) throw err;
-            shop.remove(function (err) {
-                if (err) throw err;
-                res.redirect('/admin/shop/index');
-            });
+        Shop.findById(req.params.id).exec(function (err, shop) {
+            if (shop) {
+                shop.remove();
+                dbLogger.info('Shop removed, id = ' + shop._id);
+            }
+            res.redirect('/admin/shop/index');
         });
     });
 
@@ -125,7 +150,7 @@ module.exports = function (app, passport, exphbs) {
             })
             .limit(parseInt(req.body.limit))
             .exec(function (err, docs) {
-                if (err) throw err;
+                if (err) errorLogger.error(err.message);
                 res.send(docs);
             });
     });
