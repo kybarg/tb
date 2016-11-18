@@ -7,7 +7,10 @@ var metaPlugin = require('../models/meta.js');
 
 
 var shopSchema = mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     feedUrl: String,
     slug: String

@@ -16,12 +16,12 @@ module.exports = function picturePlugin(schema, opts) {
         }
         if (f.filename) {
             this.picture.name = f.filename;
-            this.picure.color = ""; 
+            this.picture.color = null; 
         }
     });
 
     schema.pre('save', function (next) {
-        if (!this.picture.name || this.picture.name != ""){
+        if (!this.picture.name || this.picture.color != null){
             return next();
         }
         var self = this;
