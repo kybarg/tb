@@ -96,6 +96,7 @@ require('./routes/admin/category.js')(app, passport, exphbs);
 require('./routes/admin/vendor.js')(app, passport, exphbs);
 require('./routes/admin/settings.js')(app, passport, exphbs);
 require('./routes/admin/shop.js')(app, passport, exphbs);
+require('./routes/admin/import1.js')(app, passport, exphbs);
 
 // Defines folders with static files
 app.use('/admin', express.static('admin'));

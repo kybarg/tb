@@ -81,12 +81,11 @@
                     <div class="form-group">
                         <label for="inputProductColor">{{__ "Color"}}</label>
                         <select name="product[color][]" class="form-control" id="inputProductColor" multiple="multiple">
-                        <option value="Белый">Белый</option>
-                        <option value="Розовый">Розовый</option>
-                        <option value="Синий">Синий</option>
-                        <option value="Красный">Красный</option>
-                        <option value="Черный">Черный</option>
-                    </select>
+                            {{#if product.color}}
+                                {{#each product.color}}
+                                {{/each}}
+                            {{/if}}
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
