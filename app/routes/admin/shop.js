@@ -8,6 +8,7 @@ var pictUrl = pathConfig.shopPictUrl;
 var storage = require('../../lib/pictStorage.js')(pictPath);
 var errorLogger = require('log4js').getLogger('error_log');
 var dbLogger = require('log4js').getLogger('db_log');
+var route = require('../../models/route');
 
 var upload = multer({
     storage: storage
