@@ -110,6 +110,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/admin/assets/js/jquery.min.js"></script>
+    <script src="/admin/assets/js/jquery-ui.min.js"></script>
     <!-- <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script> -->
     <script src="/admin/assets/js/tether.min.js"></script>
     <script src="/admin/assets/js/bootstrap.min.js"></script>
@@ -273,6 +274,22 @@
 
         });
     </script>
+
+    
+<script>
+
+    $( "#inputProductNameVariants .btn" ).draggable({
+        revert: true
+    });
+    $( "#inputProductNameWhiteslist, #inputProductNameBlacklist" ).droppable({
+        accept: "#inputProductNameVariants .btn",
+        drop: function( event, ui ) {
+            var $target = $(event.target);
+            var $item = ui.draggable;
+            $item.appendTo( $target );
+        }
+    });
+</script>
 </body>
 
 </html>

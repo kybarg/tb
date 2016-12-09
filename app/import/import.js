@@ -200,7 +200,7 @@ xml.on('endElement: offer', function (item) {
     }
 
 
-
+    // Add product
     if (item.$.deleted === undefined || Boolean(item.$.deleted) == false) {
         // console.log(item);
 
