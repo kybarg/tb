@@ -1,1 +1,1 @@
-{"name":{"whitelist":[],"blacklist":["vedro"]},"param":[{"name":"Цвет","value":"Красный","match":["темно-красный"],"regEx":false}]}
+{"product":{"name":{"whitelist":[],"blacklist":["vedro"]},"param":[{"name":"Цвет","prop":"color","value":"Красный","match":["темно-красный"],"matchEx":["красн"]}]}}

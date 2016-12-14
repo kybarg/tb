@@ -11,42 +11,55 @@ var storage = require('../lib/pictStorage.js')(pictPath);
 
 
 function RuleFile(file) {
-    this.product = {
-        name: {
-            whitelist: [],
-            blacklist: []
-        }
-    }
     this.file = file;
     try {
-        this.product = JSON.parse(fs.readFileSync(file));
+        this.rules = JSON.parse(fs.readFileSync(file));
+
     } catch (e) {
 
     }
 }
 
-RuleFile.prototype.addRule = function (path, rule) {
+RuleFile.prototype.save = function () {
+    fs.writeFileSync(this.file, JSON.stringify(this.rules));
+}
+
+RuleFile.prototype.addRule = function (path, rule, regEx) {
+    regEx = Boolean(regEx);
     var p = path.split(".");
-    var field = this;
+    var field = this.rules;
     var t;
     for (var i = 0; i < p.length; i++) {
-        t = field[p[i]];
+        p[i] = p[i].split(":");
+        t = field[p[i][0]];
         if (!t) {
             if (Array.isArray(field)) {
                 return;
             } else if (i != p.length - 1) {
-                field[p[i]] = {};
-                field = field[p[i]];
+                field[p[i][0]] = {};
+                field = field[p[i][0]];
             } else {
-                field[p[i]] = [];
-                field = field[p[i]];
+                field[p[i][0]] = [];
+                field = field[p[i][0]];
             }
         } else {
             field = t;
         }
     }
-    field.push(rule);
-    fs.writeFileSync(this.file, JSON.stringify(this.product));
+    if (p[i - 1].length > 1 && Array.isArray(field)) {
+        p = p[i - 1];
+        for (var i = 0; i < field.length; i++) {
+            if (field[i][p[1]] == p[2]) {
+                if (regEx) {
+                    field[i].matchEx.push(rule);
+                } else {
+                    field[i].match.push(rule);
+                }
+                break;
+            }
+        }
+    }
+    this.save();
 }
 
 RuleFile.prototype.removeRule = function (rule) {
@@ -115,13 +128,13 @@ FeedImport.prototype.importItem = function (item) {
     var params = item.param;
     var picts = item.picture;
     var param = item.name;
-    for (var i = 0; i < params.length; i++){
-        if (Rules[params[i]]){
+    for (var i = 0; i < params.length; i++) {
+        if (Rules[params[i]]) {
 
         }
     }
 
-   //storage.donloadFile()
+    //storage.donloadFile()
 }
 
 
@@ -143,7 +156,8 @@ FeedImport.prototype.startImport = function () {
                 return self.emit('itemImportBlocked', item);
             }
         }
-        self.emit('itemImportNeedUser', item);  self.importItem(item);
+        self.emit('itemImportNeedUser', item);
+        self.importItem(item);
     });
 }
 

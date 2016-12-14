@@ -16,8 +16,9 @@ module.exports = function (app, passport, exphbs) {
         //var feed = new FeedImport(req.body.shop.feedUrl);
         var feed = new FeedImport('http://export.admitad.com/ru/webmaster/websites/307243/products/export_adv_products/?feed_id=4102&code=43ade2cde4&last_import=&user=jacks&format=xml&limit=100');
       //  feedList.set(req.body.shop.id, feed);
-     //   importRules.addRule('product.param', {name: 'Цвет', value: 'Красный', match: ['темно-красный'], regEx : false})
-        
+     //   importRules.addRule('product.param', {name: 'Цвет',prop:'color', value: 'Красный', match: ['темно-красный']})
+      //   importRules.addRule('product.param:value:Красный','темно-темный');
+          importRules.addRule('product.param:value:Красный','красн', true);
         feed.on('download', function(stream){
             feed.startImport();
         })
