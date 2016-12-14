@@ -13,9 +13,11 @@ module.exports = function (app, passport, exphbs) {
     })
 
     app.get('/admin/import/start', isLoggedIn, function (req, res) {
-        var feed = new FeedImport(req.body.shop.feedUrl);
-        //var feed = new FeedImport('http://export.admitad.com/ru/webmaster/websites/307243/products/export_adv_products/?feed_id=4102&code=43ade2cde4&last_import=&user=jacks&format=xml&limit=100');
-        feedList.set(req.body.shop.id, feed);
+        //var feed = new FeedImport(req.body.shop.feedUrl);
+        var feed = new FeedImport('http://export.admitad.com/ru/webmaster/websites/307243/products/export_adv_products/?feed_id=4102&code=43ade2cde4&last_import=&user=jacks&format=xml&limit=100');
+      //  feedList.set(req.body.shop.id, feed);
+     //   importRules.addRule('product.param', {name: 'Цвет', value: 'Красный', match: ['темно-красный'], regEx : false})
+        
         feed.on('download', function(stream){
             feed.startImport();
         })

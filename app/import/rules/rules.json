@@ -1,1 +1,1 @@
-{"name":{"whitelist":[],"blacklist":["vedro"]}}
+{"name":{"whitelist":[],"blacklist":["vedro"]},"param":[{"name":"Цвет","value":"Красный","match":["темно-красный"],"regEx":false}]}
