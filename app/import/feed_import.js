@@ -9,7 +9,6 @@ var Product = require('../models/product');
 var pictPath = require('./../config/path.js').productPictPath;
 var storage = require('../lib/pictStorage.js')(pictPath);
 
-
 function RuleFile(file) {
     this.file = file;
     try {
@@ -134,7 +133,9 @@ FeedImport.prototype.importItem = function (item) {
         }
     }
 
-    //storage.donloadFile()
+    //storage.donloadFile(picture, function(err, file){
+
+    //})
 }
 
 

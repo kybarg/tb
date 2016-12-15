@@ -29,14 +29,14 @@ function PictStorage(pictPath) {
 
 PictStorage.prototype.donloadFile = function (url, callback) {
   var dest = this.pictPath;
-  var request = http.get(this.source.url, function (response) {
+  var request = http.get(url, function (response) {
     if (response.statusCode === 200) {
-      var fileName = crypto.pseudoRandomBytes(16);
+      var fileName = crypto.pseudoRandomBytes(16).toString('hex') + Date.now().toString() + path.extname(url);
       var file = fs.createWriteStream(path.join(dest, fileName));
       file.on('finish', function () {
         callback(null, {
           destination: dest,
-          filename: filename
+          filename: fileName
         });
       })
       file.on('error', function () {
