@@ -45,12 +45,12 @@
             <div class="form-group">
                 <label>{{__ "Picture"}}</label> {{#if category.picture}}
                 <div class="clearfix m-y-1">
-                    <img src="/public/uploads/{{category.picture}}" style="max-height: 320px;" />
+                    <img src="/public/uploads/pictures/category/{{category.picture.name}}" style="max-height: 320px;" />
                 </div>
                 {{else}}
                 <div class="clearfix"></div>
                 {{/if}}
-                <input type="hidden" name="category[picture]" value="{{category.picture}}" />
+                {{!--<input type="hidden" name="category[picture]" value="{{category.picture}}" />--}}
                 <label class="custom-file">
                     <input name="image" type="file" id="image" class="custom-file-input">
                     <span class="custom-file-control"></span>
