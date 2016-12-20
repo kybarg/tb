@@ -5,86 +5,25 @@ var events = require('events');
 var util = require('util');
 var contentDisposition = require('content-disposition');
 var XmlStream = require('xml-stream');
+var ruleList = require('../import/import_rules');
 var Product = require('../models/product');
 var pictPath = require('./../config/path.js').productPictPath;
 var storage = require('../lib/pictStorage.js')(pictPath);
 
-function RuleFile(file) {
-    this.file = file;
-    try {
-        this.rules = JSON.parse(fs.readFileSync(file));
-
-    } catch (e) {
-
-    }
-}
-
-RuleFile.prototype.save = function () {
-    fs.writeFileSync(this.file, JSON.stringify(this.rules));
-}
-
-RuleFile.prototype.addRule = function (path, rule, regEx) {
-    regEx = Boolean(regEx);
-    var p = path.split(".");
-    var field = this.rules;
-    var t;
-    for (var i = 0; i < p.length; i++) {
-        p[i] = p[i].split(":");
-        t = field[p[i][0]];
-        if (!t) {
-            if (Array.isArray(field)) {
-                return;
-            } else if (i != p.length - 1) {
-                field[p[i][0]] = {};
-                field = field[p[i][0]];
-            } else {
-                field[p[i][0]] = [];
-                field = field[p[i][0]];
-            }
-        } else {
-            field = t;
-        }
-    }
-    if (p[i - 1].length > 1 && Array.isArray(field)) {
-        p = p[i - 1];
-        for (var i = 0; i < field.length; i++) {
-            if (field[i][p[1]] == p[2]) {
-                if (regEx) {
-                    field[i].matchEx.push(rule);
-                } else {
-                    field[i].match.push(rule);
-                }
-                break;
-            }
-        }
-    }
-    this.save();
-}
-
-RuleFile.prototype.removeRule = function (rule) {
-    //var index = this.rules.indexOf(rule);
-    //if (index != -1) {
-    //  this.rules.splice(index, 1);
-    //  fs.writeFileSync(this.file, JSON.stringify(this.rules));
-    // }
-}
-
-//var list = new RuleFile('import/rules/blacklist.json');
-//list.addRule('product.name.greenlist.list.listoflists', 'dfghjkghsgft67656jk');
-
-var Rules = new RuleFile('import/rules/rules.json');
-
-
-
-
 function FeedImport(source) {
     if (typeof source === 'string') {
         this.source = {
-            url: source
+            url: source,
+            lastUpdate: 0
         }
     } else {
         this.source = source;
     }
+    this.importStats = {
+        new: 0,
+        updated: 0,
+        deleted: 0
+    };
 }
 
 util.inherits(FeedImport, events.EventEmitter);
@@ -124,18 +63,48 @@ FeedImport.prototype.downloadFeed = function (err, callback) {
 }
 
 FeedImport.prototype.importItem = function (item) {
+    this.xmlStream.pause();
+    var self = this;
     var params = item.param;
     var picts = item.picture;
-    var param = item.name;
+    var product = new Product();
+    var rule;
+    var value;
+    product.name = item.name;
     for (var i = 0; i < params.length; i++) {
-        if (Rules[params[i]]) {
-
+        rule = ruleList.getRule(params[i].$.name)
+        if (rule) {
+            value = ruleList.getValue(rule, params[i].$text);
+            if (value) {
+                if (Array.isArray(product[rule.prop])) {
+                    product[rule.prop].push(value);
+                } else {
+                    product[rule.prop] = value;
+                }
+            }
         }
     }
-
-    //storage.donloadFile(picture, function(err, file){
-
-    //})
+    product.description = item.description;
+    product.price = parseInt(item.price);
+    product.oldPrice = item.oldprice !== undefined ? parseInt(item.oldprice) : null;
+    product.url = item.url;
+    product.shop = this.source.id !== undefined ? this.source : null;
+    if (Array.isArray(picts)){
+        var prod = product;
+        async.eachSeries(picts, function(picture, done){
+            storage.downloadFile(picture, function(err, file){
+                if (!err){
+                    product.addPicture(file);
+                } else{
+                    console.log(err.message)
+                }
+                done();
+            })
+        }, function(){
+            product.save();
+            self.xmlStream.resume();
+        })
+    }
 }
 
 
@@ -147,29 +116,21 @@ FeedImport.prototype.startImport = function () {
     this.xmlStream.on('endElement: offer', function (item) {
         var n = item.name.toLowerCase().split(" ");
         for (var i = 0; i < n.length; i++) {
-            if (Rules.product.name.whitelist.indexOf(n[i]) != -1) {
+            if (ruleList.rules.product.name.whitelist.indexOf(n[i]) != -1) {
                 self.importItem(item);
-                return self.emit('itemImportDone', item);
+                //  self.emit('itemImportDone', item);
             }
         }
         for (var i = 0; i < n.length; i++) {
-            if (Rules.product.name.blacklist.indexOf(n[i]) != -1) {
-                return self.emit('itemImportBlocked', item);
+            if (ruleList.rules.product.name.blacklist.indexOf(n[i]) != -1) {
+                //  return self.emit('itemImportBlocked', item);
             }
         }
-        self.emit('itemImportNeedUser', item);
-        self.importItem(item);
+         self.emit('itemImportNeedUser', item);
+       self.importItem(item);
+     //  this.xmlStream.pause();
+       
     });
 }
 
-FeedImport.importMany = function (feeds, callback) {
-    var tasks = feeds.map(function (feed) {
-        return function (callback) {
-            new FeedImport(feed).import(null, callback)
-        }
-    })
-    async.series(tasks);
-}
-
 module.exports = FeedImport;
-module.exports.Rules = Rules;

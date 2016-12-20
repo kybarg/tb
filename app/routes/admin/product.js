@@ -15,8 +15,7 @@ var upload = multer({
 });
 
 module.exports = function (app, passport, exphbs) {
-    app.get('/admin/product/index', isLoggedIn, function (req, res) {
-
+    app.get('/admin/product/index', isLoggedIn, function (req, res) {    
         req.breadcrumbs(__('Products'));
         Product.paginate({}, {
             page: req.query.page ? req.query.page : 1,

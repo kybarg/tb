@@ -27,7 +27,7 @@ function PictStorage(pictPath) {
   }
 }
 
-PictStorage.prototype.donloadFile = function (url, callback) {
+PictStorage.prototype.downloadFile = function (url, callback) {
   var dest = this.pictPath;
   var request = http.get(url, function (response) {
     if (response.statusCode === 200) {
