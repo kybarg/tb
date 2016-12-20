@@ -1,0 +1,17 @@
+{
+    "product": {
+        "name": {
+            "whitelist": [],
+            "blacklist": ["vedro"]
+        },
+        "param": [{
+            "name": "Цвет",
+            "prop": "color",
+            "compare": [{
+                "value": "Красный",
+                "match": ["темно-красный"],
+                "matchEx": ["красн"]
+            }]
+        }]
+    }
+}

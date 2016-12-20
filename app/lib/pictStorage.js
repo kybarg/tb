@@ -1,6 +1,7 @@
-var fs = require('fs')
-var path = require('path')
-var crypto = require('crypto')
+var fs = require('fs');
+var path = require('path');
+var crypto = require('crypto');
+var http = require('http');
 
 function getFilename(req, file, cb) {
   crypto.pseudoRandomBytes(16, function (err, raw) {
@@ -13,7 +14,7 @@ function getDestination(req, file, cb) {
   cb(null, this.pictPath)
 };
 
-function pictStorage(pictPath) {
+function PictStorage(pictPath) {
   this.pictPath = pictPath;
   this.getFilename = getFilename;
   this.getDestination = getDestination;
@@ -26,7 +27,32 @@ function pictStorage(pictPath) {
   }
 }
 
-pictStorage.prototype._handleFile = function _handleFile(req, file, cb) {
+PictStorage.prototype.downloadFile = function (url, callback) {
+  var dest = this.pictPath;
+  var request = http.get(url, function (response) {
+    if (response.statusCode === 200) {
+      var fileName = crypto.pseudoRandomBytes(16).toString('hex') + Date.now().toString() + path.extname(url);
+      var file = fs.createWriteStream(path.join(dest, fileName));
+      file.on('finish', function () {
+        callback(null, {
+          destination: dest,
+          filename: fileName
+        });
+      })
+      file.on('error', function () {
+        fs.unlink(fileName);
+        callback(new Error('picture download failed'), null);
+      })
+      response.pipe(file);
+    } else {
+      callback(new Error(response.statusMessage), null);
+    }
+  })
+}
+
+
+
+PictStorage.prototype._handleFile = function _handleFile(req, file, cb) {
   var self = this
 
   self.getDestination(req, file, function (err, destination) {
@@ -51,16 +77,14 @@ pictStorage.prototype._handleFile = function _handleFile(req, file, cb) {
   })
 }
 
-pictStorage.prototype._removeFile = function _removeFile(req, file, cb) {
+PictStorage.prototype._removeFile = function _removeFile(req, file, cb) {
   var path = file.path
-
   delete file.destination
   delete file.filename
   delete file.path
-
   fs.unlink(path, cb)
 }
 
 module.exports = function (pictPath) {
-  return new pictStorage(pictPath)
+  return new PictStorage(pictPath)
 }

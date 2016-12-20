@@ -11,6 +11,7 @@ var shopSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    lastUpdate: Date, 
     description: String,
     feedUrl: String,
     slug: String
