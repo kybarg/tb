@@ -1,41 +1,71 @@
 var mongoose = require('mongoose');
 var fs = require('fs');
 var gm = require('gm');
+var async = require('async');
 
 module.exports = function picturePlugin(schema, opts) {
     schema.add({
-        picture: {
+        picture: [{
             name: String,
             color: String
-        }
+        }]
     })
 
+    schema.methods.addPicture = function (file) {
+        if (file.filename) {
+            this.picture.push({
+                name: file.filename,
+                color: null
+            })
+        }
+    }
+
+    schema.methods.removePicture = function (file) {
+        var target = file.filename ? file.filename : file;
+        for (var i = 0; i < this.picture.length; i++) {
+            if (this.picture[i].name == target) {
+                this.picture.splice(i, 1);
+                break;
+            }
+        }
+    }
+
     schema.virtual('pictureFile').set(function (f) {
-        if (this.picture.name) {
-            fs.unlink(opts.pictPath + this.picture.name, function (err) {});
+        if (this.picture[0].name) {
+            fs.unlink(opts.pictPath + this.picture[0].name, function (err) {});
         }
         if (f.filename) {
-            this.picture.name = f.filename;
-            this.picture.color = null; 
+            this.picture[0] = {
+                name: f.filename,
+                color: null
+            };
         }
     });
 
     schema.pre('save', function (next) {
-        if (!this.picture.name || this.picture.color != null){
-            return next();
+        var savePict = function (pict, callback) {
+            if (!pict.name || pict.color != null) {
+                return callback();
+            }
+            gm(opts.pictPath + pict.name)
+                .resize(250, 250)
+                .colors()
+                .toBuffer('RGB', function (error, buffer) {
+                    pict.color = buffer.slice(0, 3).toString('hex');
+                    callback();
+                });
         }
-        var self = this;
-        gm(opts.pictPath + self.picture.name)
-            .resize(250, 250)
-            .colors()
-            .toBuffer('RGB', function (error, buffer) {
-                self.picture.color = buffer.slice(0, 3).toString('hex');
-                next();
-            });
+        async.eachSeries(this.picture, function (pict, callback) {
+            savePict(pict, callback);
+        }, function () {
+            next();
+        });
     })
 
+
     schema.post('remove', function (doc) {
-        if (doc.picture.name)
-            fs.unlink(opts.pictPath + doc.picture.name, function (err) {});
+        for (var i = 0; i < this.picture.length; i++) {
+            fs.unlink(opts.pictPath + doc.picture[i].name, function (err) {});
+        }
     });
 }
