@@ -15,7 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "v4.0.0-alpha.5",
+    "bootstrap": "v4.0.0-alpha.6",
     "mdi": "^1.7.22",
     "holderjs": "^2.9.4",
     "select2": "^4.0.3"

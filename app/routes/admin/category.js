@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var multer = require('multer');
 var Category = require('../../models/category');
 var pictPath = require('../../config/path.js').categoryPictPath;
+var pictUrl = require('../../config/path.js').categoryPictUrl;
 var storage = require('../../lib/pictStorage.js')(pictPath);
 var settingsMem = require('../../config/admin_config.js').stores.memory;
 var errorLogger = require('log4js').getLogger('error_log');
@@ -94,7 +95,7 @@ module.exports = function (app, passport, exphbs) {
             category.pictureFile = req.file;
         }
 
-       // route.generate();
+        // route.generate();
 
         category.save(function (err, category) {
             if (err) {
@@ -129,7 +130,8 @@ module.exports = function (app, passport, exphbs) {
 
                 res.render('category/create', {
                     breadcrumbs: req.breadcrumbs(),
-                    category: category
+                    category: category,
+                    pictUrl: pictUrl
                 });
             });
     });
@@ -147,7 +149,7 @@ module.exports = function (app, passport, exphbs) {
                 category.pictureFile = req.file;
             }
 
-            category = Object.assign({}, category, req.body.category);
+            category = Object.assign(category, req.body.category);
 
             category.save(function (err) {
                 if (err) {

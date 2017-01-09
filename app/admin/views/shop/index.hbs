@@ -1,7 +1,7 @@
 <form method="POST">
     {{#if shops}}
-    <div class="mb-1">
-        <div class="float-xs-left">
+    <div class="mb-3">
+        <div class="float-left">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="float-xs-right">
+        <div class="float-right">
             <a href="/admin/shop/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> {{__ "New shop"}}</a>
         </div>
         <div class="clearfix"></div>
@@ -39,22 +39,22 @@
             <tr>
                 <th>
                     <label class="custom-control custom-checkbox m-0">
-                        <input name="shops[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
+                        <input name="shops[]" class="custom-control-input select-all" type="checkbox" value="{{_id}}">
                         <span class="custom-control-indicator"></span>&nbsp;
                     </label>
                 </th>
                 <th scope="row">{{@index}}</th>
                 <td>
-                    <img {{#if this.picture}} src="/public/uploads/pictures/shop/{{this.picture.name}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="shop image"
+                    <img {{#if picture}} src="{{../pictUrl}}{{picture.0.name}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="shop image"
                         class="rounded" style="height:40px; width: 40px;" />
                 </td>
-                <td><a href="/admin/shop/update/{{this._id}}">{{this.name}}</a></td>
+                <td><a href="/admin/shop/update/{{_id}}">{{name}}</a></td>
                 <!-- <td>Женщине, Одежжда, Верхняя одежда, Шубы</td> -->
                 <!-- <td>Otto</td> -->
                 <td>
                     <a href="#" class="btn btn-info btn-sm"><i class="mdi mdi-eye"></i></a>
-                    <a href="/admin/shop/update/{{this._id}}" class="btn btn-primary btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
-                    <a href="#" data-href="/admin/shop/delete/{{this._id}}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i></a>
+                    <a href="/admin/shop/update/{{_id}}" class="btn btn-primary btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
+                    <a href="#" data-href="/admin/shop/delete/{{_id}}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i></a>
                 </td>
             </tr>
             {{/each}}

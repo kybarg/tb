@@ -1,11 +1,17 @@
 <form method="POST" enctype="multipart/form-data">
-    <div class="mb-1">
-        <div class="float-xs-left">
-            <a href="/admin/category/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
+{{#each errors}}
+{{this}}
+{{/each}}
+    <div class="mb-3">
+        <div class="float-left">
+            <a href="/admin/category/index" class="btn btn-secondary">
+                <i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
         </div>
-        <div class="float-xs-right">
-                <a href="#" data-href="/admin/category/delete/{{category._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
-            <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> {{__ "Save"}}</button>
+        <div class="float-right">
+            <a href="#" data-href="/admin/category/delete/{{category._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal">
+                <i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
+            <button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-check"></i> {{__ "Save"}}</button>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -18,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label for="inputCategoryDescription">{{__ "Description"}}</label>
-                <textarea name="category[description]" class="form-control js-summernote-control" id="inputCategoryDescription" rows="3">{{{category.description}}}</textarea>
+                <textarea name="category[description]" class="form-control js-summernote-control" id="inputCategoryDescription" rows="6">{{{category.description}}}</textarea>
             </div>
             <div class="form-group">
                 <label for="inputCategoryCategory">{{__ "Parent category"}}</label>
@@ -45,12 +51,15 @@
             <div class="form-group">
                 <label>{{__ "Picture"}}</label> {{#if category.picture}}
                 <div class="clearfix m-y-1">
-                    <img src="/public/uploads/pictures/category/{{category.picture.name}}" style="max-height: 320px;" />
+                    {{#each category.picture}}
+                        <img class="img-thumbnail" src="{{../pictUrl}}{{name}}" style="max-height: 320px;" />
+                        <span class="img-thumbnail" style="display: inline-block;width: 2rem;height: 2rem;margin: .25rem;background-color: #{{color}};border: 1px solid;"></span>
+                    {{/each}}
                 </div>
                 {{else}}
                 <div class="clearfix"></div>
-                {{/if}}
-                {{!--<input type="hidden" name="category[picture]" value="{{category.picture}}" />--}}
+                {{/if}} {{!--
+                <input type="hidden" name="category[picture]" value="{{category.picture}}" />--}}
                 <label class="custom-file">
                     <input name="image" type="file" id="image" class="custom-file-input">
                     <span class="custom-file-control"></span>
@@ -64,10 +73,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-                <h4 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h4>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 You are about to delete this category!

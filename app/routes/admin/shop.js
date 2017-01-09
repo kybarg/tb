@@ -35,7 +35,8 @@ module.exports = function (app, passport, exphbs) {
                     showPagination: result.pages > 1 ? true : false,
                     helpers: {
                         paginate: handlebarsPaginate
-                    }
+                    },
+                    pictUrl: pictUrl
                 });
             } else {
                 errorLogger.error(err.message);
@@ -94,7 +95,8 @@ module.exports = function (app, passport, exphbs) {
 
                 res.render('shop/create', {
                     breadcrumbs: req.breadcrumbs(),
-                    shop: shop
+                    shop: shop,
+                    pictUrl: pictUrl
                 });
             });
     });
