@@ -128,7 +128,7 @@ module.exports = function (app, passport, exphbs) {
     })
 
     // Update product with ID
-    app.post('/admin/product/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
+    app.post('/admin/product/update/:id', isLoggedIn, upload.array('image'), function (req, res) {
         // Get product by ID and update with new data
         Product.findById(req.params.id, function (err, product) {
             if (err) {
@@ -140,7 +140,7 @@ module.exports = function (app, passport, exphbs) {
             if (req.file) {
                 product.pictureFile = req.file;
             }
-            product = Object.assign({}, product, req.body.product);
+            product = Object.assign(product, req.body.product);
 
             product.save(function (err) {
                 if (err) {

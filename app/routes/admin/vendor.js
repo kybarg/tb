@@ -95,7 +95,8 @@ module.exports = function (app, passport, exphbs) {
 
                 res.render('vendor/create', {
                     breadcrumbs: req.breadcrumbs(),
-                    vendor: vendor
+                    vendor: vendor,
+                    pictUrl: pictUrl
                 });
             });
     });

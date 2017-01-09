@@ -1,9 +1,12 @@
+{{#each errors}}
+{{this}}
+{{/each}}
 <form method="POST" enctype="multipart/form-data">
-    <div class="mb-1">
-        <div class="float-xs-left">
+    <div class="mb-3">
+        <div class="float-left">
             <a href="/admin/product/index" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
         </div>
-        <div class="float-xs-right">
+        <div class="float-right">
             <a href="#" data-href="/admin/product/delete/{{product._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
             <button type="submit" class="btn btn-primary"><i class="mdi mdi-check"></i> {{__ "Save"}}</button>
         </div>
@@ -18,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label for="inputProductDescription">{{__ "Description"}}</label>
-                <textarea name="product[description]" class="form-control js-summernote-control" id="inputProductDescription" rows="3">{{{product.description}}}</textarea>
+                <textarea name="product[description]" class="form-control js-summernote-control" id="inputProductDescription" rows="6">{{{product.description}}}</textarea>
             </div>
             <div class="form-group">
                 <label for="inputProductCategory">{{__ "Categories"}}</label>
@@ -28,7 +31,7 @@
                             <option value="{{_id}}" selected="selected">{{name}}</option>
                         {{/each}}
                     {{/if}}
-            </select>
+                </select>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -227,14 +230,16 @@
             <div class="form-group">
                 <label>{{__ "Picture"}}</label> {{#if product.picture}}
                 <div class="clearfix m-y-1">
-                    <img src="{{pictUrl}}{{product.picture}}" style="max-height: 320px;" />
+                     {{#each product.picture}}
+                        <img class="img-thumbnail" src="{{../pictUrl}}{{name}}" style="max-height: 320px;" />
+                    {{/each}}
                 </div>
                 {{else}}
                 <div class="clearfix"></div>
                 {{/if}}
-                <input type="hidden" name="product[picture]" value="{{product.picture.name}}" />
+                {{!--<input type="hidden" name="product[picture]" value="{{product.picture.name}}" />--}}
                 <label class="custom-file">
-                    <input name="image" type="file" id="image" class="custom-file-input">
+                    <input name="image" type="file" id="image" class="custom-file-input" multiple="multiple">
                     <span class="custom-file-control"></span>
                 </label>
             </div>

@@ -223,7 +223,7 @@
 /* Frame mode layout
 ------------------------------------------*/
 .note-editor.note-frame {
-  border: 1px solid #a9a9a9;
+  border: 1px solid rgba(0,0,0,0.15);
   /* codeview mode */
   /* fullscreen mode */
   /* statusbar */
@@ -297,7 +297,7 @@
 .note-editor.note-frame .note-statusbar .note-resizebar .note-icon-bar {
   width: 20px;
   margin: 1px auto;
-  border-top: 1px solid #a9a9a9;
+  border-top: 1px solid rgba(0,0,0,0.15);
 }
 .note-editor.note-frame .note-placeholder {
   padding: 10px;
@@ -327,6 +327,7 @@
 .note-popover .popover-content, .note-toolbar {
   margin: 0;
   padding: 0 0 5px 5px;
+  flex-wrap: wrap;
   /* dropdown-menu for toolbar and popover */
   /* color palette for toolbar and popover */
 }

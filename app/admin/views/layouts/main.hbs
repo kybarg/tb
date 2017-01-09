@@ -24,11 +24,11 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <div id="sidebar-wrapper" class="bg-inverse">
-            <div class="navbar navbar-dark">
+            <div class="navbar navbar-inverse">
                 <a class="navbar-brand" href="/admin">Trendberry</a>
             </div>
-            <div class="navbar-dark">
-                <ul class="nav navbar-nav nav-pills nav-stacked">
+            <div class="navbar navbar-inverse">
+                <ul class="navbar-nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/category/index">{{__ "Categories"}}</a>
                     </li>
@@ -56,19 +56,22 @@
         <!-- /#sidebar-wrapper -->
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <nav class="navbar navbar-static-top navbar-dark bg-inverse">
-                <a href="#menu-toggle" class="navbar-brand" id="menu-toggle"><i class="mdi mdi-menu"></i></a>
-                <ul class="nav navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">{{__ "Home"}} <span class="sr-only">({{__ "current"}})</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/" target="_blank">{{__ "Live"}} <i class="mdi mdi-open-in-new"></i></a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav float-xs-right">
+            <nav class="navbar navbar-static-top navbar-inverse bg-inverse navbar-toggleable-xl">
+                <a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
+                    <i class="mdi mdi-menu"></i>
+                </a>
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="/admin">{{__ "Home"}}
+                        <span class="sr-only">({{__ "current"}})</span>
+                    </a>
+                    <a class="nav-item nav-link" href="/" target="_blank">{{__ "Live"}}
+                        <i class="mdi mdi-open-in-new"></i>
+                    </a>
+                </div>
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-account-circle"></i> admin</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="mdi mdi-account-circle"></i> admin</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuDropdown">
                             <a class="dropdown-item" href="#">{{__ "Profile"}}</a>
                             <a class="dropdown-item" href="#">{{__ "Logout"}}</a>
@@ -123,19 +126,19 @@
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
     <!-- Menu Toggle Script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-            $("#menu-toggle").click(function(e) {
+            $("#menu-toggle").click(function (e) {
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
 
-            $('#select-all-toggle').click(function() {
+            $('#select-all-toggle').click(function () {
                 var checkBoxes = $('input.select-all');
                 checkBoxes.prop('checked', $(this).prop('checked'));
             });
 
-            $('#deleteConfirmModal').on('show.bs.modal', function(e) {
+            $('#deleteConfirmModal').on('show.bs.modal', function (e) {
                 $(this).find('.btn-ok').attr('href', $(e.relatedTarget).attr('data-href'));
             });
 
@@ -154,17 +157,18 @@
                     url: "/admin/category/search",
                     dataType: 'json',
                     delay: 250,
-                    data: function(params) {
+                    data: function (params) {
                         return {
                             searchString: params.term,
                             limit: 10
                         };
                     },
-                    processResults: function(data, page) {
-                        $.each(data, function(index, element) {
+                    processResults: function (data, page) {
+                        $.each(data, function (index, element) {
                             data[index].id = element._id;
                             data[index].text = element.name;
-                            if (element.ancestors.length > 0 && element.ancestors[0]._id != element._id) {
+                            if (element.ancestors.length > 0 && element.ancestors[0]._id !=
+                                element._id) {
                                 data[index].text += ' (' + element.ancestors[0].name + ')';
                             }
                         });
@@ -179,7 +183,8 @@
                         };
                     },
                     method: 'POST'
-                }
+                },
+                width: '100%'
             });
 
             $('#inputProductCategory').select2({
@@ -187,14 +192,14 @@
                     url: "/admin/category/search",
                     dataType: 'json',
                     delay: 250,
-                    data: function(params) {
+                    data: function (params) {
                         return {
                             searchString: params.term,
                             limit: 10
                         };
                     },
-                    processResults: function(data, page) {
-                        $.each(data, function(index, element) {
+                    processResults: function (data, page) {
+                        $.each(data, function (index, element) {
                             data[index].id = element._id;
                             data[index].text = element.name;
                             if (element.ancestors.length > 0) {
@@ -207,7 +212,8 @@
                         };
                     },
                     method: 'POST'
-                }
+                },
+                width: '100%'
             });
 
             $('#inputProductVendor').select2({
@@ -215,14 +221,14 @@
                     url: "/admin/vendor/search",
                     dataType: 'json',
                     delay: 250,
-                    data: function(params) {
+                    data: function (params) {
                         return {
                             searchString: params.term,
                             limit: 10
                         };
                     },
-                    processResults: function(data, page) {
-                        $.each(data, function(index, element) {
+                    processResults: function (data, page) {
+                        $.each(data, function (index, element) {
                             data[index].id = element._id;
                             data[index].text = element.name;
                         });
@@ -232,7 +238,8 @@
                         };
                     },
                     method: 'POST'
-                }
+                },
+                width: '100%'
             });
 
             $('#inputProductShop').select2({
@@ -240,14 +247,14 @@
                     url: "/admin/shop/search",
                     dataType: 'json',
                     delay: 250,
-                    data: function(params) {
+                    data: function (params) {
                         return {
                             searchString: params.term,
                             limit: 10
                         };
                     },
-                    processResults: function(data, page) {
-                        $.each(data, function(index, element) {
+                    processResults: function (data, page) {
+                        $.each(data, function (index, element) {
                             data[index].id = element._id;
                             data[index].text = element.name;
                         });
@@ -257,9 +264,14 @@
                         };
                     },
                     method: 'POST'
-                }
+                },
+                width: '100%'
             });
 
+            $('#inputVendorSynonyms').select2({
+                tags: true,
+                width: '100%'
+            });
 
             $('.js-summernote-control').summernote()
                 // Hide the initial popovers that display
@@ -274,22 +286,19 @@
 
         });
     </script>
-
-    
-<script>
-
-    $( "#inputProductNameVariants .btn" ).draggable({
-        revert: true
-    });
-    $( "#inputProductNameWhiteslist, #inputProductNameBlacklist" ).droppable({
-        accept: "#inputProductNameVariants .btn",
-        drop: function( event, ui ) {
-            var $target = $(event.target);
-            var $item = ui.draggable;
-            $item.appendTo( $target );
-        }
-    });
-</script>
+    <script>
+        $("#inputProductNameVariants .btn").draggable({
+            revert: true
+        });
+        $("#inputProductNameWhiteslist, #inputProductNameBlacklist").droppable({
+            accept: "#inputProductNameVariants .btn",
+            drop: function (event, ui) {
+                var $target = $(event.target);
+                var $item = ui.draggable;
+                $item.appendTo($target);
+            }
+        });
+    </script>
 </body>
 
 </html>

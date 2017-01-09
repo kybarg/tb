@@ -31,7 +31,7 @@ module.exports = function picturePlugin(schema, opts) {
     }
 
     schema.virtual('pictureFile').set(function (f) {
-        if (this.picture[0].name) {
+        if (this.picture[0] && this.picture[0].name) {
             fs.unlink(opts.pictPath + this.picture[0].name, function (err) {});
         }
         if (f.filename) {
