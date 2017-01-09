@@ -102,6 +102,9 @@ require('./routes/admin/import.js')(app, passport, exphbs);
 app.use('/admin', express.static('admin'));
 app.use('/public', express.static('public')); 
 
+// error pages
+require('./routes/errors.js')(app, passport, exphbs);
+
 // launch ======================================================================
 app.listen(port);
 console.log('Connected on port ' + port);
