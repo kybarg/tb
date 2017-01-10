@@ -5,7 +5,7 @@ var upload = multer();
 var adminConfig = require('../../config/admin_config.js');
 
 module.exports = function (app, passport, exphbs) {
-    app.get('/admin/settings/index', isLoggedIn, function (req, res) {
+    app.get('/admin/settings/index', function (req, res) {
         req.breadcrumbs(__('Settings'));
 
         res.render('settings/index', {
@@ -17,7 +17,7 @@ module.exports = function (app, passport, exphbs) {
                 });
     });
 
-    app.post('/admin/settings/index', isLoggedIn, upload.array(), function (req, res) {
+    app.post('/admin/settings/index', upload.array(), function (req, res) {
         var admin = JSON.stringify(req.body.settings.admin)
         var public = JSON.stringify(req.body.settings.public);
         var global = JSON.stringify(req.body.settings.global);
@@ -30,14 +30,3 @@ module.exports = function (app, passport, exphbs) {
         res.redirect('/admin/settings/index');
     });
 }
-
-
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-};

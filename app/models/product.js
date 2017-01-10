@@ -19,7 +19,10 @@ var productSchema = mongoose.Schema({
     price: Number,
     oldPrice: Number,
     slug: String,
-    url: String,
+    url: {
+        type: String,
+        required: true
+    },
     vendor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendor'
@@ -29,7 +32,10 @@ var productSchema = mongoose.Schema({
         enum: [null, 1, 2, 3],
         default: null
     },
-    color: [String],
+    color: {
+        type: [String],
+        default: void 0
+    },
     material: [String],
     size: [String], // need converter
     sex: {
@@ -42,7 +48,7 @@ var productSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Shop'
     },
-});
+}, {minimize: false});
 
 productSchema.pre('save', function (next) {
     var self = this;

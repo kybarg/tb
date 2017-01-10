@@ -1,0 +1,203 @@
+<form method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <div class="float-left">
+            <a href="/admin/product/index" class="btn btn-secondary">
+                <i class="mdi mdi-chevron-left"></i> {{__ "Back"}}</a>
+        </div>
+        <div class="float-right">
+            {{#if product._id}}
+            <a href="#" data-href="/admin/product/delete/{{product._id}}" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal">
+                <i class="mdi mdi-delete"></i> {{__ "Delete"}}</a>
+            {{/if}}
+            <button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-check"></i> {{__ "Save"}}</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+
+            {{> formGroupInput id="ProductName" label="Name" name="product[name]" placeholder="Product name" value=product.name error=errors.name}}
+            
+            {{> formGroupTextarea id="ProductDescription" label="Description" name="product[description]" placeholder="Product description" value=product.description error=errors.description editor=true rows="6"}}
+            
+            {{> formGroupSelect id="ProductCategory" label="Categories" name="product[category][]" placeholder="Product category" value=product.category error=errors.category multiple=true size="1"}}
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{> formGroupSelect id="ProductVendor" label="Vendor" name="product[vendor]" placeholder="Product vendor" value=product.vendor error=errors.vendor}}
+                </div>
+                <div class="col-md-6">
+                    {{> formGroupSelect id="ProductShop" label="Shop" name="product[shop]" placeholder="Product shop" value=product.shop error=errors.shop}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{> formGroupInputGroup id="ProductPrice" label="Price" name="product[price]" placeholder="0.00" value=product.price error=errors.price
+                    addonAfter="RUB"}}
+                </div>
+                <div class="col-md-6">
+                    {{> formGroupInputGroup id="ProductOldprice" label="Old price" name="product[oldPrice]" placeholder="0.00" value=product.oldPrice
+                    error=errors.oldPrice addonAfter="RUB"}}
+                </div>
+            </div>
+
+            {{> formGroupInput id="ProductUrl" label="URL" name="product[url]" placeholder="Product url" value=product.url error=errors.url}}
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{> formGroupSelect id="ProductColor" label="Color" name="product[color][]" placeholder="Product color" value=product.color error=errors.color multiple=true size="1"}}
+                </div>
+                <div class="col-md-6">
+                     {{> formGroupSelect id="ProductMaterial" label="Material" name="product[material][]" placeholder="Product material" value=product.material error=errors.material multiple=true size="1"}}
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputProductSize">{{__ "Size"}}</label>
+                        <select name="product[size][]" class="form-control" id="inputProductSize" multiple="multiple">
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                            <option value="XXXL">XXXL</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{__ "Age"}}</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="0"> {{__ "None"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="1"> {{__ "Toddler"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="2"> {{__ "Child"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="3"> {{__ "Adult"}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{__ "Season"}}</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="0"> {{__ "None"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="1"> {{__ "Summer"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="2"> {{__ "Winter"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="3"> {{__ "Demi"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="4"> {{__ "All-season"}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{__ "Sex"}}</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="0"> {{__ "None"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="1"> {{__ "Women"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="2"> {{__ "Men"}}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="product[sex]" value="3"> {{__ "Unisex"}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="inputProductSlug">{{__ "Slug"}}</label>
+                <input name="product[slug]" type="text" class="form-control" id="inputProductSlug" placeholder="product-name-vendor-id" value="{{product.slug}}">
+            </div>
+            <div class="form-group">
+                <label for="inputProductMetaTitle">{{__ "Meta Title"}}</label>
+                <input name="product[meta][title]" type="text" class="form-control" id="inputProductMetaTitle" placeholder="Title" value="{{product.meta.title}}">
+            </div>
+            <div class="form-group">
+                <label for="inputProductMetaDescription">{{__ "Meta Description"}}</label>
+                <textarea name="product[meta][description]" class="form-control" id="inputProductMetaDescription" rows="3">{{product.meta.description}}</textarea>
+            </div>
+            <div class="form-group">
+                <label>{{__ "Picture"}}</label> {{#if product.picture}}
+                <div class="clearfix m-y-1">
+                    {{#each product.picture}}
+                    <img class="img-thumbnail" src="{{../pictUrl}}{{name}}" style="max-height: 320px;" /> {{/each}}
+                </div>
+                {{else}}
+                <div class="clearfix"></div>
+                {{/if}} {{!--
+                <input type="hidden" name="product[picture]" value="{{product.picture.name}}" />--}}
+                <label class="custom-file">
+                    <input name="image" type="file" id="image" class="custom-file-input" multiple="multiple">
+                    <span class="custom-file-control"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                You are about to delete this product!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

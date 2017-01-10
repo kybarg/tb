@@ -16,7 +16,7 @@ var upload = multer({
 
 module.exports = function (app, passport, exphbs) {
 
-    app.get('/admin/shop/index', isLoggedIn, function (req, res) {
+    app.get('/admin/shop/index', function (req, res) {
         req.breadcrumbs(__('Shops'));
         // Using paginate for simplier pagination
         Shop.paginate({}, {
@@ -44,7 +44,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.get('/admin/shop/create', isLoggedIn, function (req, res) {
+    app.get('/admin/shop/create', function (req, res) {
         req.breadcrumbs([{
             name: __('Shops'),
             url: '/admin/shop/index'
@@ -57,7 +57,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.post('/admin/shop/create', isLoggedIn, upload.single('image'), function (req, res) {
+    app.post('/admin/shop/create', upload.single('image'), function (req, res) {
         var shop = new Shop(req.body.shop);
         if (req.file) {
             shop.pictureFile = req.file;
@@ -81,7 +81,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.get('/admin/shop/update/:id', isLoggedIn, function (req, res) {
+    app.get('/admin/shop/update/:id', function (req, res) {
         Shop.findOne({
                 _id: mongoose.Types.ObjectId(req.params.id)
             })
@@ -102,7 +102,7 @@ module.exports = function (app, passport, exphbs) {
     });
 
     // Update shop with ID
-    app.post('/admin/shop/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
+    app.post('/admin/shop/update/:id', upload.single('image'), function (req, res) {
         Shop.findById(req.params.id, function (err, shop) {
             if (err) {
                 res.redirect('/admin/shop/update/' + req.params.id);
@@ -134,7 +134,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.get('/admin/shop/delete/:id', isLoggedIn, function (req, res) {
+    app.get('/admin/shop/delete/:id', function (req, res) {
         Shop.findById(req.params.id).exec(function (err, shop) {
             if (shop) {
                 shop.remove();
@@ -144,7 +144,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.post('/admin/shop/search', isLoggedIn, function (req, res) {
+    app.post('/admin/shop/search', function (req, res) {
         Shop.find({
                 name: {
                     $regex: req.body.searchString ? req.body.searchString : '',
@@ -158,18 +158,3 @@ module.exports = function (app, passport, exphbs) {
             });
     });
 }
-
-
-
-
-
-
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-};

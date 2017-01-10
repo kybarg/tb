@@ -1,0 +1,25 @@
+<div class="container" style="height: 100vh;">
+	<div class="row justify-content-center align-items-center" style="height: 100vh;">
+		<div class="col-sm-6 align-self-center">
+			<!-- show any messages that come back with authentication -->
+			{{#if message.length }}
+			<div class="alert alert-danger">{{message}}</div>
+			{{/if}}
+			<!-- LOGIN FORM -->
+			<div class="card">
+				<div class="card-header">
+					<i class="mdi mdi-sign-in"></i> {{__ "Admin Login"}}
+				</div>
+				<div class="card-block">
+					<form method="post">
+						{{> formGroupInput id="LoginEmail" label="Email" name="email" placeholder="Email"}}
+
+						{{> formGroupInput id="LoginPassword" label="Password" name="password" placeholder="Password" type="password"}}
+						
+						<button type="submit" class="btn btn-primary">{{__ "Sign in"}}</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
