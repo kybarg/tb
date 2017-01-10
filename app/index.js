@@ -21,6 +21,7 @@ var exphbs = require('express-handlebars');
 var path = require('path');
 var static = require('express-static');
 var i18n = require('i18n');
+var MongoStore = require('connect-mongo')(session);
 // var i18nHelper = require('handlebars-helper-i18n');
 // var multer = require('multer');
 // var upload = multer();
@@ -72,15 +73,18 @@ app.use(session({
     cookie: {
         maxAge: 2628000000
     },
-    store: new(require('express-sessions'))({
-        storage: 'mongodb',
-        instance: mongoose, // optional
-        host: 'localhost', // optional
-        port: 27017, // optional
-        db: 'tb', // optional
-        collection: 'sessions', // optional
-        expire: 86400 // optional
+    store: new MongoStore({
+        mongooseConnection: mongoose.connection
     }),
+    // store: new(require('express-sessions'))({
+    //     storage: 'mongodb',
+    //     instance: mongoose, // optional
+    //     host: 'localhost', // optional
+    //     port: 27017, // optional
+    //     db: 'tb', // optional
+    //     collection: 'sessions', // optional
+    //     expire: 86400 // optional
+    // }),
     resave: true,
     saveUninitialized: true
 }));
