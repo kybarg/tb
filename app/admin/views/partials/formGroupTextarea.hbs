@@ -1,0 +1,7 @@
+<div class="form-group{{#if error}} has-danger{{/if}}">
+    <label class="form-control-label" for="input{{id}}">{{__ label}}</label>
+    <textarea name="{{name}}" type="text" class="form-control{{#if editor}} js-summernote-control{{/if}}{{#if error}} form-control-danger{{/if}}" id="input{{id}}" placeholder="{{__ placeholder}}"{{#if rows}} rows="{{rows}}"{{/if}}>{{value}}</textarea>
+    {{#if error}}
+        <div class="form-control-feedback">{{error.message}}</div>
+    {{/if}}
+</div>

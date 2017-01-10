@@ -33,6 +33,7 @@ adminConfig.defaults({
 })
 
 adminConfig.stores.memory.set('admin', adminConfig.get('admin'));
+adminConfig.stores.memory.set('global', adminConfig.get('global'));
 adminConfig.stores.memory.logicalSeparator = ".";
 
 module.exports = adminConfig;

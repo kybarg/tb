@@ -88,6 +88,16 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+
+// our custom "verbose errors" setting
+// which we can use in the templates
+// via settings['verbose errors']
+app.enable('verbose errors');
+
+// disable them in production
+// use $ NODE_ENV=production node examples/error-pages
+if ('production' == app.settings.env) app.disable('verbose errors');
+
 // routes ======================================================================
 require('./routes/routes.js')(app, passport, exphbs); // load our routes and pass in our app and fully configured passport
 require('./routes/admin.js')(app, passport, exphbs);
@@ -99,7 +109,6 @@ require('./routes/admin/shop.js')(app, passport, exphbs);
 require('./routes/admin/import.js')(app, passport, exphbs);
 
 // Defines folders with static files
-app.use('/admin', express.static('admin'));
 app.use('/public', express.static('public')); 
 
 // error pages

@@ -1,0 +1,15 @@
+<div class="form-group{{#if error}} has-danger{{/if}}">
+    <label class="form-control-label" for="input{{id}}">{{__ label}}</label>
+    <div class="input-group">
+        {{#if addonBefore}}
+            <span class="input-group-addon">{{addonBefore}}</span>
+        {{/if}}
+        <input name="{{name}}" type="text" class="form-control{{#if error}} form-control-danger{{/if}}" id="input{{id}}" placeholder="{{__ placeholder}}" value="{{value}}">
+        {{#if addonAfter}}
+            <span class="input-group-addon">{{addonAfter}}</span>
+        {{/if}}
+    </div>
+    {{#if errors}}
+        <div class="form-control-feedback">{{error.message}}</div>
+    {{/if}}
+</div>

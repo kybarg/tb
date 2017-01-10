@@ -37,20 +37,20 @@
             <tr>
                 <th>
                     <label class="custom-control custom-checkbox m-0">
-                        <input name="vendors[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
+                        <input name="vendors[]" class="custom-control-input select-all" type="checkbox" value="{{_id}}">
                         <span class="custom-control-indicator"></span>&nbsp;
                     </label>
                 </th>
                 <th scope="row">{{@index}}</th>
                 <td>
-                    <img {{#if this.picture}} src="/public/uploads/{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="vendor image"
+                    <img {{#if picture}} src="{{../pictUrl}}{{picture.0.name}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="vendor image"
                         class="rounded" style="height:40px; width: 40px;" />
                 </td>
-                <td><a href="/admin/vendor/update/{{this._id}}">{{this.name}}</a></td>
+                <td><a href="/admin/vendor/update/{{_id}}">{{name}}</a></td>
                 <td>
                     <a href="#" class="btn btn-info btn-sm"><i class="mdi mdi-eye"></i></a>
-                    <a href="/admin/vendor/update/{{this._id}}" class="btn btn-primary btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
-                    <a href="#" data-href="/admin/vendor/delete/{{this._id}}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i></a>
+                    <a href="/admin/vendor/update/{{_id}}" class="btn btn-primary btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
+                    <a href="#" data-href="/admin/vendor/delete/{{_id}}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i></a>
                 </td>
             </tr>
             {{/each}}
