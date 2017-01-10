@@ -20,7 +20,6 @@
     "express-breadcrumbs": "0.0.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.1",
-    "express-static": "^1.0.3",
     "gm": "^1.23.0",
     "handlebars": "^4.0.5",
     "handlebars-paginate": "^0.1.0",
