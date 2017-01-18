@@ -28,11 +28,34 @@
 
     $stateProvider
       .state('admin', {
+        abstract: true,
         url: '/admin',
-        template: '<ui-view/>',
+        // template: '<ui-view/>',
+        views: {
+          '@': {
+            templateUrl: '/modules/core/client/admin/views/layout.client.view.html',
+          },
+          'toolbar@admin': {
+            templateUrl: '/modules/core/client/admin/views/header.client.view.html',
+            controller: 'HeaderController',
+            controllerAs: 'vm'
+          },
+          'drawer@admin': {
+            templateUrl: '/modules/core/client/admin/views/drawer.client.view.html',
+            controller: 'DrawerController',
+            controllerAs: 'vm'
+          }
+        }
+      })
+      .state('admin.home', {
+        url: '',
         templateUrl: '/modules/core/client/admin/views/home.client.view.html',
         controller: 'HomeController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Home'
+        }
+
       })
       .state('not-found', {
         url: '/not-found',

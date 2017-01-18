@@ -20,6 +20,7 @@
         controller: 'ArticlesListController',
         controllerAs: 'vm',
         data: {
+          pageTitle: 'Articles',
           roles: ['admin']
         }
       })
@@ -29,6 +30,7 @@
         controller: 'ArticlesController',
         controllerAs: 'vm',
         data: {
+          pageTitle: 'Create Article',
           roles: ['admin']
         },
         resolve: {
@@ -41,6 +43,7 @@
         controller: 'ArticlesController',
         controllerAs: 'vm',
         data: {
+          pageTitle: 'Edit Article',
           roles: ['admin']
         },
         resolve: {

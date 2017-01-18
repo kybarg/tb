@@ -38,18 +38,9 @@
   {{#each cssFiles.admin}}<link rel="stylesheet" href="/{{this}}">{{/each}}
 </head>
 
-<body ng-cloak layout="column">
-  <md-toolbar class="md-whiteframe-2dp" layout="row" layout-wrap ng-include="'/modules/core/client/admin/views/header.client.view.html'" style="z-index: 40;"></md-toolbar>
+<body ng-cloak layout="column" ui-view>
 
-  <section layout="row" flex>
-
-    <md-sidenav ng-controller="DrawerController as vm" class="md-whiteframe-1dp" md-is-locked-open="$mdMedia('gt-md') && isDrawerOpen" md-component-id="drawer" ng-include="'/modules/core/client/admin/views/drawer.client.view.html'"></md-sidenav>
-
-    <md-content flex layout-padding>
-      {{{block "content"}}}
-    </md-content>
-
-  </section>
+    {{{block "content"}}}
 
   <noscript>
     <style>
@@ -73,7 +64,7 @@
 
   <!--Application JavaScript Files-->
     {{#each jsFiles.admin}}<script type="text/javascript" src="/{{this}}"></script>{{/each}}
-  
+
   <!--owasp config sync-->
   <script type="text/javascript">
     var sharedConfig = {{{ sharedConfig }}};
