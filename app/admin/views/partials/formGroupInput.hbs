@@ -1,7 +1,0 @@
-<div class="form-group{{#if error}} has-danger{{/if}}">
-    <label class="form-control-label" for="input{{id}}">{{__ label}}</label>
-    <input name="{{name}}" type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control{{#if error}} form-control-danger{{/if}}" id="input{{id}}" placeholder="{{__ placeholder}}" value="{{value}}">
-    {{#if error}}
-        <div class="form-control-feedback">{{error.message}}</div>
-    {{/if}}
-</div>

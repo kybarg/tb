@@ -1,0 +1,52 @@
+<md-card>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-title">{{vm.category._id ? 'Edit Category' : 'New Category'}}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <form name="vm.form.categoryForm" class="form-horizontal" ng-submit="vm.save(vm.form.categoryForm.$valid)" novalidate>
+    <div layout="column" layout-gt-sm="row" layout-padding layout-wrap>
+      <div flex-gt-sm="66">
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input name="name" ng-model="vm.category.name" required>
+          <div ng-messages="vm.form.categoryForm.name.$error">
+            <div ng-message="required">Category name is required.</div>
+          </div>
+        </md-input-container>
+
+        <div class="md-textangular">
+          <label>Description</label>
+          <div text-angular ng-model="vm.category.description"></div>
+        </div>
+
+        <md-input-container style="min-width: 240px;">
+          <label>Parent category</label>
+          <md-select placeholder="Parent category" ng-model="vm.category.parent" md-on-open="vm.getCategories()" md-on-close="vm.clearSearchTerm()">
+            <!--ng-model-options="{trackBy: '$value._id'}"-->
+            <md-select-header class="demo-select-header">
+            <input ng-model="vm.searchTerm" type="search" placeholder="Search for a categories.." class="demo-header-searchbox md-text" ng-change="vm.getCategories()">
+            </md-select-header>
+            <div label="categories">
+              <md-option ng-value="category._id" ng-repeat="category in vm.categories" ng-selected="category._id == vm.parent">{{category.name}}<span ng-if="category.path.length > 1"> ({{category.path[0][0]}})</span></md-option>
+            </div>
+          </md-select>
+        </md-input-container>
+
+      </div>
+      <div flex-gt-sm="33">
+
+        <md-input-container class="md-block">
+          <label>Slug</label>
+          <input name="slug" ng-model="vm.category.slug">
+        </md-input-container>
+
+        <md-meta model="vm.category" />
+      </div>
+    </div>
+    <md-card-actions layout="row" layout-align="start center">
+      <md-button class="md-primary" type="submit">{{vm.category._id ? 'Update' : 'Create'}}</md-button>
+      <md-button ng-show="vm.category._id" ng-click="vm.remove()">Remove</md-button>
+    </md-card-actions>
+  </form>
+</md-card>

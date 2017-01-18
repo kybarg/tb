@@ -1,23 +1,32 @@
 {
-  "name": "trendberry",
-  "description": "",
-  "main": "index.js",
-  "authors": [
-    "Trendberry Team"
-  ],
-  "license": "ISC",
-  "homepage": "https://github.com/kybarg/tb",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "name": "meanjs",
+  "description": "Fullstack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
+  "homepage": "http://meanjs.org/",
+  "license": "MIT",
   "dependencies": {
-    "bootstrap": "v4.0.0-alpha.6",
-    "mdi": "^1.7.22",
-    "holderjs": "^2.9.4",
-    "select2": "^4.0.3"
+    "angular": "^1.6.1",
+    "angular-animate": "^1.6.1",
+    "angular-messages": "^1.6.1",
+    "angular-mocks": "^1.6.1",
+    "angular-material": "^1.1.1",
+    "angular-ui-notification": "^0.3.5",
+    "angular-ui-router": "^0.3.2",
+    "ng-file-upload": "^12.2.13",
+    "angular-resource": "^1.6.1",
+    "owasp-password-strength-test": "^1.3.0",
+    "angular-material-data-table": "^0.10.10",
+    "textAngular": "^1.5.16"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap-theme.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "jquery": {
+      "main": []
+    }
   }
 }

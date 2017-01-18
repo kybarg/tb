@@ -1,0 +1,74 @@
+﻿<section>
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
+      <div class="md-toolbar-tools">
+        <h2 class="md-title">Articles</h2>
+        <div flex></div>
+        <md-button class="md-icon-button" ng-click="filter.show = true">
+          <md-icon>filter_list</md-icon>
+        </md-button>
+        <md-button class="md-icon-button" ng-click="addItem($event)" data-ui-sref="admin.articles.create">
+          <md-icon>add</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !selected.length">
+      <div class="md-toolbar-tools">
+        <md-icon>search</md-icon>
+        <form flex name="filter.form">
+          <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
+        </form>
+        <md-button class="md-icon-button" ng-click="removeFilter()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length" md-colors="{background: 'primary-50'}">
+      <div class="md-toolbar-tools" layout-align="space-between center">
+        <div class="md-subhead" md-colors="{color: 'primary-500'}">{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</div>
+        <md-button class="md-icon-button" ng-click="delete($event)">
+          <md-icon>delete</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-table-container>
+      <table md-table md-row-select multiple ng-model="selected" md-progress="promise">
+        <thead md-head md-order="query.sort" md-on-reorder="getArticles">
+          <tr md-row>
+            <th md-column md-order-by="title">
+              <span>Title</span>
+            </th>
+            <th md-column md-order-by="created" style="width: 1%;">
+              <span>Created</span>
+            </th>
+            <!--<th md-column md-numeric>Fat (g)</th>-->
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row md-select="article" md-select-id="_id" ng-repeat="article in articles.items" data-ui-sref="admin.articles.edit({articleId: article._id})">
+            <td md-cell>{{article.title}}</td>
+            <td md-cell>{{article.created | date:'medium'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+    <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{articles.count}}"
+      md-on-paginate="getArticles" md-page-select></md-table-pagination>
+
+  </md-card>
+    <!--<a data-ng-repeat="article in vm.articles" data-ui-sref="admin.articles.edit({articleId: article._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="article.created | date:'mediumDate'"></span>
+        by
+        <span ng-if="article.user" ng-bind="article.user.displayName"></span>
+        <span ng-if="!article.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="article.title"></h4>
+      <p class="list-group-item-text" data-ng-bind="article.content"></p>
+    </a>-->
+  <div class="alert alert-warning text-center" data-ng-if="articles.$resolved && !articles.count">
+    No articles yet, why don't you
+    <a data-ui-sref="admin.articles.create">create one</a>?
+  </div>
+</section>

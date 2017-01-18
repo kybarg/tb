@@ -1,0 +1,86 @@
+<md-card ng-if="vm.categories.$resolved && vm.categories.count">
+  <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.selected.length || vm.filter.show">
+    <div class="md-toolbar-tools">
+      <h2 class="md-title">Categories</h2>
+      <div flex></div>
+      <md-button class="md-icon-button" ng-click="vm.showFilter()">
+        <md-icon>filter_list</md-icon>
+      </md-button>
+      <md-button class="md-icon-button" data-ui-sref="admin.categories.create">
+        <md-icon>add</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-toolbar class="md-table-toolbar md-default" ng-show="vm.filter.show && !vm.selected.length">
+    <div class="md-toolbar-tools">
+      <md-icon>search</md-icon>
+      <form flex name="vm.filter.form">
+        <input type="text" ng-model="vm.query.name" ng-model-options="vm.filter.options" placeholder="search" class="focusNameImput"
+          ng-change="vm.getCategories()">
+      </form>
+      <md-button class="md-icon-button" ng-click="vm.removeFilter()">
+        <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-toolbar class="md-table-toolbar alternate" ng-show="vm.selected.length" md-colors="{background: 'primary-50'}">
+    <div class="md-toolbar-tools" layout-align="space-between center">
+      <div class="md-subhead" md-colors="{color: 'primary-500'}">{{vm.selected.length}} {{vm.selected.length > 1 ? 'items' : 'item'}} selected</div>
+      <md-button class="md-icon-button" ng-click="vm.delete($event)">
+        <md-icon>delete</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-table-container flex style="overflow: auto;">
+<table md-table md-row-select multiple ng-model="vm.selected" md-progress="vm.promise">
+  <thead md-head>
+    <tr md-row>
+      <th md-column>
+        <span>Name</span>
+      </th>
+      <th md-column style="width: 100px;">
+<span>Created</span>
+</th>
+</tr>
+</thead>
+<tbody md-body>
+  <tr md-row md-select="category" md-select-id="_id" ng-repeat="(i, category) in vm.categories.items" data-ui-sref="admin.categories.edit({categoryId: category._id})">
+    <td md-cell>
+      <span class="hidden-categories-names-hover">
+        <span class="hidden-categories-names" ng-repeat="path in category.path track by $index" ng-if="$last != true">
+          <span>{{path[0]}}&emsp;</span>
+      <span>&bull;&emsp;</span>
+      </span>
+      </span>
+      {{ category.name }}
+    </td>
+    <td md-cell>{{category.created | date:'medium'}}</td>
+  </tr>
+</tbody>
+</table>
+</md-table-container>
+<md-table-pagination md-limit="vm.query.limit" md-limit-options="[10, 20, 50]" md-page="vm.query.page" md-total="{{vm.categories.count}}"
+  md-on-paginate="vm.getCategories" md-page-select></md-table-pagination>
+</md-card>
+<!--<a data-ng-repeat="category in vm.categories" data-ui-sref="admin.categories.edit({categoryId: category._id})" class="list-group-item">
+  <small class="list-group-item-text">
+    Posted on
+    <span data-ng-bind="category.created | date:'mediumDate'"></span>
+    by
+    <span ng-if="category.user" ng-bind="category.user.displayName"></span>
+    <span ng-if="!category.user">Deleted User</span>
+  </small>
+  <h4 class="list-group-item-heading" data-ng-bind="category.title"></h4>
+  <p class="list-group-item-text" data-ng-bind="category.content"></p>
+</a>-->
+<div class="md-empty-state" data-ng-if="vm.categories.$resolved && !vm.categories.count">
+  No categories yet
+  <div>
+    <i class="material-icons">folder_open</i>
+  </div>
+  Why don't you
+  <md-button class="md-primary" data-ui-sref="admin.categories.create">
+    create one
+  </md-button>
+  ?
+</div>

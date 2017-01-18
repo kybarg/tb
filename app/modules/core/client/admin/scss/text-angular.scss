@@ -1,0 +1,64 @@
+.ta-root {
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 2px;
+    .ta-toolbar {
+        border-bottom: 1px solid rgba(0,0,0,0.12);
+        padding: 0 12px;
+        height: auto;
+        min-height: 48px;
+        max-height: none;
+
+        .md-textangular-group {
+
+        }
+        button.md-textangular-button {
+            line-height: 24px;
+            margin: 0;
+            min-width: 48px;
+            padding: 12px;
+        }
+    }
+
+    &.focussed > .ta-scroll-window.form-control {
+        box-shadow: none;
+        border-bottom: 2px solid rgb(63,81,181);
+        margin-bottom: -2px;
+    }
+}
+
+.md-textangular {
+    margin: -18px 0 0;
+    padding-bottom: 24px;
+    label {
+        color: rgba(0,0,0,0.54);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+        -webkit-box-ordinal-group: 2;
+        -webkit-order: 1;
+        order: 1;
+        pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        padding-left: 3px;
+        padding-right: 0;
+        z-index: 1;
+        max-width: 100%;
+        -webkit-transform-origin: left top;
+        transform-origin: left top;
+        font-size: 75%;
+        margin-bottom: 8px;
+        display: inline-block;
+    }
+
+    .ta-bind {
+        border: none;
+        display: block;
+        outline: none;
+        
+    }
+    textarea.ta-bind {
+        padding: 0;
+        width: 100%;
+    }
+}

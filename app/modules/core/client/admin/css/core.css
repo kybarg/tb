@@ -1,0 +1,120 @@
+.undecorated-link:hover {
+	text-decoration: none;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+	display: none !important;
+}
+
+
+/*.content {
+  background-color: #fff;
+  min-height: 100%;
+  width: 100%;
+}
+
+md-content > section {
+    width: 100%;
+}*/
+
+@media (min-width: 600px) {
+	md-sidenav {
+		max-width: 210px;
+	}
+}
+
+@media (min-width: 1280px) {
+	md-sidenav {
+		box-shadow: none !important;
+		background-color: transparent;
+	}
+}
+
+table.md-table.md-row-select tbody.md-body>tr.md-row,
+table.md-table.md-row-select tbody.md-body>tr.md-row>td {
+	cursor: pointer;
+}
+
+md-toolbar.md-table-toolbar form {
+    margin-left: 16px;
+}
+
+md-toolbar.md-table-toolbar form > input {
+    width: 100%;
+    margin: 0;
+    border: none;
+    color: rgba(0, 0, 0, 0.87);
+	height: 40px;
+}
+md-toolbar.md-table-toolbar form > input:focus {
+	outline: none;
+}
+
+.demo-header-searchbox {
+	border: none;
+	outline: none;
+	height: 100%;
+	width: 100%;
+	padding: 0;
+}
+
+.demo-select-header {
+	box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+	padding-left: 10.667px;
+	height: 48px;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: auto;
+}
+
+.hidden-categories-names-hover {
+	display: inline-block;
+	height: 47px;
+	line-height: 47px;
+}
+
+.hidden-categories-names-hover>span>span {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.hidden-categories-names-hover>span>span:first-child {
+	overflow: hidden;
+	max-width: 0;
+	opacity: 0;
+	transition: all 0.3s;
+	white-space: nowrap;
+}
+
+.hidden-categories-names-hover:hover span>span:first-child {
+	max-width: 150px;
+	opacity: 1;
+}
+
+
+
+.selectdemoSelectHeader {
+  /* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */ }
+  .selectdemoSelectHeader .demo-header-searchbox {
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    padding: 0; }
+  .selectdemoSelectHeader .demo-select-header {
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+    padding-left: 10.667px;
+    height: 48px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto; }
+  .selectdemoSelectHeader md-content._md {
+    max-height: 240px; }
