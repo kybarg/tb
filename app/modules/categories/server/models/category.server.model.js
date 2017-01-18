@@ -24,6 +24,10 @@ var CategorySchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Category',
     index: true
+  },
+  created: {
+    type: Date,
+    default: Date.now
   }
 });
 
@@ -39,7 +43,7 @@ CategorySchema.plugin(metaPlugin);
  * @param  {Function} next
  */
 CategorySchema.pre('save', function (next, done) {
-  if (!this.slug || this.slug.length == 0) {
+  if (!this.slug || this.slug.length === 0) {
     this.slug = slugify(this.name);
   }
   next();

@@ -23,7 +23,7 @@
     }
 
     $scope.isDrawerOpen = isDrawerOpen;
-    
+
     $scope.toggleDrawer = function() {
       $mdSidenav('drawer').toggle();
     };

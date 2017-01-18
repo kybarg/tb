@@ -31,10 +31,8 @@
 
       vm.back = function() {
         $window.history.back();
-      }
+      };
     }
-
-
 
     vm.isDrawerOpen = isDrawerOpen;
 

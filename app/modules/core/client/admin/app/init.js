@@ -18,7 +18,7 @@
       requireBase: false
     }).hashPrefix('!');
 
-    $httpProvider.interceptors.push('authInterceptor');
+$httpProvider.interceptors.push('authInterceptor');
 
     // Disable debug data for production environment
     // @link https://docs.angularjs.org/guide/production

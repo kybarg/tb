@@ -63,7 +63,7 @@
 
       for (var prop in vm.query) {
         if (defaultQuery.hasOwnProperty(prop)) {
-          if (defaultQuery[prop] != vm.query[prop]) params[prop] = vm.query[prop];
+          if (defaultQuery[prop] !== vm.query[prop]) params[prop] = vm.query[prop];
         } else {
           params[prop] = vm.query[prop];
         }
@@ -85,9 +85,9 @@
     vm.showFilter = function () {
       vm.filter.show = true;
       $timeout(function () {
-        angular.element(document.querySelectorAll(".focusNameImput")).focus();
+        angular.element(document.querySelectorAll('.focusNameImput')).focus();
       });
-    }
+    };
 
     $scope.$watch('vm.query.name', function (newValue, oldValue) {
       if (!oldValue) {

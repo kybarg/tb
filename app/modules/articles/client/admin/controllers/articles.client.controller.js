@@ -27,8 +27,8 @@
 
       $mdDialog.show(confirm).then(function() {
         vm.article.$remove(function() {
-          $state.go('admin.articles.list')
-          $mdToast.show($mdToast.simple({position: 'bottom right'}).textContent('Article removed successfully!'));
+          $state.go('admin.articles.list');
+          $mdToast.show($mdToast.simple({ position: 'bottom right' }).textContent('Article removed successfully!'));
         });
       });
     }
@@ -47,11 +47,11 @@
 
       function successCallback(res) {
         $state.go('admin.articles.list'); // should we send the User to the list or the updated Article's view?
-        $mdToast.show($mdToast.simple({position: 'bottom right'}).textContent('Article saved successfully!'));
+        $mdToast.show($mdToast.simple({ position: 'bottom right' }).textContent('Article saved successfully!'));
       }
 
       function errorCallback(res) {
-        $mdToast.show($mdToast.simple({position: 'bottom right'}).textContent('Article save error!'));
+        $mdToast.show($mdToast.simple({ position: 'bottom right' }).textContent('Article save error!'));
       }
     }
   }

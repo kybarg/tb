@@ -4,7 +4,7 @@
 
 module.exports = {
   client: {
-    public: {
+    admin: {
       lib: {
         css: [
           // bower:css
@@ -12,8 +12,7 @@ module.exports = {
           'public/lib/bootstrap/dist/css/bootstrap-theme.css',
           'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
           'public/lib/angular-material/angular-material.css',
-          'public/lib/md-data-table/dist/md-data-table.css',
-          'public/lib/froala_editor/css/froala_editor.min.css',
+          'public/lib/angular-material-data-table/dist/md-data-table.css',
           'public/lib/textAngular/dist/textAngular.css'
           // endbower
         ],
@@ -22,65 +21,6 @@ module.exports = {
           'public/lib/angular/angular.js',
           'public/lib/angular-animate/angular-animate.js',
           'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-          'public/lib/ng-file-upload/ng-file-upload.js',
-          'public/lib/angular-aria/angular-aria.js',
-          'public/lib/angular-messages/angular-messages.js',
-          'public/lib/angular-material/angular-material.js',
-          'public/lib/angular-mocks/angular-mocks.js',
-          'public/lib/angular-resource/angular-resource.js',
-          'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
-          'public/lib/angular-ui-router/release/angular-ui-router.js',
-          'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-          'public/lib/md-data-table/dist/md-data-table.js',
-          'public/lib/textAngular/dist/textAngular-rangy.min.js',
-          'public/lib/textAngular/dist/textAngular-sanitize.min.js',
-          'public/lib/textAngular/dist/textAngular.min.js'
-          // endbower
-        ],
-        tests: ['public/lib/angular-mocks/angular-mocks.js']
-      },
-      css: [
-        'modules/*/client/public/{css,less,scss}/*.css'
-      ],
-      less: [
-        'modules/*/client/public/less/*.less'
-      ],
-      sass: [
-        'modules/*/client/public/scss/*.scss'
-      ],
-      js: [
-        'modules/core/client/public/app/config.js',
-        'modules/core/client/public/app/init.js',
-        'modules/*/client/public/*.js',
-        'modules/*/client/public/**/*.js'
-      ],
-      img: [
-        'modules/**/*/public/img/**/*.jpg',
-        'modules/**/*/public/img/**/*.png',
-        'modules/**/*/public/img/**/*.gif',
-        'modules/**/*/public/img/**/*.svg'
-      ],
-      views: ['modules/*/client/public/views/**/*.html'],
-      templates: ['build/templates.js']
-    },
-    admin: {
-      lib: {
-        css: [
-          // bower:css
-          // 'public/lib/bootstrap/dist/css/bootstrap.css',
-          // 'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-          'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
-          'public/lib/angular-material/angular-material.css',
-          'public/lib/angular-material-data-table/dist/md-data-table.css',
-          'public/lib/froala_editor/css/froala_editor.min.css',
-          'public/lib/textAngular/dist/textAngular.css'
-          // endbower
-        ],
-        js: [
-          // bower:js
-          'public/lib/angular/angular.js',
-          'public/lib/angular-animate/angular-animate.js',
-          // 'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
           'public/lib/ng-file-upload/ng-file-upload.js',
           'public/lib/angular-aria/angular-aria.js',
           'public/lib/angular-messages/angular-messages.js',
@@ -119,9 +59,67 @@ module.exports = {
         'modules/**/*/admin/img/**/*.gif',
         'modules/**/*/admin/img/**/*.svg'
       ],
-      views: ['modules/*/client/views/admin/**/*.html'],
-      templates: ['build/templates.js']
+      views: ['modules/*/client/admin/views/**/*.html'],
+      templates: ['build/admin.templates.js']
     },
+    public: {
+      lib: {
+        css: [
+          // bower:css
+          'public/lib/bootstrap/dist/css/bootstrap.css',
+          'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+          'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
+          'public/lib/angular-material/angular-material.css',
+          'public/lib/angular-material-data-table/dist/md-data-table.css',
+          'public/lib/textAngular/dist/textAngular.css'
+          // endbower
+        ],
+        js: [
+          // bower:js
+          'public/lib/angular/angular.js',
+          'public/lib/angular-animate/angular-animate.js',
+          'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+          'public/lib/ng-file-upload/ng-file-upload.js',
+          'public/lib/angular-aria/angular-aria.js',
+          'public/lib/angular-messages/angular-messages.js',
+          'public/lib/angular-material/angular-material.js',
+          'public/lib/angular-mocks/angular-mocks.js',
+          'public/lib/angular-resource/angular-resource.js',
+          'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
+          'public/lib/angular-ui-router/release/angular-ui-router.js',
+          'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
+          'public/lib/angular-material-data-table/dist/md-data-table.js',
+          'public/lib/textAngular/dist/textAngular-rangy.min.js',
+          'public/lib/textAngular/dist/textAngular-sanitize.min.js',
+          'public/lib/textAngular/dist/textAngular.min.js'
+          // endbower
+        ],
+        tests: ['public/lib/angular-mocks/angular-mocks.js']
+      },
+      css: [
+        'modules/*/client/public/{css,less,scss}/*.css'
+      ],
+      less: [
+        'modules/*/client/public/less/*.less'
+      ],
+      sass: [
+        'modules/*/client/public/scss/*.scss'
+      ],
+      js: [
+        'modules/core/client/public/app/config.js',
+        'modules/core/client/public/app/init.js',
+        'modules/*/client/public/*.js',
+        'modules/*/client/public/**/*.js'
+      ],
+      img: [
+        'modules/**/*/public/img/**/*.jpg',
+        'modules/**/*/public/img/**/*.png',
+        'modules/**/*/public/img/**/*.gif',
+        'modules/**/*/public/img/**/*.svg'
+      ],
+      views: ['modules/*/client/public/views/**/*.html'],
+      templates: ['build/public.templates.js']
+    }
   },
   server: {
     gulpConfig: ['gulpfile.js'],

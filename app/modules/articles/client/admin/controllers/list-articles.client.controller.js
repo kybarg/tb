@@ -60,9 +60,9 @@
     vm.getArticles = function () {
       var params = {};
 
-      for(var prop in vm.query) {
+      for (var prop in vm.query) {
         if (defaultQuery.hasOwnProperty(prop)) {
-          if (defaultQuery[prop] != vm.query[prop]) params[prop] = vm.query[prop];
+          if (defaultQuery[prop] !== vm.query[prop]) params[prop] = vm.query[prop];
         } else {
           params[prop] = vm.query[prop];
         }
@@ -95,6 +95,6 @@
     //   }
 
     // });
-      vm.getArticles();
+    vm.getArticles();
   }
 }());

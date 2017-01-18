@@ -45,8 +45,8 @@
       }
       return CategoriesService.query(query, function (result) {
         vm.categories = baseCategories.concat(result.items.filter(function (item) {
-          if(parent)
-            return item._id != parent._id;
+          if (parent)
+            return item._id !== parent._id;
           return true;
         })).sort(function (a, b) {
           var nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -75,7 +75,7 @@
           return 0;
         });
       }).$promise;
-    }
+    };
 
     $element.find('input').on('keydown', function (ev) {
       ev.stopPropagation();
@@ -92,7 +92,7 @@
 
       $mdDialog.show(confirm).then(function () {
         vm.category.$remove(function () {
-          $state.go('admin.categories.list')
+          $state.go('admin.categories.list');
           $mdToast.show($mdToast.simple({ position: 'bottom right' }).textContent('Category removed successfully!'));
         });
       });
@@ -120,4 +120,4 @@
       }
     }
   }
-} ());
+}());

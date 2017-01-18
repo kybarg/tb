@@ -33,7 +33,7 @@
         // template: '<ui-view/>',
         views: {
           '@': {
-            templateUrl: '/modules/core/client/admin/views/layout.client.view.html',
+            templateUrl: '/modules/core/client/admin/views/layout.client.view.html'
           },
           'toolbar@admin': {
             templateUrl: '/modules/core/client/admin/views/header.client.view.html',

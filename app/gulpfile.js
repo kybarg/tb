@@ -84,10 +84,10 @@ gulp.task('watch', function () {
 
   if (process.env.NODE_ENV === 'production') {
     gulp.watch(defaultAssets.server.gulpConfig, ['templatecache', 'eslint']);
-    gulp.watch(defaultAssets.client.views, ['templatecache']).on('change', plugins.refresh.changed);
+    gulp.watch(_.union(defaultAssets.client.admin.views, defaultAssets.client.public.views), ['templatecache']).on('change', plugins.refresh.changed);
   } else {
     gulp.watch(defaultAssets.server.gulpConfig, ['eslint']);
-    gulp.watch(defaultAssets.client.views).on('change', plugins.refresh.changed);
+    gulp.watch(_.union(defaultAssets.client.admin.views, defaultAssets.client.public.views)).on('change', plugins.refresh.changed);
   }
 });
 
@@ -118,7 +118,7 @@ gulp.task('watch:server:run-tests', function () {
 
 // CSS linting task
 gulp.task('csslint', function () {
-  return gulp.src(defaultAssets.client.admin.css.concat(defaultAssets.client.public.css))
+  return gulp.src(_.union(defaultAssets.client.admin.css, defaultAssets.client.public.css))
     .pipe(plugins.csslint('.csslintrc'))
     .pipe(plugins.csslint.formatter());
     // Don't fail CSS issues yet
@@ -130,7 +130,7 @@ gulp.task('eslint', function () {
   var assets = _.union(
     defaultAssets.server.gulpConfig,
     defaultAssets.server.allJS,
-    defaultAssets.client.admin.js.concat(defaultAssets.client.public.js),
+    _.union(defaultAssets.client.admin.js, defaultAssets.client.public.js),
     testAssets.tests.server,
     testAssets.tests.client,
     testAssets.tests.e2e
@@ -143,34 +143,49 @@ gulp.task('eslint', function () {
 
 // JS minifying task
 gulp.task('uglify', function () {
-  var assets = _.union(
-    defaultAssets.client.admin.js.concat(defaultAssets.client.public.js),
-    defaultAssets.client.templates
-  );
+  var assets = {
+    admin: _.union(defaultAssets.client.admin.js, defaultAssets.client.public.templates),
+    public: _.union(defaultAssets.client.public.js, defaultAssets.client.public.templates)
+  };
   del(['public/dist/*']);
 
-  return gulp.src(assets)
+  gulp.src(assets.admin)
     .pipe(plugins.ngAnnotate())
     .pipe(plugins.uglify({
       mangle: false
     }))
-    .pipe(plugins.concat('application.min.js'))
+    .pipe(plugins.concat('admin.application.min.js'))
+    .pipe(plugins.rev())
+    .pipe(gulp.dest('public/dist'));
+
+  gulp.src(assets.public)
+    .pipe(plugins.ngAnnotate())
+    .pipe(plugins.uglify({
+      mangle: false
+    }))
+    .pipe(plugins.concat('public.application.min.js'))
     .pipe(plugins.rev())
     .pipe(gulp.dest('public/dist'));
 });
 
 // CSS minifying task
 gulp.task('cssmin', function () {
-  return gulp.src(defaultAssets.client.admin.css.concat(defaultAssets.client.public.css))
+  gulp.src(defaultAssets.client.admin.css)
     .pipe(plugins.csso())
-    .pipe(plugins.concat('application.min.css'))
+    .pipe(plugins.concat('admin.application.min.css'))
+    .pipe(plugins.rev())
+    .pipe(gulp.dest('public/dist'));
+
+  gulp.src(defaultAssets.client.public.css)
+    .pipe(plugins.csso())
+    .pipe(plugins.concat('public.application.min.css'))
     .pipe(plugins.rev())
     .pipe(gulp.dest('public/dist'));
 });
 
 // Sass task
 gulp.task('sass', function () {
-  return gulp.src(defaultAssets.client.admin.sass.concat(defaultAssets.client.public.sass))
+  return gulp.src(_.union(defaultAssets.client.public.sass, defaultAssets.client.admin.sass))
     .pipe(plugins.sass())
     .pipe(plugins.autoprefixer())
     .pipe(gulp.dest('./modules/'));
@@ -178,7 +193,7 @@ gulp.task('sass', function () {
 
 // Less task
 gulp.task('less', function () {
-  return gulp.src(defaultAssets.client.admin.less.concat(defaultAssets.client.public.less))
+  return gulp.src(_.union(defaultAssets.client.admin.less, defaultAssets.client.public.less))
     .pipe(plugins.less())
     .pipe(plugins.autoprefixer())
     .pipe(gulp.dest('./modules/'));
@@ -186,7 +201,7 @@ gulp.task('less', function () {
 
 // Imagemin task
 gulp.task('imagemin', function () {
-  return gulp.src(defaultAssets.client.img)
+  return gulp.src(_.union(defaultAssets.client.public.img, defaultAssets.client.admin.img))
     .pipe(plugins.imagemin({
       progressive: true,
       svgoPlugins: [{ removeViewBox: false }],
@@ -254,7 +269,7 @@ gulp.task('copyLocalEnvConfig', function () {
 
 // Make sure upload directory exists
 gulp.task('makeUploadsDir', function () {
-  return fs.mkdir('modules/users/client/img/profile/uploads', function (err) {
+  return fs.mkdir('modules/users/client/public/img/profile/uploads', function (err) {
     if (err && err.code !== 'EEXIST') {
       console.error(err);
     }
@@ -263,8 +278,18 @@ gulp.task('makeUploadsDir', function () {
 
 // Angular template cache task
 gulp.task('templatecache', function () {
-  return gulp.src(defaultAssets.client.views)
-    .pipe(plugins.templateCache('templates.js', {
+  gulp.src(defaultAssets.client.admin.views)
+    .pipe(plugins.templateCache('admin.templates.js', {
+      root: 'modules/',
+      module: 'core',
+      templateHeader: '(function () {' + endOfLine + '	\'use strict\';' + endOfLine + endOfLine + '	angular' + endOfLine + '		.module(\'<%= module %>\'<%= standalone %>)' + endOfLine + '		.run(templates);' + endOfLine + endOfLine + '	templates.$inject = [\'$templateCache\'];' + endOfLine + endOfLine + '	function templates($templateCache) {' + endOfLine,
+      templateBody: '		$templateCache.put(\'<%= url %>\', \'<%= contents %>\');',
+      templateFooter: '	}' + endOfLine + '})();' + endOfLine
+    }))
+    .pipe(gulp.dest('build'));
+
+  gulp.src(defaultAssets.client.public.views)
+    .pipe(plugins.templateCache('public.templates.js', {
       root: 'modules/',
       module: 'core',
       templateHeader: '(function () {' + endOfLine + '	\'use strict\';' + endOfLine + endOfLine + '	angular' + endOfLine + '		.module(\'<%= module %>\'<%= standalone %>)' + endOfLine + '		.run(templates);' + endOfLine + endOfLine + '	templates.$inject = [\'$templateCache\'];' + endOfLine + endOfLine + '	function templates($templateCache) {' + endOfLine,

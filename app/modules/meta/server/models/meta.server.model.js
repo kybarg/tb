@@ -15,11 +15,11 @@ module.exports = function metaPlugin(schema, options) {
       title: String,
       description: String
     }
-  })
+  });
 
   schema.pre('save', function (next) {
 
-    if(!this.meta) this.meta = {};
+    if (!this.meta) this.meta = {};
 
     // Generate Meta Title with template if it's empty
     if (!this.meta.title) {
@@ -33,4 +33,4 @@ module.exports = function metaPlugin(schema, options) {
 
     next();
   });
-}
+};

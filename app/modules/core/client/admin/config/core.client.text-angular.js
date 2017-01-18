@@ -20,21 +20,21 @@
             '</md-menu-content>' +
             '</md-menu></span>',
           action: function (o) {
-            if(typeof o.value !== 'undefined')
-              return this.$parent.$editor().wrapSelection('formatBlock', '<' + o.value + '>')
+            if (typeof o.value !== 'undefined')
+              return this.$parent.$editor().wrapSelection('formatBlock', '<' + o.value + '>');
           },
-          isButtonDisabled: function(){
-              // to set your own disabled logic set a function or boolean on the tool called 'disabled'
-              return ( // this bracket is important as without it it just returns the first bracket and ignores the rest
-                  // when the button's disabled function/value evaluates to true
-                  (typeof this.$eval('disabled') !== 'function' && this.$eval('disabled')) || this.$eval('disabled()') ||
-                  // all buttons except the HTML Switch button should be disabled in the showHtml (RAW html) mode
-                  (this.name !== 'html' && this.$parent.$editor().showHtml) ||
-                  // if the toolbar is disabled
-                  this.$parent.$parent.disabled ||
-                  // if the current editor is disabled
-                  this.$parent.$editor().disabled
-              );
+          isButtonDisabled: function() {
+            // to set your own disabled logic set a function or boolean on the tool called 'disabled'
+            return ( // this bracket is important as without it it just returns the first bracket and ignores the rest
+              // when the button's disabled function/value evaluates to true
+              (typeof this.$eval('disabled') !== 'function' && this.$eval('disabled')) || this.$eval('disabled()') ||
+              // all buttons except the HTML Switch button should be disabled in the showHtml (RAW html) mode
+              (this.name !== 'html' && this.$parent.$editor().showHtml) ||
+              // if the toolbar is disabled
+              this.$parent.$parent.disabled ||
+              // if the current editor is disabled
+              this.$parent.$editor().disabled
+            );
           },
           // activeState: function (q) {
           //   return function () {

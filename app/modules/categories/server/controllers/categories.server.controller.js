@@ -112,31 +112,31 @@ exports.list = function (req, res) {
       $match: match
     }, {
       $graphLookup: {
-        from: "categories",
-        startWith: "$parent",
-        connectFromField: "parent",
-        connectToField: "_id",
-        as: "ancestors"
+        from: 'categories',
+        startWith: '$parent',
+        connectFromField: 'parent',
+        connectToField: '_id',
+        as: 'ancestors'
       }
     }, {
-      "$project": {
-        "_id": 1,
-        "name": 1,
-        "description": 1,
-        "slug": 1,
-        "created": 1,
-        "parent": 1,
-        "ancestors": 1,
-        "path": {
-          "$concatArrays": [
+      $project: {
+        _id: 1,
+        name: 1,
+        description: 1,
+        slug: 1,
+        created: 1,
+        parent: 1,
+        ancestors: 1,
+        path: {
+          $concatArrays: [
             {
-              "$map": {
-                "input": "$ancestors",
-                "as": "a",
-                "in": ["$$a.name", "$$a._id"]
+              $map: {
+                input: '$ancestors',
+                as: 'a',
+                in: ['$$a.name', '$$a._id']
               }
             },
-            [["$name", "$_id"]]
+            [['$name', '$_id']]
           ]
         }
       }

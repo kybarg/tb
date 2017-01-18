@@ -230,9 +230,11 @@ module.exports.initModulesSeo = function (app) {
   // }));
 
   app.use(function (req, res, next) {
-    // If there is _escaped_fragment_ option, it means we have to // generate the static HTML that should normally return the Javascript 
+    // If there is _escaped_fragment_ option, it means we have to // generate the static HTML that should normally return the Javascript
     if (typeof req.query._escaped_fragment_ !== 'undefined') {
-      var _ph, _page, _outObj;
+      var _ph,
+        _page,
+        _outObj;
       phantom.create(['--load-images=no'], {
         phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs'
       }).then(function (ph) {
@@ -252,7 +254,7 @@ module.exports.initModulesSeo = function (app) {
         return console.log(e);
       });
     } else
-      // If there is no _escaped_fragment_, we return the normal index template. 
+      // If there is no _escaped_fragment_, we return the normal index template.
       next();
   });
 };

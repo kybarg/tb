@@ -6,12 +6,12 @@
     .module('categories.services')
     .factory('CategoriesService', CategoriesService);
 
-  CategoriesService.$inject = ['$resource'];
+  CategoriesService.$inject = ['$resource', '$log'];
 
-  function CategoriesService($resource) {
+  function CategoriesService($resource, $log) {
     var Category = $resource('/api/categories/:categoryId', {
       categoryId: '@_id'
-    },{
+    }, {
       update: {
         method: 'PUT'
       },

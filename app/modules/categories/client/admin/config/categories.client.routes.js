@@ -77,4 +77,4 @@
   function newCategory(CategoriesService) {
     return new CategoriesService();
   }
-} ());
+}());
