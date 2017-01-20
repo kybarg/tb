@@ -12,7 +12,7 @@ module.exports = function picturePlugin(schema, opts) {
     })
 
     schema.methods.addPicture = function (file) {
-        if (file.filename) {
+        if (file && file.filename) {
             this.picture.push({
                 name: file.filename,
                 color: null
@@ -21,7 +21,7 @@ module.exports = function picturePlugin(schema, opts) {
     }
 
     schema.methods.removePicture = function (file) {
-        var target = file.filename ? file.filename : file;
+        var target = (file && file.filename) ? file.filename : file;
         for (var i = 0; i < this.picture.length; i++) {
             if (this.picture[i].name == target) {
                 this.picture.splice(i, 1);

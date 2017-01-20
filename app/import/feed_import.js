@@ -22,13 +22,16 @@ function FeedImport(source) {
     this.importStats = {
         new: 0,
         updated: 0,
-        deleted: 0
+        deleted: 0,
+        blocked: 0,
+        ignored: 0
     };
+    this.categories = {};
 }
 
 util.inherits(FeedImport, events.EventEmitter);
 
-FeedImport.prototype.downloadFeed = function (err, callback) {
+FeedImport.prototype.downloadFeed = function (callback) {
     console.log('downloading from ' + this.source.url);
     var self = this;
     try {
@@ -56,21 +59,27 @@ FeedImport.prototype.downloadFeed = function (err, callback) {
             }
         })
     } catch (e) {
-        err = e;
+        // err = e;
         console.log(e);
         callback();
     }
 }
 
 FeedImport.prototype.importItem = function (item) {
-    this.xmlStream.pause();
     var self = this;
     var params = item.param;
     var picts = item.picture;
     var product = new Product();
     var rule;
     var value;
-    product.name = item.name;
+    var category;
+    var categoryPath;
+    product.name = item.name.replace(" " + item.vendor, "");
+  //  product.name = item.name;
+    category = ruleList.getCategory(product.name);
+    if (!category) {
+        return self.emit('itemImportNeedUser', item);
+    }
     for (var i = 0; i < params.length; i++) {
         rule = ruleList.getRule(params[i].$.name)
         if (rule) {
@@ -84,53 +93,126 @@ FeedImport.prototype.importItem = function (item) {
             }
         }
     }
+
+    if (!product.age) {
+        if (self.categories[item.categoryId]) {
+            rule = ruleList.getRule('age');
+            value = ruleList.getValue(rule, self.categories[item.categoryId]);
+            if (!value) {
+                importStats.ignored++;
+                return self.emit('itemImportIgnored', item);
+            } else {
+                product.age = value;
+            }
+        }
+    }
+
+    if (!product.sex && product.age != 1) {
+        if (category.sex != '') {
+            product.sex = category.sex;
+        } else {
+            if (self.categories[item.categoryId]) {
+                rule = ruleList.getRule('gender');
+                value = ruleList.getValue(rule, self.categories[item.categoryId]);
+                if (!value) {
+                    importStats.ignored++;
+                    return self.emit('itemImportIgnored', item);
+                } else {
+                    product.sex = value;
+                }
+            }
+        }
+    }
+
+    switch (product.age) {
+        case 1:
+            categoryPath = 'Для малышей';
+            break;
+        case 2:
+            categoryPath = product.sex == 1 ? 'Девочке' : product.sex == 2 ? 'Мальчику' : '';
+            break;
+        case 3:
+            categoryPath = product.sex == 1 ? 'Женщине' : product.sex == 2 ? 'Мужчине' : '';
+    }
+
+    categoryPath = categoryPath.concat('/', category.type, category.sub_type == '' ? '' : '/' + category.sub_type, '/', category.category_name);
+
     product.description = item.description;
     product.price = parseInt(item.price);
     product.oldPrice = item.oldprice !== undefined ? parseInt(item.oldprice) : null;
     product.url = item.url;
     product.shop = this.source.id !== undefined ? this.source : null;
-    if (Array.isArray(picts)){
-        var prod = product;
-        async.eachSeries(picts, function(picture, done){
-            storage.downloadFile(picture, function(err, file){
-                if (!err){
-                    product.addPicture(file);
-                } else{
-                    console.log(err.message)
-                }
-                done();
-            })
-        }, function(){
-            product.save();
-            self.xmlStream.resume();
-        })
-    }
+    self.pictDownloadQueue.push({
+        picts: picts,
+        product: product
+    }, function () {
+        self.importStats.new++;
+    });
 }
 
 
 
 FeedImport.prototype.startImport = function () {
     var self = this;
+    this.pictDownloadQueue = async.queue(function (prod, callback) {
+        var picts = [].concat(prod.picts);
+        var product = prod.product;
+        async.eachSeries(picts, function (picture, done) {
+            storage.downloadFile(picture, function (err, file) {
+                if (!err) {
+                    product.addPicture(file);
+                } else {
+                    console.log(err.message)
+                }
+                done();
+            });
+        }, function () {
+            product.save(function () {
+                callback();
+            });
+        });
+    }, 1);
+    
+    this.xmlStream.on('error', function (e) {
+        console.log(e);
+    });
+    this.xmlStream.collect('category');
+    this.xmlStream.on('endElement: categories', function (categories) {
+        function chainCat(cat) {
+            if (cat.$.parentId && cat.$.parentId != 0) {
+                for (var i = 0; i < categories.category.length; i++) {
+                    if (categories.category[i].$.id == cat.$.parentId) {
+                        var c = {};
+                        Object.assign(c, cat);
+                        c.$text = chainCat(categories.category[i]).$text + '/' + c.$text;
+                        return c;
+                    }
+                }
+            }
+            return cat;
+        }
+        for (var i = 0; i < categories.category.length; i++) {
+            self.categories[categories.category[i].$.id] = chainCat(categories.category[i]).$text;
+        }
+    });
+
     this.xmlStream.collect('picture');
     this.xmlStream.collect('param');
     this.xmlStream.on('endElement: offer', function (item) {
-        var n = item.name.toLowerCase().split(" ");
-        for (var i = 0; i < n.length; i++) {
-            if (ruleList.rules.product.name.whitelist.indexOf(n[i]) != -1) {
-                self.importItem(item);
-                //  self.emit('itemImportDone', item);
-            }
+        if (ruleList.inBlacklist(item.name)) {
+            importStats.blocked++;
+            return self.emit('itemImportBlocked', item);
+        };
+
+        switch (undefined) {
+            case item.vendor:
+            case item.picture:
+            case item.price:
+                importStats.ignored++;
+                return self.emit('itemImportIgnored', item);
         }
-        for (var i = 0; i < n.length; i++) {
-            if (ruleList.rules.product.name.blacklist.indexOf(n[i]) != -1) {
-                //  return self.emit('itemImportBlocked', item);
-            }
-        }
-         self.emit('itemImportNeedUser', item);
-       self.importItem(item);
-     //  this.xmlStream.pause();
-       
-    });
+        self.importItem(item);
+       });
 }
 
 module.exports = FeedImport;
