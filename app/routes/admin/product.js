@@ -15,6 +15,7 @@ var upload = multer({
 });
 
 module.exports = function (app, passport, exphbs) {
+
     app.get('/admin/product/index', function (req, res) {
         req.breadcrumbs(__('Products'));
         Product.paginate({}, {
