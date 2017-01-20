@@ -1,21 +1,20 @@
 <form method="POST">
     {{#if products}}
-    <div class="mb-1">
-        <div class="float-xs-left">
+    <div class="mb-3">
+        <div class="float-left">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                        {{__ "Bulk actions"}}
-                    </button>
+                    {{__ "Bulk actions"}}
+                </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">{{__ "Add to category"}}</a>
-                    <a class="dropdown-item" href="#">{{__ "Move to category"}}</a>
                     <button class="dropdown-item" onclick="form.action='/admin/product/delete';">{{__ "Delete"}}</button>
                 </div>
             </div>
         </div>
-        <div class="float-xs-right">
-            <a href="/admin/product/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> {{__ "New product"}}</a>
+        <div class="float-right">
+            <a href="/admin/product/create" class="btn btn-primary">
+                <i class="mdi mdi-plus"></i> {{__ "New product"}}</a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -24,9 +23,9 @@
             <tr>
                 <th style="width: 1%;">
                     <label class="custom-control custom-checkbox m-0">
-                            <input class="custom-control-input" type="checkbox" id="select-all-toggle">
-                            <span class="custom-control-indicator"></span>&nbsp;
-                        </label>
+                        <input class="custom-control-input" type="checkbox" id="select-all-toggle">
+                        <span class="custom-control-indicator"></span>&nbsp;
+                    </label>
                 </th>
                 <th style="width: 1%;">#</th>
                 <th style="width: 71px;">{{__ "Picture"}}</th>
@@ -41,22 +40,30 @@
             <tr>
                 <th>
                     <label class="custom-control custom-checkbox m-0">
-                                    <input name="products[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
-                                    <span class="custom-control-indicator"></span>&nbsp;
-                                </label>
+                        <input name="products[]" class="custom-control-input select-all" type="checkbox" value="{{this._id}}">
+                        <span class="custom-control-indicator"></span>&nbsp;
+                    </label>
                 </th>
                 <th scope="row">{{@index}}</th>
                 <td>
                     <img {{#if this.picture}} src="{{../pictUrl}}{{this.picture}}" {{else}} data-src="holder.js/40x40" {{/if}} alt="Product image"
                         class="rounded" style="height:40px; width: 40px;" />
                 </td>
-                <td><a href="/admin/product/update/{{this._id}}">{{this.name}}</a></td>
+                <td>
+                    <a href="/admin/product/update/{{this._id}}">{{this.name}}</a>
+                </td>
                 <!-- <td>Женщине, Одежжда, Верхняя одежда, Шубы</td> -->
                 <!-- <td>Otto</td> -->
                 <td>
-                    <a href="#" class="btn btn-info btn-sm"><i class="mdi mdi-eye"></i></a>
-                    <a href="/admin/product/update/{{this._id}}" class="btn btn-primary btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
-                    <a href="#" data-href="/admin/product/delete/{{this._id}}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal"><i class="mdi mdi-delete"></i></a>
+                    <a href="#" class="btn btn-info btn-sm">
+                        <i class="mdi mdi-eye"></i>
+                    </a>
+                    <a href="/admin/product/update/{{this._id}}" class="btn btn-primary btn-sm">
+                        <i class="mdi mdi-lead-pencil"></i>
+                    </a>
+                    <a href="#" data-href="/admin/product/delete/{{this._id}}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal">
+                        <i class="mdi mdi-delete"></i>
+                    </a>
                 </td>
             </tr>
             {{/each}}
@@ -73,7 +80,9 @@
                 </a>
             </li>
             {{/paginate}} {{#paginate pagination type="middle" limit="7" }}
-            <li class="page-item{{#if active}} active{{/if}}"><a class="page-link" href="/admin/product/index?page={{n}}">{{n}}</a></li>
+            <li class="page-item{{#if active}} active{{/if}}">
+                <a class="page-link" href="/admin/product/index?page={{n}}">{{n}}</a>
+            </li>
             {{/paginate}} {{#paginate pagination type="last" }}
             <li class="page-item{{#if disabled}} disabled{{/if}}">
                 <a class="page-link" href="/admin/product/index?page={{n}}" aria-label="Next">
@@ -88,7 +97,8 @@
     <div class="jumbotron text-xs-center mx-auto" style="background-color: transparent; max-width: 728px;">
         <h1 class="display-4">{{__ "No products are found."}}</h1>
         <p class="lead">{{__ "You can create new one."}}</p>
-        <a href="/admin/product/create" class="btn btn-primary"><i class="mdi mdi-plus"></i> {{__ "New product"}}</a>
+        <a href="/admin/product/create" class="btn btn-primary">
+            <i class="mdi mdi-plus"></i> {{__ "New product"}}</a>
     </div>
     {{/if}}
 </form>
@@ -98,8 +108,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title" id="deleteConfirmModalLabel">Are you sure?</h4>
             </div>
             <div class="modal-body">

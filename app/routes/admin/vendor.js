@@ -15,7 +15,7 @@ var upload = multer({
 
 module.exports = function (app, passport, exphbs) {
 
-    app.get('/admin/vendor/index', isLoggedIn, function (req, res) {
+    app.get('/admin/vendor/index', function (req, res) {
 
         req.breadcrumbs(__('Vendors'));
 
@@ -36,7 +36,8 @@ module.exports = function (app, passport, exphbs) {
                     showPagination: result.pages > 1 ? true : false,
                     helpers: {
                         paginate: handlebarsPaginate
-                    }
+                    },
+                    pictUrl: pictUrl
                 });
             } else {
                 errorLogger.error(err.message);
@@ -44,7 +45,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.get('/admin/vendor/create', isLoggedIn, function (req, res) {
+    app.get('/admin/vendor/create', function (req, res) {
         req.breadcrumbs([{
             name: __('Vendors'),
             url: '/admin/vendor/index'
@@ -57,7 +58,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.post('/admin/vendor/create', isLoggedIn, upload.single('image'), function (req, res) {
+    app.post('/admin/vendor/create', upload.single('image'), function (req, res) {
         var vendor = new Vendor(req.body.vendor);
         if (req.file) {
             vendor.pictureFile = req.file;
@@ -81,7 +82,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.get('/admin/vendor/update/:id', isLoggedIn, function (req, res) {
+    app.get('/admin/vendor/update/:id', function (req, res) {
         Vendor.findOne({
                 _id: mongoose.Types.ObjectId(req.params.id)
             })
@@ -95,13 +96,14 @@ module.exports = function (app, passport, exphbs) {
 
                 res.render('vendor/create', {
                     breadcrumbs: req.breadcrumbs(),
-                    vendor: vendor
+                    vendor: vendor,
+                    pictUrl: pictUrl
                 });
             });
     });
 
     // Update vendor with ID
-    app.post('/admin/vendor/update/:id', isLoggedIn, upload.single('image'), function (req, res) {
+    app.post('/admin/vendor/update/:id', upload.single('image'), function (req, res) {
         Vendor.findById(req.params.id, function (err, vendor) {
             if (err) {
                 res.redirect('/admin/vendor/update/' + req.params.id);
@@ -132,7 +134,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.get('/admin/vendor/delete/:id', isLoggedIn, function (req, res) {
+    app.get('/admin/vendor/delete/:id', function (req, res) {
         Vendor.findById(req.params.id).exec(function (err, vendor) {
             if (vendor) {
                 vendor.remove();
@@ -142,7 +144,7 @@ module.exports = function (app, passport, exphbs) {
         });
     });
 
-    app.post('/admin/vendor/search', isLoggedIn, function (req, res) {
+    app.post('/admin/vendor/search', function (req, res) {
         Vendor.find({
                 name: {
                     $regex: req.body.searchString ? req.body.searchString : '',
@@ -156,18 +158,3 @@ module.exports = function (app, passport, exphbs) {
             });
     });
 }
-
-
-
-
-
-
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-};

@@ -75,5 +75,12 @@
 	"You can create new one.": "You can create new one.",
 	"No categories are found.": "No categories are found.",
 	"No shops are found.": "No shops are found.",
-	"No vendors are found.": "No vendors are found."
+	"No vendors are found.": "No vendors are found.",
+	"Synonyms": "Synonyms",
+	"English": "English",
+	"Russian": "Russian",
+	"Product name": "Product name",
+	"Product description": "Product description",
+	"0.00": "0.00",
+	"Product url": "Product url"
 }
