@@ -5,11 +5,11 @@
         border-bottom: 1px solid rgba(0,0,0,0.12);
         padding: 0 12px;
         height: auto;
-        min-height: 48px;
         max-height: none;
 
-        .md-textangular-group {
-
+        .md-toolbar-tools {
+            padding: 0;
+            width: auto;
         }
         button.md-textangular-button {
             line-height: 24px;

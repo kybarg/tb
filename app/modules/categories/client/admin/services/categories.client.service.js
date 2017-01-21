@@ -15,9 +15,17 @@
       update: {
         method: 'PUT'
       },
-      'query': {
+      query: {
         method: 'GET',
         isArray: false
+      },
+      pictures: {
+        method: 'POST',
+        url: '/api/categories/:categoryId/pictures'
+      },
+      deletePictures: {
+        method: 'DELETE',
+        url: '/api/categories/:categoryId/pictures/:pictureId'
       }
     });
 
@@ -25,6 +33,15 @@
       createOrUpdate: function () {
         var category = this;
         return createOrUpdate(category);
+      }
+    });
+
+    angular.extend(Category, {
+      getCategories: function (params) {
+        return this.query(params).$promise;
+      },
+      deletePicture: function (params) {
+        return this.deletePictures(params).$promise;
       }
     });
 

@@ -1,0 +1,59 @@
+tb-pictures {
+  display: block;
+  position: relative;
+  padding: 2px;
+  margin: 18px 0;
+  vertical-align: middle; }
+  tb-pictures label {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    pointer-events: none;
+    -webkit-font-smoothing: antialiased;
+    padding-left: 3px;
+    padding-right: 0;
+    z-index: 1;
+    -webkit-transform: translate3d(0, 28px, 0) scale(1);
+            transform: translate3d(0, 28px, 0) scale(1);
+    -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    max-width: 100%;
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
+    -webkit-transform: translate3d(0, 24px, 0);
+            transform: translate3d(0, 24px, 0);
+    -webkit-transform: translate3d(0, 6px, 0) scale(0.75);
+            transform: translate3d(0, 6px, 0) scale(0.75); }
+    [dir=rtl] tb-pictures label {
+      left: auto; }
+    [dir=rtl] tb-pictures label {
+      right: 0; }
+    [dir=rtl] tb-pictures label {
+      padding-left: 0; }
+    [dir=rtl] tb-pictures label {
+      padding-right: 3px; }
+    [dir=rtl] tb-pictures label {
+      -webkit-transform-origin: right top;
+              transform-origin: right top; }
+  tb-pictures .tb-pictures__drop-box {
+    border-style: dashed;
+    border-width: 1px;
+    border-radius: 2px;
+    margin: 8px 0 18px;
+    overflow: hidden;
+    padding: 8px;
+    position: relative; }
+    tb-pictures .tb-pictures__drop-box md-progress-linear {
+      position: absolute;
+      top: 0;
+      left: 0; }

@@ -4,9 +4,9 @@
   // Users directive used to force lowercase input
   angular
     .module('meta')
-    .directive('mdMeta', mdMeta);
+    .directive('tbMeta', tbMeta);
 
-  function mdMeta() {
+  function tbMeta() {
     return {
       scope: {
         model: '=model'

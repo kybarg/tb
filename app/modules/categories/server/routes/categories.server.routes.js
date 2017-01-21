@@ -18,6 +18,14 @@ module.exports = function (app) {
     .put(categories.update)
     .delete(categories.delete);
 
+  // Category pictures routes
+  app.route('/api/categories/:categoryId/pictures').all(categoriesPolicy.isAllowed)
+    .post(categories.uploadPicture);
+
+  // Single category routes
+  app.route('/api/categories/:categoryId/pictures/:pictureId').all(categoriesPolicy.isAllowed)
+    .delete(categories.deletePicture);
+
   // Finish by binding the Category middleware
   app.param('categoryId', categories.categoryByID);
 };

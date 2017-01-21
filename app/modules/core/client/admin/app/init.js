@@ -3,22 +3,30 @@
 
   // Start by defining the main module and adding the module dependencies
   angular
-    .module(app.applicationModuleName, app.applicationModuleVendorDependencies);
+    .module(app.applicationModuleName, app.applicationModuleVendorDependencies)
 
   // Setting HTML5 Location Mode
   angular
     .module(app.applicationModuleName)
     .config(bootstrapConfig);
 
-  bootstrapConfig.$inject = ['$compileProvider', '$locationProvider', '$httpProvider', '$logProvider'];
+  bootstrapConfig.$inject = ['$compileProvider', '$locationProvider', '$httpProvider', '$logProvider', '$mdThemingProvider'];
 
-  function bootstrapConfig($compileProvider, $locationProvider, $httpProvider, $logProvider) {
+  function bootstrapConfig($compileProvider, $locationProvider, $httpProvider, $logProvider, $mdThemingProvider) {
     $locationProvider.html5Mode({
       enabled: true,
       requireBase: false
     }).hashPrefix('!');
 
-$httpProvider.interceptors.push('authInterceptor');
+    // $mdThemingProvider
+    //   .theme('default')
+    //   .primaryPalette('blue')
+    //   .accentPalette('teal')
+    //   .warnPalette('red')
+    //   .backgroundPalette('grey')
+    //   .dark();
+
+    $httpProvider.interceptors.push('authInterceptor');
 
     // Disable debug data for production environment
     // @link https://docs.angularjs.org/guide/production

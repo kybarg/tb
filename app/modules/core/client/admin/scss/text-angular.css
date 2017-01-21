@@ -5,8 +5,10 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     padding: 0 12px;
     height: auto;
-    min-height: 48px;
     max-height: none; }
+    .ta-root .ta-toolbar .md-toolbar-tools {
+      padding: 0;
+      width: auto; }
     .ta-root .ta-toolbar button.md-textangular-button {
       line-height: 24px;
       margin: 0;

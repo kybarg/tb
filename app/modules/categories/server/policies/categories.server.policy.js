@@ -20,6 +20,12 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/categories/:categoryId',
       permissions: '*'
+    }, {
+      resources: '/api/categories/:categoryId/pictures',
+      permissions: '*'
+    }, {
+      resources: '/api/categories/:categoryId/pictures/:pictureId',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],

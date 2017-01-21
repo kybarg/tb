@@ -13,7 +13,8 @@ module.exports = {
           'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
           'public/lib/angular-material/angular-material.css',
           'public/lib/angular-material-data-table/dist/md-data-table.css',
-          'public/lib/textAngular/dist/textAngular.css'
+          'public/lib/textAngular/dist/textAngular.css',
+          'public/lib/md-color-picker/dist/mdColorPicker.min.css'
           // endbower
         ],
         js: [
@@ -33,7 +34,9 @@ module.exports = {
           'public/lib/angular-material-data-table/dist/md-data-table.js',
           'public/lib/textAngular/dist/textAngular-rangy.min.js',
           'public/lib/textAngular/dist/textAngular-sanitize.min.js',
-          'public/lib/textAngular/dist/textAngular.min.js'
+          'public/lib/textAngular/dist/textAngular.min.js',
+          'public/lib/tinycolor/dist/tinycolor-min.js',
+          'public/lib/md-color-picker/dist/mdColorPicker.min.js'
           // endbower
         ],
         tests: ['public/lib/angular-mocks/angular-mocks.js']

@@ -3,12 +3,16 @@
 /**
  * Module dependencies.
  */
-var path = require('path'),
-  mongoose = require('mongoose'),
-  async = require('async'),
-  Category = mongoose.model('Category'),
+var _ = require('lodash'),
+  fs = require('fs'),
+  path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  mongoose = require('mongoose'),
+  multer = require('multer'),
+  config = require(path.resolve('./config/config')),
+  Category = mongoose.model('Category'),
+  async = require('async'),
+  crypto = require('crypto');
 
 /**
  * Create a Category
@@ -41,6 +45,7 @@ exports.read = function (req, res) {
  * Update a Category
  */
 exports.update = function (req, res) {
+
   var category = req.category;
 
   category = _.extend(category, req.body);
@@ -154,6 +159,112 @@ exports.list = function (req, res) {
         items: results[1],
         count: results[0]
       });
+    }
+  });
+};
+
+/**
+ * Upload category picture
+ */
+exports.uploadPicture = function (req, res) {
+  var category = req.category;
+  var existingImageName;
+
+  var multerConfig = config.uploads.category.image;
+  // Filtering to upload only images
+  multerConfig.fileFilter = require(path.resolve('./config/lib/multer')).imageFileFilter;
+  multerConfig.storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.resolve(config.uploads.category.image.dest))
+    },
+    filename: function (req, file, cb) {
+      crypto.pseudoRandomBytes(16, function (err, raw) {
+        if (err) return cb(err)
+        cb(null, raw.toString('hex') + path.extname(file.originalname))
+      })
+    }
+  });
+  var upload = multer(multerConfig).single('picture');
+
+  if (category) {
+    // existingImageName = (category.picture && category.picture[0]) ? category.picture[0].name : false;
+    uploadImage()
+      .then(updateCategory)
+      // .then(deleteOldImage)
+      .then(function () {
+        res.json(category);
+      })
+      .catch(function (err) {
+        res.status(422).send(err);
+      });
+  } else {
+    res.status(404).send({
+      message: 'Category not found!'
+    });
+  }
+
+  function uploadImage () {
+    return new Promise(function (resolve, reject) {
+      upload(req, res, function (uploadError) {
+        if (uploadError) {
+          reject(errorHandler.getErrorMessage(uploadError));
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  function updateCategory () {
+    return new Promise(function (resolve, reject) {
+      category.picturesToUpload = req.file;
+      category.save(function (err, thecategory) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  function deleteOldImage () {
+    return new Promise(function (resolve, reject) {
+      if (existingImageName !== Category.schema.path('picture.name').defaultValue) {
+        fs.unlink(existingImageName, function (unlinkError) {
+          if (unlinkError) {
+            console.log(unlinkError);
+            reject({
+              message: 'Error occurred while deleting old profile picture'
+            });
+          } else {
+            resolve();
+          }
+        });
+      } else {
+        resolve();
+      }
+    });
+  }
+};
+
+exports.deletePicture = function (req, res) {
+  var category = req.category;
+  category.picturesToDelete = [req.params.pictureId];
+
+
+  // console.log(req.params.pictureId);
+  // console.log(req.query);
+
+  // res.json({dfgsdfg: 'dfgdfgsfg'});
+
+  category.save(function (err, category) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp({data: category, pictureId: req.params.pictureId});
     }
   });
 };

@@ -28,7 +28,7 @@
             <input ng-model="vm.searchTerm" type="search" placeholder="Search for a categories.." class="demo-header-searchbox md-text" ng-change="vm.getCategories()">
             </md-select-header>
             <div label="categories">
-              <md-option ng-value="category._id" ng-repeat="category in vm.categories" ng-selected="category._id == vm.parent">{{category.name}}<span ng-if="category.path.length > 1"> ({{category.path[0][0]}})</span></md-option>
+              <md-option ng-value="category._id" ng-repeat="category in vm.categories track by category._id" ng-selected="category._id == vm.parent">{{category.name}}<span ng-if="category.path.length > 1"> ({{category.path[0][0]}})</span></md-option>
             </div>
           </md-select>
         </md-input-container>
@@ -41,12 +41,15 @@
           <input name="slug" ng-model="vm.category.slug">
         </md-input-container>
 
-        <md-meta model="vm.category" />
+        <tb-meta model="vm.category"></tb-meta>
+
+        <tb-pictures model="vm.category" ng-if="vm.category._id"></tb-pictures>
+
       </div>
     </div>
     <md-card-actions layout="row" layout-align="start center">
       <md-button class="md-primary" type="submit">{{vm.category._id ? 'Update' : 'Create'}}</md-button>
-      <md-button ng-show="vm.category._id" ng-click="vm.remove()">Remove</md-button>
+      <md-button ng-if="vm.category._id" ng-click="vm.remove()">Remove</md-button>
     </md-card-actions>
   </form>
 </md-card>

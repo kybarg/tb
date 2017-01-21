@@ -72,9 +72,15 @@
     }).$promise;
   }
 
+  getCategories.$inject = ['CategoriesService'];
+
+  function getCategories(CategoriesService) {
+    return CategoriesService.query().$promise;
+  }
+
   newCategory.$inject = ['CategoriesService'];
 
   function newCategory(CategoriesService) {
     return new CategoriesService();
   }
-}());
+} ());

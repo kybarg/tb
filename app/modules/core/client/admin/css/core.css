@@ -33,7 +33,7 @@ md-content > section {
 		background-color: transparent;
 	}
 }
-
+/*
 table.md-table.md-row-select tbody.md-body>tr.md-row,
 table.md-table.md-row-select tbody.md-body>tr.md-row>td {
 	cursor: pointer;
@@ -52,7 +52,7 @@ md-toolbar.md-table-toolbar form > input {
 }
 md-toolbar.md-table-toolbar form > input:focus {
 	outline: none;
-}
+}*/
 
 .demo-header-searchbox {
 	border: none;

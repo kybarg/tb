@@ -1,4 +1,27 @@
-<section class="row">
+<md-card>
+  <form class="signin form-horizontal">
+
+    <md-card-title>
+
+        <md-card-title-media>
+             <img ngf-src="vm.fileSelected ? picFile : '/' + vm.user.profileImageURL" alt="{{vm.user.displayName}}" class="md-media-lg card-media" ngf-drop>
+          </md-card-title-media>
+        </md-card-title>
+
+      <md-progress-circular ng-show="vm.loading"  md-mode="indeterminate"></md-progress-circular>
+
+    <div ng-show="!vm.fileSelected" class="text-center form-group">
+      <md-button ngf-select="(vm.fileSelected = true) && (vm.loading = false)" ng-model="picFile"
+        accept="image/*" ngf-before-model-change="vm.loading = true" ngf-resize="{width: 400}" ngf-resize-if="$width > 400 || $height > 400">Select Picture</md-button>
+    </div>
+    <md-card-actions ng-show="vm.fileSelected">
+      <md-button ng-click="vm.upload(picFile)">Use This Picture</md-button>
+      <md-button ng-click="vm.fileSelected = false">Cancel</md-button>
+    </md-card-actions>
+    <md-progress-linear ng-show="vm.fileSelected && vm.progress" md-mode="determinate" value="{{vm.progress}}"></md-progress-linear>
+  </form>
+</md-card>
+<!--<section class="row">
   <div class="col-xs-offset-1 col-xs-10 col-md-offset-3 col-md-4">
     <form class="signin form-horizontal">
       <fieldset>
@@ -23,4 +46,4 @@
       </fieldset>
     </form>
   </div>
-</section>
+</section>-->

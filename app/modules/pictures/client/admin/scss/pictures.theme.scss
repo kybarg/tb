@@ -1,0 +1,15 @@
+tb-pictures.md-THEME_NAME-theme {
+
+    label {
+        color: '{{foreground-2}}';
+    }
+
+    .tb-pictures__drop-box {
+        border-color: '{{foreground-4}}';
+
+        &.dragover {
+            border-color: '{{primary-color}}';
+            background-color: '{{primary-color-0.2}}';
+        }
+    }
+}

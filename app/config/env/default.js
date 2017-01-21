@@ -48,7 +48,15 @@ module.exports = {
   uploads: {
     profile: {
       image: {
-        dest: './modules/users/client/public/img/profile/uploads/',
+        dest: './public/uploads/images/users/',
+        limits: {
+          fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
+        }
+      }
+    },
+    category: {
+      image: {
+        dest: './public/uploads/images/categories/',
         limits: {
           fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
         }

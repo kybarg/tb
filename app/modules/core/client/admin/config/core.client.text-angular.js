@@ -85,8 +85,8 @@
         ];
         taOptions.classes = {
           focussed: 'focussed',
-          toolbar: 'md-toolbar-tools layout-wrap layout-align-start-center',
-          toolbarGroup: 'md-textangular-group',
+          toolbar: 'md-toolbar layout-row layout-wrap layout-align-start-center',
+          toolbarGroup: 'md-toolbar-tools',
           toolbarButton: 'md-textangular-button',
           toolbarButtonActive: 'active',
           disabled: 'disabled',

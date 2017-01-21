@@ -7,7 +7,9 @@ var mongoose = require('mongoose'),
   path = require('path'),
   Schema = mongoose.Schema,
   slugify = require('transliteration').slugify,
-  metaPlugin = require(path.resolve('./modules/meta/server/models/meta.server.model'));
+  config = require(path.resolve('./config/config')),
+  metaPlugin = require(path.resolve('./modules/meta/server/models/meta.server.model')),
+  picturePlugin = require(path.resolve('./modules/pictures/server/models/pictures.server.model'));
 
 /**
  * Category Schema
@@ -35,6 +37,13 @@ var CategorySchema = new Schema({
  * Meta Title/Description middleware
  */
 CategorySchema.plugin(metaPlugin);
+
+/**
+ * Picture upload middleware
+ */
+CategorySchema.plugin(picturePlugin, {
+  picturesPath: path.resolve(config.uploads.category.image.dest)
+});
 
 /**
  * Pre-save middleware
