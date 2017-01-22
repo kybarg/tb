@@ -20,12 +20,12 @@ var config = require('../config'),
   path = require('path'),
   _ = require('lodash'),
   lusca = require('lusca'),
-  phantom = require('phantom'),
+  // phantom = require('phantom'),
   detector = require('spider-detector');
 
-var phantomBrowser = phantom.create(['--load-images=no'], {
-  phantomPath: '/usr/local/lib/node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs'
-})
+// var phantomBrowser = phantom.create(['--load-images=no'], {
+//   phantomPath: '/usr/local/lib/node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs'
+// })
 
 /**
  * Initialize local variables
@@ -228,64 +228,64 @@ module.exports.initErrorRoutes = function (app) {
 /**
  * Configure seo See https://yandex.ru/support/webmaster/robot-workings/ajax-indexing.xml
  */
-module.exports.initModulesSeo = function (app) {
-  // app.use(seo({
-  //   cacheClient: 'disk', // Can be 'disk' or 'redis'
-  //   cacheDuration: 0 // In milliseconds for disk cache
-  // }));
-  app.use(detector.middleware())
+// module.exports.initModulesSeo = function (app) {
+//   // app.use(seo({
+//   //   cacheClient: 'disk', // Can be 'disk' or 'redis'
+//   //   cacheDuration: 0 // In milliseconds for disk cache
+//   // }));
+//   app.use(detector.middleware())
 
-  app.use(function (req, res, next) {
-    // If there is _escaped_fragment_ option, it means we have to // generate the static HTML that should normally return the Javascript
-    if (typeof req.query._escaped_fragment_ !== 'undefined' || req.isSpider()) {
-      var _ph,
-        _page;
+//   app.use(function (req, res, next) {
+//     // If there is _escaped_fragment_ option, it means we have to // generate the static HTML that should normally return the Javascript
+//     if (typeof req.query._escaped_fragment_ !== 'undefined' || req.isSpider()) {
+//       var _ph,
+//         _page;
 
-      phantomBrowser
-        .then(function (ph) {
-          _ph = ph;
-          return _ph.createPage();
-        })
-        .then(function (page) {
-          _page = page;
+//       phantomBrowser
+//         .then(function (ph) {
+//           _ph = ph;
+//           return _ph.createPage();
+//         })
+//         .then(function (page) {
+//           _page = page;
 
-          _page.property('onResourceRequested', function (requestData, request) {
-            if ((/https?:\/\/.+?\.css/gi).test(requestData['url']) || requestData.headers['Content-Type'] == 'text/css') {
-              console.log('The url of the request is matching. Aborting: ' + requestData['url']);
-              request.abort();
-            }
-          });
+//           _page.property('onResourceRequested', function (requestData, request) {
+//             if ((/https?:\/\/.+?\.css/gi).test(requestData['url']) || requestData.headers['Content-Type'] == 'text/css') {
+//               console.log('The url of the request is matching. Aborting: ' + requestData['url']);
+//               request.abort();
+//             }
+//           });
 
-          return _page.open(req.protocol + '://' + req.headers.host + req.originalUrl); //.replace('_escaped_fragment_', 'fragment_data'));
-        })
-        .then(function (status) {
-          console.log(status);
-          return new Promise(function (resolve, reject){
-            setTimeout(function() {
-              if(req.accepts('html','json') === 'json') {
-                  //respond json
-                  resolve(_page.property('plainText'));
-              } else {
-                  //respond in html
-                  resolve(_page.property('content'));
-              }
+//           return _page.open(req.protocol + '://' + req.headers.host + req.originalUrl); //.replace('_escaped_fragment_', 'fragment_data'));
+//         })
+//         .then(function (status) {
+//           console.log(status);
+//           return new Promise(function (resolve, reject){
+//             setTimeout(function() {
+//               if(req.accepts('html','json') === 'json') {
+//                   //respond json
+//                   resolve(_page.property('plainText'));
+//               } else {
+//                   //respond in html
+//                   resolve(_page.property('content'));
+//               }
 
-            }, 1000);
-          })
-        })
-        .then(function (content) {
-          console.log(content);
-          _page.close();
-          res.send(content);
-        })
-        .catch(function (e) {
-          return console.log(e);
-        });
-    } else
-      // If there is no _escaped_fragment_, we return the normal index template.
-      next();
-  });
-};
+//             }, 1000);
+//           })
+//         })
+//         .then(function (content) {
+//           console.log(content);
+//           _page.close();
+//           res.send(content);
+//         })
+//         .catch(function (e) {
+//           return console.log(e);
+//         });
+//     } else
+//       // If there is no _escaped_fragment_, we return the normal index template.
+//       next();
+//   });
+// };
 
 /**
  * Configure Socket.io
@@ -330,7 +330,7 @@ module.exports.init = function (db) {
   this.initModulesServerPolicies(app);
 
   // Initialize modules seo
-  this.initModulesSeo(app);
+  // this.initModulesSeo(app);
 
   // Initialize modules server routes
   this.initModulesServerRoutes(app);
