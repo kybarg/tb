@@ -31,8 +31,11 @@
         // },
         data: {
           pageTitle: 'Categories',
-          roles: ['admin']
-        }
+          // roles: ['*']
+        },
+        // resolve: {
+        //   categoriesResolve: getCategories
+        // }
       })
       .state('admin.categories.create', {
         url: '/create',

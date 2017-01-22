@@ -144,7 +144,7 @@ gulp.task('eslint', function () {
 // JS minifying task
 gulp.task('uglify', function () {
   var assets = {
-    admin: _.union(defaultAssets.client.admin.js, defaultAssets.client.public.templates),
+    admin: _.union(defaultAssets.client.admin.lib.js, defaultAssets.client.admin.js, defaultAssets.client.admin.templates),
     public: _.union(defaultAssets.client.public.js, defaultAssets.client.public.templates)
   };
   del(['public/dist/*']);
@@ -170,7 +170,7 @@ gulp.task('uglify', function () {
 
 // CSS minifying task
 gulp.task('cssmin', function () {
-  gulp.src(defaultAssets.client.admin.css)
+  gulp.src(_.union(defaultAssets.client.admin.lib.css, defaultAssets.client.admin.css))
     .pipe(plugins.csso())
     .pipe(plugins.concat('admin.application.min.css'))
     .pipe(plugins.rev())

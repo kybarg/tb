@@ -140,7 +140,10 @@ var initGlobalConfigFiles = function (config, assets) {
   // Appending files
   config.files = {
     server: {},
-    client: {}
+    client: {
+      admin: {},
+      public: {}
+    }
   };
 
   // Setting Globbed model files
@@ -159,15 +162,12 @@ var initGlobalConfigFiles = function (config, assets) {
   config.files.server.policies = getGlobbedPaths(assets.server.policies);
 
   // Setting Globbed js files
-  config.files.client.admin = {
-    js: getGlobbedPaths(assets.client.admin.lib.js, 'public/').concat(getGlobbedPaths(assets.client.admin.js, ['public/'])),
-    css: getGlobbedPaths(assets.client.admin.lib.css, 'public/').concat(getGlobbedPaths(assets.client.admin.css, ['public/']))
-  };
+  config.files.client.admin.js = getGlobbedPaths(assets.client.admin.lib.js, 'public/').concat(getGlobbedPaths(assets.client.admin.js, ['public/']));
+  config.files.client.admin.css = getGlobbedPaths(assets.client.admin.lib.css, 'public/').concat(getGlobbedPaths(assets.client.admin.css, ['public/']));
 
-  config.files.client.public = {
-    js: getGlobbedPaths(assets.client.public.lib.js, 'public/').concat(getGlobbedPaths(assets.client.public.js, ['public/'])),
-    css: getGlobbedPaths(assets.client.public.lib.css, 'public/').concat(getGlobbedPaths(assets.client.public.css, ['public/']))
-  };
+  // Setting Globbed css files
+  config.files.client.public.js = getGlobbedPaths(assets.client.public.lib.js, 'public/').concat(getGlobbedPaths(assets.client.public.js, ['public/']));
+  config.files.client.public.css = getGlobbedPaths(assets.client.public.lib.css, 'public/').concat(getGlobbedPaths(assets.client.public.css, ['public/']));
 
   // Setting Globbed test files
   config.files.client.tests = getGlobbedPaths(assets.client.tests);

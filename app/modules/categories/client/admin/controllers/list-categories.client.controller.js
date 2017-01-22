@@ -5,13 +5,14 @@
     .module('categories')
     .controller('CategoriesListController', CategoriesListController);
 
-  CategoriesListController.$inject = ['$timeout', '$location', 'CategoriesService'];
+  CategoriesListController.$inject = ['$timeout', '$location', 'CategoriesService', '$stateParams'];
 
-  function CategoriesListController($timeout, $location, CategoriesService) {
+  function CategoriesListController($timeout, $location, CategoriesService, $stateParams) {
 
     var vm = this;
 
     vm.categories = {};
+    vm.selected = [];
 
     vm.options = {
       rowSelection: true,
@@ -24,7 +25,12 @@
       pageSelect: true
     };
 
-    vm.selected = [];
+    vm.filter = {
+      options: {
+        debounce: 500
+      }
+    };
+
     vm.limitOptions = [10, 20, 50, {
       label: 'All',
       value: function () {
@@ -38,7 +44,9 @@
       page: 1
     };
 
-    vm.promise = getCategories();
+    angular.extend(vm.query, $location.search());
+
+    vm.promise = getCategories(vm.query);
 
     vm.onPaginate = function (page, limit) {
       console.log('Scope Page: ' + vm.query.page + ' Scope Limit: ' + vm.query.limit);
@@ -54,10 +62,8 @@
       console.log(item.name, 'was selected');
     };
 
-    vm.loadStuff = function () {
-      vm.promise = $timeout(function () {
-
-      }, 2000);
+    vm.search = function () {
+      vm.promise = getCategories(vm.query);
     };
 
     vm.onReorder = function (order) {
@@ -71,13 +77,11 @@
       }, 2000);
     };
 
-    function getCategories(params) {
-      params = params ? params : {};
-
-      return CategoriesService.getCategories(params)
+    function getCategories() {
+      return CategoriesService.getCategories(vm.query)
       .then(function (categories) {
         vm.categories = categories;
-        $location.path($location.path()).search(params);
+        $location.path($location.path()).search(vm.query);
       })
       .catch(function(response) {
         console.dir(response);
@@ -90,12 +94,6 @@
     // vm.selected = [];
     // vm.categories = getCategories;
     // // vm.remove = remove;
-
-    // vm.filter = {
-    //   options: {
-    //     debounce: 500
-    //   }
-    // };
 
     // vm.defaultQuery = {
     //   name: '',
@@ -152,21 +150,21 @@
     //   vm.promise = CategoriesService.query(vm.query).$promise;
     // };
 
-    // vm.removeFilter = function () {
-    //   vm.filter.show = false;
-    //   vm.query.name = '';
+    vm.removeFilter = function () {
+      vm.filter.show = false;
+      vm.query.name = '';
 
-    //   if (vm.filter.form.$dirty) {
-    //     vm.filter.form.$setPristine();
-    //   }
-    // };
+      // if (vm.filter.form.$dirty) {
+      //   vm.filter.form.$setPristine();
+      // }
+    };
 
-    // vm.showFilter = function () {
-    //   vm.filter.show = true;
-    //   $timeout(function () {
-    //     angular.element(document.querySelectorAll('.focusNameImput')).focus();
-    //   });
-    // };
+    vm.showFilter = function () {
+      vm.filter.show = true;
+      $timeout(function () {
+        angular.element(document.querySelectorAll('.focusNameImput')).focus();
+      });
+    };
 
     // // $scope.$watchCollection('vm.query.name', function (newValue, oldValue) {
     // //   if (!oldValue) {

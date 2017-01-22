@@ -1,29 +1,38 @@
 <md-card>
-  <md-toolbar class="md-table-toolbar md-default" ng-show="!vm.options.rowSelection || !vm.selected.length">
+  <md-toolbar class="md-table-toolbar md-default" ng-if="!vm.options.rowSelection || !vm.selected.length && !vm.filter.show">
     <div class="md-toolbar-tools">
       <span>Categories</span>
       <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.showFilter()">
+        <md-icon>filter_list</md-icon>
+      </md-button>
       <md-button class="md-icon-button" ui-sref="admin.categories.create">
-        <md-icon>filter_list</md-icon>
+        <md-icon>add</md-icon>
       </md-button>
-      <!--<md-button class="md-icon-button" ng-click="vm.loadStuff()">
-        <md-icon>refresh</md-icon>
-      </md-button>
-      <md-button class="md-icon-button">
-        <md-icon>filter_list</md-icon>
-      </md-button>
-      <md-button class="md-icon-button">
-        <md-icon>more_vert</md-icon>
-      </md-button>-->
     </div>
   </md-toolbar>
 
-  <md-toolbar class="md-table-toolbar" ng-show="vm.options.rowSelection && vm.selected.length" md-colors="{background: 'primary-50'}">
+  <md-toolbar class="md-table-toolbar" ng-if="vm.options.rowSelection && vm.selected.length" md-colors="{background: 'primary-50'}">
     <div class="md-toolbar-tools">
       <span class="md-subhead" md-colors="{color: 'primary-500'}">{{vm.selected.length}} {{vm.selected.length > 1 ? 'items' : 'item'}} selected</span>
       <span flex></span>
       <md-button class="md-icon-button">
         <md-icon>delete</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-toolbar class="md-table-toolbar md-default" ng-if="vm.filter.show && !vm.selected.length">
+    <div class="md-toolbar-tools">
+      <md-icon>search</md-icon>
+      <div flex>
+        <md-input-container md-no-float class="md-block">
+          <div class="md-errors-spacer"></div>
+          <input ng-model="vm.query.name" ng-change="vm.search()" type="text" placeholder="Search" class="focusNameImput">
+        </md-input-container>
+      </div>
+      <md-button class="md-icon-button" ng-click="vm.removeFilter()">
+        <md-icon>close</md-icon>
       </md-button>
     </div>
   </md-toolbar>
@@ -59,81 +68,3 @@
     md-on-paginate="vm.onPaginate" md-page-select="vm.options.pageSelect" md-boundary-links="vm.options.boundaryLinks"></md-table-pagination>
 </md-card>
 
-<!--<md-card ng-if="vm.categories && vm.categories.count">
-
-  <md-toolbar class="md-table-toolbar md-default" ng-if="!vm.filter.show || !vm.selected.length">
-    <div class="md-toolbar-tools">
-      <span>Categories</span>
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="vm.showFilter()">
-        <md-icon>filter_list</md-icon>
-      </md-button>
-      <md-button class="md-icon-button" ui-sref="admin.categories.create">
-        <md-icon>add</md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-
-  <md-toolbar class="md-table-toolbar md-default" ng-if="vm.filter.show && !vm.selected.length">
-    <div class="md-toolbar-tools">
-      <md-icon>search</md-icon>
-      <form flex name="vm.filter.form">
-        <input type="text" ng-model="vm.query.name" ng-model-options="vm.filter.options" placeholder="search" class="focusNameImput"
-          ng-change="vm.getCategories">
-      </form>
-      <md-button class="md-icon-button" ng-click="vm.removeFilter()">
-        <md-icon>close</md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-  <md-toolbar class="md-table-toolbar" ng-if="vm.selected.length" md-colors="{background: 'primary-50'}">
-    <div class="md-toolbar-tools">
-      <span class="md-subhead" md-colors="{color: 'primary-500'}">{{vm.selected.length}} {{vm.selected.length > 1 ? 'items' : 'item'}} selected</span>
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="vm.remove($event)">
-        <md-icon>delete</md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-  <md-table-container flex style="overflow: auto;">
-<table md-table md-row-select multiple ng-model="vm.selected" md-progress="vm.promise">
-  <thead md-head>
-    <tr md-row>
-      <th md-column>
-        <span>Name</span>
-      </th>
-      <th md-column style="width: 100px;">
-        <span>Created</span>
-      </th>
-    </tr>
-  </thead>
-<tbody md-body>
-  <tr md-row md-select="category" md-select-id="_id" ng-repeat="(i, category) in vm.categories.items track by category._id" ui-sref="admin.categories.edit({categoryId: category._id})">
-    <td md-cell>
-      <span class="hidden-categories-names-hover">
-        <span class="hidden-categories-names" ng-repeat="path in category.path track by $index" ng-if="$last != true">
-          <span>{{path[0]}}&emsp;</span>
-      <span>&bull;&emsp;</span>
-      </span>
-      </span>
-      {{ category.name }}
-    </td>
-    <td md-cell>{{category.created | date:'medium'}}</td>
-  </tr>
-</tbody>
-</table>
-</md-table-container>
-<md-table-pagination md-limit="vm.query.limit" md-limit-options="[10, 20, 50]" md-page="vm.query.page" md-total="{{vm.categories.count}}"
-  md-on-paginate="vm.getCategories" md-page-select></md-table-pagination>
-</md-card>
-<div class="md-empty-state" ng-if="vm.categories && !vm.categories.count">
-  No categories yet
-  <div>
-    <i class="material-icons">folder_open</i>
-  </div>
-  Why don't you
-  <md-button class="md-primary" ui-sref="admin.categories.create">
-    create one
-  </md-button>
-  ?
-</div>-->

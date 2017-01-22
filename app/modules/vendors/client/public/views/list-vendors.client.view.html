@@ -1,0 +1,22 @@
+<section>
+  <div class="page-header">
+    <h1>Vendors</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="vendor in vm.vendors"
+       ui-sref="vendors.view({ vendorId: vendor._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="vendor.created | date:'mediumDate'"></span>
+        by
+        <span ng-if="vendor.user" ng-bind="vendor.user.displayName"></span>
+        <span ng-if="!vendor.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="vendor.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="vm.vendors.$resolved && !vm.vendors.length">
+    No Vendors yet, why don't you <a ui-sref="vendors.create">create one</a>?
+  </div>
+</section>

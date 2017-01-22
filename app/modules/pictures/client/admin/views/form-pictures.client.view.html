@@ -1,28 +1,22 @@
-<!--<md-button ngf-select="upload($file)">Upload on file select</md-button>
-<md-button ngf-select="uploadFiles($files)" multiple="multiple">Upload on file select</md-button>
-  Drop File:-->
-  <label>Picture</label>
-  <!--<img ng-repeat="picture as model.picture" ngf-thumbnail="'/public/uploads/images/categories/' + (picture.name || vm.picture || 'thumb.jpg')">-->
+<label>Picture</label>
 
-  <div ngf-drop="vm.uploadPicture($file)" class="tb-pictures__drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-pattern="'image/*'">
-    <md-progress-linear md-mode="determinate" value="{{vm.uploadProgress}}" ng-if="vm.uploadProgress"></md-progress-linear>
-    <md-button class="md-primary" ngf-select="vm.uploadPicture($file)">Choose</md-button> or drop images here
-  </div>
+<div ngf-drop="vm.uploadPicture($file)" class="tb-pictures__drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true"
+  ngf-pattern="'image/*'">
+  <md-progress-linear md-mode="determinate" value="{{vm.uploadProgress}}" ng-if="vm.uploadProgress"></md-progress-linear>
+  <md-button class="md-primary" ngf-select="vm.uploadPicture($file)">Choose</md-button> or drop images here
+</div>
 
-  <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
-  <md-grid-list md-cols="2" md-row-height="1:1">
+<md-grid-list md-cols="2" md-row-height="1:1">
     <md-grid-tile ng-repeat="picture in vm.pictures" ng-style="{'background': picture.color}">
 
       <img ngf-thumbnail="'/uploads/images/categories/' + picture.name" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
       <md-grid-tile-footer layout="column" layout-align="center stretch">
         <div layout="row" layout-align="space-between center">
           <h3 default="{{picture.color}}" md-color-history="false" md-color-picker md-color-clear-button="false" ng-model="picture.color"></h3>
-          <!--<h3 flex style="overflow: hidden; text-overflow: ellipsis;">{{picture.name}}</h3>-->
           <md-button class="md-icon-button md-accent" ng-click="vm.deletePicture(picture._id)"><md-icon>delete</md-icon></md-button>
         </div>
       </md-grid-tile-footer>
     </md-grid-tile>
   </md-grid-list>
-
-  <!--<img ng-repeat="picture in vm.pictures" ngf-thumbnail="'/uploads/images/categories/' + picture.name">-->
