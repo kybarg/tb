@@ -12,7 +12,7 @@
     menuService.addMenuItem('drawer', {
       title: 'Vendors',
       state: 'admin.vendors.list',
-      icon: 'folder',
+      icon: 'stars',
       roles: ['admin']
     });
   }

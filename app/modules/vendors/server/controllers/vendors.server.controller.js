@@ -89,7 +89,7 @@ exports.list = function(req, res) {
     });
   }, function (callback) {
     Vendor.find().sort('-created').populate('user', 'displayName').exec(function(err, vendors) {
-      callback(err, count);
+      callback(err, vendors);
     });
   }], function (err, results) {
     if (err) {
