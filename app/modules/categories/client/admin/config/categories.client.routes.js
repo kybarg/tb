@@ -31,7 +31,7 @@
         // },
         data: {
           pageTitle: 'Categories',
-          // roles: ['*']
+          roles: ['admin']
         },
         // resolve: {
         //   categoriesResolve: getCategories

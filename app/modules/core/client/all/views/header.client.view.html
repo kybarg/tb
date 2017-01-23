@@ -1,5 +1,11 @@
-<div class="container" ng-controller="HeaderController as vm">
-  <div class="navbar-header">
+<div class="md-toolbar-tools">
+  <md-button class="md-icon-button" aria-label="Navigation" ng-click="vm.toggleDrawer();" ng-if="!vm.showBackButton">
+    <md-icon class="material-icons">menu</md-icon>
+  </md-button>
+  <md-button class="md-icon-button" aria-label="Back" ng-if="vm.showBackButton" ng-click="vm.back()">
+    <md-icon class="material-icons">arrow_back</md-icon>
+  </md-button>
+  <!--<div class="navbar-header">
     <button class="navbar-toggle" type="button" ng-click="vm.isCollapsed = !vm.isCollapsed">
       <span class="sr-only">Toggle navigation</span>
       <span class="icon-bar"></span>
@@ -7,8 +13,8 @@
       <span class="icon-bar"></span>
     </button>
     <a ui-sref="home" class="navbar-brand">MEAN.JS</a>
-  </div>
-  <nav class="navbar-collapse" uib-collapse="!vm.isCollapsed" role="navigation">
+  </div>-->
+  <!--<nav class="navbar-collapse" uib-collapse="!vm.isCollapsed" role="navigation">
     <ul class="nav navbar-nav" ng-if="vm.menu.shouldRender(vm.authentication.user);">
       <li ng-repeat="item in vm.menu.items | orderBy: 'position'" ng-if="item.shouldRender(vm.authentication.user);" ng-switch="item.type" ng-class="{ dropdown: item.type === 'dropdown' }" ui-sref-active="active" class="{{item.class}}" uib-dropdown="item.type === 'dropdown'">
         <a ng-switch-when="dropdown" class="dropdown-toggle" uib-dropdown-toggle role="button">{{::item.title}}&nbsp;<span class="caret"></span></a>
@@ -29,7 +35,32 @@
         <a ui-sref="authentication.signin">Sign In</a>
       </li>
     </ul>
-    <ul class="nav navbar-nav navbar-right" ng-show="vm.authentication.user">
+  </nav>-->
+  <h2>
+    <!--<img src="/modules/core/client/admin/img/brand/logo.png" style="height: 40px; vertical-align: middle">-->
+    <img src="/modules/core/client/admin/img/brand/logo.svg" style="height: 40px; vertical-align: middle">
+    <span ng-bind="vm.sectionName" style="vertical-align: middle; display: inline-block; margin-left: 10px; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 16px;"></span>
+</h2>
+<span flex></span>
+<!--<md-button class="md-icon-button" aria-label="More">
+    <md-icon>more_vert</md-icon>
+  </md-button>-->
+<div>
+  <md-menu md-position-mode="target-right target" md-offset="0 56">
+    <md-button class="md-icon-button" style="margin: 0;" ng-click="$mdOpenMenu($event)" aria-label="Profile">
+<img ng-src="/{{vm.authentication.user.profileImageURL}}" alt="{{vm.authentication.user.displayName}}" style="border-radius: 50%; width: 40px; height: 40px; margin: -8px;" />
+</md-button>
+<md-menu-content width="4">
+  <md-menu-item ng-repeat="item in vm.accountMenu.items">
+    <md-button ui-sref="{{item.state}}"> {{ item.title }} </md-button>
+  </md-menu-item>
+  <md-menu-item>
+    <md-button href="/api/auth/signout" target="_self">Sign out</md-button>
+  </md-menu-item>
+</md-menu-content>
+</md-menu>
+</div>
+<!--<ul class="nav navbar-nav navbar-right" ng-show="vm.authentication.user">
       <li class="dropdown" uib-dropdown>
         <a class="dropdown-toggle user-header-dropdown-toggle" uib-dropdown-toggle role="button">
           <img ng-src="/{{vm.authentication.user.profileImageURL}}" alt="{{vm.authentication.user.displayName}}" class="header-profile-image" />
@@ -45,6 +76,6 @@
           </li>
         </ul>
       </li>
-    </ul>
-  </nav>
+    </ul>-->
 </div>
+<div class="md-toolbar-tools" ui-view="tabs" ng-if="vm.hasTabs"></div>

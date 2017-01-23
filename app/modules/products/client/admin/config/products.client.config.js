@@ -2,16 +2,19 @@
   'use strict';
 
   angular
-    .module('users.admin')
+    .module('products')
     .run(menuConfig);
 
   menuConfig.$inject = ['menuService'];
 
-  // Configuring the Users module
   function menuConfig(menuService) {
+    // Add the dropdown list item
     menuService.addMenuItem('drawer', {
-      title: 'Users',
-      state: 'admin.users'
+      title: 'Products',
+      state: 'admin.products.list',
+      icon: 'local_mall',
+      position: 2,
+      roles: ['admin']
     });
   }
 }());

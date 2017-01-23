@@ -13,6 +13,7 @@
       title: 'Vendors',
       state: 'admin.vendors.list',
       icon: 'stars',
+      position: 3,
       roles: ['admin']
     });
   }

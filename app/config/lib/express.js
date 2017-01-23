@@ -43,11 +43,11 @@ module.exports.initLocalVariables = function (app) {
   app.locals.twitterUsername = config.twitter.username;
   app.locals.jsFiles = {
     admin: config.files.client.admin.js,
-    public: config.files.client.public.js
+    all: config.files.client.all.js
   };
   app.locals.cssFiles = {
     admin: config.files.client.admin.css,
-    public: config.files.client.public.css
+    all: config.files.client.all.css
   };
   app.locals.livereload = config.livereload;
   app.locals.logo = config.logo;

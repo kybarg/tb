@@ -142,7 +142,7 @@ var initGlobalConfigFiles = function (config, assets) {
     server: {},
     client: {
       admin: {},
-      public: {}
+      all: {}
     }
   };
 
@@ -166,8 +166,8 @@ var initGlobalConfigFiles = function (config, assets) {
   config.files.client.admin.css = getGlobbedPaths(assets.client.admin.lib.css, 'public/').concat(getGlobbedPaths(assets.client.admin.css, ['public/']));
 
   // Setting Globbed css files
-  config.files.client.public.js = getGlobbedPaths(assets.client.public.lib.js, 'public/').concat(getGlobbedPaths(assets.client.public.js, ['public/']));
-  config.files.client.public.css = getGlobbedPaths(assets.client.public.lib.css, 'public/').concat(getGlobbedPaths(assets.client.public.css, ['public/']));
+  config.files.client.all.js = getGlobbedPaths(assets.client.all.lib.js, 'public/').concat(getGlobbedPaths(assets.client.all.js, ['public/']));
+  config.files.client.all.css = getGlobbedPaths(assets.client.all.lib.css, 'public/').concat(getGlobbedPaths(assets.client.all.css, ['public/']));
 
   // Setting Globbed test files
   config.files.client.tests = getGlobbedPaths(assets.client.tests);

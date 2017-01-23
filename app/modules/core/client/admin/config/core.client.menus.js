@@ -10,8 +10,9 @@
   function menuConfig(menuService) {
 
     menuService.addMenuItem('drawer', {
-      title: 'Home',
-      icon: 'home',
+      title: 'Dashboard',
+      icon: 'dashboard',
+      position: 0,
       state: 'admin.home',
       roles: ['admin']
     });

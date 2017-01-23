@@ -1,0 +1,13 @@
+{
+  "name": "trendberry",
+  "version": "0.0.1",
+  "description": "trendberry rest api",
+  "template": {
+    "withCompare": true
+  },
+  "options": {
+    "excludeFilters": [
+      "node_modules/"
+    ]
+  }
+}

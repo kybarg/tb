@@ -27,15 +27,51 @@
     });
 
     $stateProvider
+      // .state('', {
+      //   abstract: true,
+      //   url: '/',
+      //   views: {
+      //     '@': {
+      //       templateUrl: '/modules/core/client/all/views/layout.client.view.html'
+      //     },
+      //     'toolbar@all': {
+      //       templateUrl: '/modules/core/client/all/views/header.client.view.html',
+      //       controller: 'HeaderController',
+      //       controllerAs: 'vm'
+      //     },
+      //     'drawer@all': {
+      //       templateUrl: '/modules/core/client/all/views/drawer.client.view.html',
+      //       controller: 'DrawerController',
+      //       controllerAs: 'vm'
+      //     }
+      //   }
+      // })
       .state('home', {
         url: '/',
-        templateUrl: '/modules/core/client/public/views/home.client.view.html',
-        controller: 'HomeController',
-        controllerAs: 'vm'
+         views: {
+          '@': {
+            templateUrl: '/modules/core/client/all/views/layout.client.view.html'
+          },
+          'toolbar@home': {
+            templateUrl: '/modules/core/client/all/views/header.client.view.html',
+            controller: 'HeaderController',
+            controllerAs: 'vm'
+          },
+          'drawer@home': {
+            templateUrl: '/modules/core/client/all/views/drawer.client.view.html',
+            controller: 'DrawerController',
+            controllerAs: 'vm'
+          },
+          '@home': {
+            templateUrl: '/modules/core/client/all/views/home.client.view.html',
+            controller: 'HomeController',
+            controllerAs: 'vm'
+          }
+        }
       })
       .state('not-found', {
         url: '/not-found',
-        templateUrl: '/modules/core/client/public/views/404.client.view.html',
+        templateUrl: '/modules/core/client/all/views/404.client.view.html',
         controller: 'ErrorController',
         controllerAs: 'vm',
         params: {

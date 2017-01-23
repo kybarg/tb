@@ -13,6 +13,7 @@
       title: 'Articles',
       state: 'admin.articles.list',
       icon: 'insert_drive_file',
+      position: 4,
       roles: ['admin']
     });
   }
