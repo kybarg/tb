@@ -9,13 +9,13 @@ var path = require('path'),
   Vendor = mongoose.model('Vendor'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
+  var fs = require('fs');
 
 /**
  * Create a Vendor
  */
 exports.create = function(req, res) {
   var vendor = new Vendor(req.body);
-  vendor.user = req.user;
 
   vendor.save(function(err) {
     if (err) {
@@ -23,7 +23,7 @@ exports.create = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(vendor);
+      res.json(vendor);
     }
   });
 };
@@ -34,10 +34,6 @@ exports.create = function(req, res) {
 exports.read = function(req, res) {
   // convert mongoose document to JSON
   var vendor = req.vendor ? req.vendor.toJSON() : {};
-
-  // Add a custom field to the Article, for determining if the current User is the "owner".
-  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
-  vendor.isCurrentUserOwner = req.user && vendor.user && vendor.user._id.toString() === req.user._id.toString();
 
   res.jsonp(vendor);
 };
@@ -88,7 +84,7 @@ exports.list = function(req, res) {
       callback(err, count);
     });
   }, function (callback) {
-    Vendor.find().sort('-created').populate('user', 'displayName').exec(function(err, vendors) {
+    Vendor.find().sort('-created').exec(function(err, vendors) {
       callback(err, vendors);
     });
   }], function (err, results) {
@@ -115,7 +111,7 @@ exports.vendorByID = function(req, res, next, id) {
     });
   }
 
-  Vendor.findById(id).populate('user', 'displayName').exec(function (err, vendor) {
+  Vendor.findById(id).exec(function (err, vendor) {
     if (err) {
       return next(err);
     } else if (!vendor) {
