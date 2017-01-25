@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  Schema = mongoose.Schema,
+  slugify = require('transliteration').slugify;
 
 /**
  * Vendor Schema
@@ -16,14 +17,19 @@ var VendorSchema = new Schema({
     required: 'Please fill Vendor name',
     trim: true
   },
+  synonyms: [String],
+  slug: String,
   created: {
     type: Date,
     default: Date.now
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
   }
+});
+
+VendorSchema.pre('save', function (next) {
+    if (!this.slug || this.slug.length === 0) {
+        this.slug = slugify(this.name);
+    }
+    next();
 });
 
 mongoose.model('Vendor', VendorSchema);
