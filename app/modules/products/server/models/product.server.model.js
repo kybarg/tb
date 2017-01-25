@@ -4,7 +4,10 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  Schema = mongoose.Schema,
+  path = require('path'),
+  config = require(path.resolve('./config/config')),
+  picturePlugin = require(path.resolve('./modules/pictures/server/models/pictures.server.model'));
 
 /**
  * Product Schema
@@ -24,6 +27,10 @@ var ProductSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   }
+});
+
+ProductSchema.plugin(picturePlugin, {
+  picturesPath: path.resolve(config.uploads.product.image.dest)
 });
 
 mongoose.model('Product', ProductSchema);

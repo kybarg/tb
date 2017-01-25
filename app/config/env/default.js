@@ -61,6 +61,22 @@ module.exports = {
           fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
         }
       }
+    },
+     product: {
+      image: {
+        dest: './public/uploads/images/products/',
+        limits: {
+          fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
+        }
+      }
+    },
+    shop: {
+      image: {
+        dest: './public/uploads/images/shops/',
+        limits: {
+          fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
+        }
+      }
     }
   },
   shared: {

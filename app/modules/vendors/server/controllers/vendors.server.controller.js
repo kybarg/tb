@@ -9,6 +9,7 @@ var path = require('path'),
   Vendor = mongoose.model('Vendor'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
+  var fs = require('fs');
 
 /**
  * Create a Vendor
@@ -23,7 +24,7 @@ exports.create = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(vendor);
+      res.json(vendor);
     }
   });
 };

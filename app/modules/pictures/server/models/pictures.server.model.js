@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
   fs = require('fs'),
   gm = require('gm'),
   path = require('path'),
-  async = require('async');
+  async = require('async'),
+  config = require(path.resolve('./config/config'));
 
 /**
  * Pictures Plugin
@@ -24,24 +25,17 @@ module.exports = function picturePlugin(schema, options) {
     }]
   });
 
-  // schema.methods.addPicture = function (file) {
-  //   if (file.filename) {
-  //     this.picture.push({
-  //       name: file.filename,
-  //       color: null
-  //     });
-  //   }
-  // };
-
-  // schema.methods.removePicture = function (file) {
-  //   var target = file.filename ? file.filename : file;
-  //   for (var i = 0; i < this.picture.length; i++) {
-  //     if (this.picture[i].name === target) {
-  //       this.picture.splice(i, 1);
-  //       break;
-  //     }
-  //   }
-  // };
+  if (options && options.picturesPath) {
+    if (!(fs.existsSync(options.picturesPath))) {
+      options.picturesPath.split(path.sep).forEach(function (dir, index, arr) {
+        var parent = arr.slice(0, index).join(path.sep);
+        var dirPath = path.resolve(parent, dir);
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath);
+        }
+      });
+    }
+  }
 
   /**
    * Append new pictures
@@ -49,7 +43,7 @@ module.exports = function picturePlugin(schema, options) {
    */
   schema.virtual('picturesToUpload').set(function (pictures) {
 
-    if(!this.picture) this.picture = [];
+    if (!this.picture) this.picture = [];
 
     if (!Array.isArray(pictures)) pictures = [pictures];
 
@@ -67,9 +61,9 @@ module.exports = function picturePlugin(schema, options) {
    */
   schema.virtual('picturesToDelete').set(function (picturesIds) {
     console.log(picturesIds);
-    if(this.picture && this.picture.length > 0 && Array.isArray(picturesIds)) {
-      this.picture = this.picture.filter(function (value){
-        if(picturesIds.indexOf(value._id.toString()) === -1) {
+    if (this.picture && this.picture.length > 0 && Array.isArray(picturesIds)) {
+      this.picture = this.picture.filter(function (value) {
+        if (picturesIds.indexOf(value._id.toString()) === -1) {
           return true;
         } else {
           fs.unlink(path.resolve(options.picturesPath, value.name), function (err) {
@@ -98,9 +92,9 @@ module.exports = function picturePlugin(schema, options) {
           callback();
         });
     };
-    if(this.picture.length > 0)
+    if (this.picture.length > 0)
       async.eachSeries(this.picture, function (picture, callback) {
-        if(!picture.color)
+        if (!picture.color)
           savePict(picture, callback);
         else
           callback();
@@ -117,7 +111,7 @@ module.exports = function picturePlugin(schema, options) {
    */
   schema.post('remove', function (doc) {
     for (var i = 0; i < this.picture.length; i++) {
-      fs.unlink(path.resolve(options.picturesPath, doc.picture[i].name), function (err) { });
+      fs.unlink(path.resolve(options.picturesPath, doc.picture[i].name), function (err) {});
     }
   });
 };
