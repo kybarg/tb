@@ -100,7 +100,7 @@ exports.list = function (req, res) {
       //shops[i].import = feed.getInfo();
       result.push({
         shop: shops[i],
-        import: feed.getInfo() 
+        import: feed.getInfo()
       })
     }
     res.json({
