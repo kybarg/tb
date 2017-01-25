@@ -1,0 +1,7 @@
+<md-list>
+  <md-list-item ui-sref-active="md-primary" ng-repeat="item in vm.menu.items | orderBy: 'position'" ng-if="item.shouldRender(vm.authentication.user);" ui-sref="{{item.state}}({{item.params}})">
+    <md-icon ng-if="item.icon">{{ item.icon }}</md-icon>
+    <md-icon ng-if="item.iconSvg" md-svg-src="{{ item.iconSvg }}" class="s24"></md-icon>
+    <p> {{ item.title }} </p>
+  </md-list-item>
+</md-list>

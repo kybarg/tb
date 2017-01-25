@@ -12,7 +12,8 @@
     menuService.addMenuItem('drawer', {
       title: 'Users',
       state: 'admin.users.list',
-      icon: 'person',
+      icon: 'people',
+      position: 5,
       roles: ['admin']
     });
   }

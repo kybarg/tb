@@ -63,7 +63,8 @@
         controller: 'UserListController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Users'
+          pageTitle: 'Users',
+          roles: ['admin']
         }
       })
       .state('admin.user', {
@@ -75,7 +76,8 @@
           userResolve: getUser
         },
         data: {
-          pageTitle: 'Edit User'
+          pageTitle: 'Edit User',
+          roles: ['admin']
         }
       })
       .state('admin.settings', {
@@ -85,7 +87,7 @@
         controller: 'SettingsController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin']
+          roles: ['admin']
         }
       })
       .state('admin.settings.profile', {
@@ -127,6 +129,12 @@
       .state('admin.authentication', {
         abstract: true,
         url: '/authentication',
+        views: {
+          '@': {
+            templateUrl: '/modules/core/client/admin/views/layout-no-drawer-no-topbar.client.view.html'
+          },
+        },
+
         templateUrl: '/modules/users/client/admin/views/authentication/authentication.client.view.html',
         controller: 'AuthenticationController',
         controllerAs: 'vm'

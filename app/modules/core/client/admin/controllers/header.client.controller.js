@@ -10,13 +10,12 @@
   function HeaderController($window, $mdSidenav, $scope, $state, Authentication, menuService, isDrawerOpen) {
     var vm = this;
     vm.back = false;
+    vm.showBackButton = false;
 
     vm.accountMenu = menuService.getMenu('account').items[0];
     vm.authentication = Authentication;
     vm.isCollapsed = false;
     vm.menu = menuService.getMenu('topbar');
-
-    vm.showBackButton = false;
 
     $scope.$on('$stateChangeSuccess', stateChangeSuccess);
 

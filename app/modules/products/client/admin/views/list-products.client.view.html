@@ -4,7 +4,7 @@
   </div>
   <div class="list-group">
     <a ng-repeat="product in vm.products"
-       ui-sref="products.view({ productId: product._id })"
+       ui-sref="admin.products.view({ productId: product._id })"
        class="list-group-item">
       <small class="list-group-item-text">
         Posted on
@@ -17,6 +17,6 @@
     </a>
   </div>
   <div class="alert alert-warning text-center" ng-if="vm.products.$resolved && !vm.products.length">
-    No Products yet, why don't you <a ui-sref="products.create">create one</a>?
+    No Products yet, why don't you <a ui-sref="admin.products.create">create one</a>?
   </div>
 </section>

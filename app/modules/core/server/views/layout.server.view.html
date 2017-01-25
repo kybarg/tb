@@ -34,16 +34,18 @@
   <link href="/{{favicon}}" rel="shortcut icon" type="image/x-icon">
 
   <!-- Application CSS Files -->
-  {{#each cssFiles.public}}<link rel="stylesheet" href="/{{this}}">{{/each}}
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  {{#each cssFiles.all}}<link rel="stylesheet" href="/{{this}}">{{/each}}
 </head>
 
-<body class="ng-cloak">
-  <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-  <section class="content">
-    <section class="container">
-      {{{block "content"}}}
-    </section>
-  </section>
+<body>
+
+  <div id="main" layout="column" ui-view>
+    {{{block "content"}}}
+  </div>
+  <script>
+    document.getElementById('main').innerHTML = "";
+  </script>
 
   <noscript>
     <style>
@@ -66,7 +68,7 @@
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
   <!--Application JavaScript Files-->
-    {{#each jsFiles.public}}<script type="text/javascript" src="/{{this}}"></script>{{/each}}
+    {{#each jsFiles.all}}<script type="text/javascript" src="/{{this}}"></script>{{/each}}
 
   <!--owasp config sync-->
   <script type="text/javascript">

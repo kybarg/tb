@@ -9,7 +9,7 @@
   VendorsService.$inject = ['$resource'];
 
   function VendorsService($resource) {
-    return $resource('/api/vendors/:vendorId', {
+    var Vendor = $resource('/api/vendors/:vendorId', {
       vendorId: '@_id'
     }, {
       update: {
@@ -20,5 +20,13 @@
         isArray: false
       }
     });
+
+    angular.extend(Vendor, {
+      getVendors: function (params) {
+        return this.query(params).$promise;
+      }
+    });
+
+    return Vendor;
   }
 }());

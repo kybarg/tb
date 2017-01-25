@@ -1,0 +1,32 @@
+<div class="md-toolbar-tools">
+  <md-button class="md-icon-button" aria-label="Navigation" ng-click="vm.toggleDrawer();" ng-if="!vm.showBackButton">
+    <md-icon class="material-icons">menu</md-icon>
+  </md-button>
+  <md-button class="md-icon-button" aria-label="Back" ng-if="vm.showBackButton" ng-click="vm.back()">
+    <md-icon class="material-icons">arrow_back</md-icon>
+  </md-button>
+  <h2>
+    <img src="/modules/core/client/admin/img/brand/logo.svg" style="height: 40px; vertical-align: middle; width: 40px;">
+    <span ng-bind="vm.sectionName" style="vertical-align: middle; display: inline-block; margin-left: 10px; border-left: 1px solid rgba(0,0,0,0.26); padding-left: 16px;"></span>
+  </h2>
+  <span flex></span>
+  <!--<md-button class="md-icon-button" aria-label="More">
+    <md-icon>more_vert</md-icon>
+  </md-button>-->
+  <div>
+    <md-menu md-position-mode="target-right target" md-offset="0 56">
+      <md-button class="md-icon-button" style="margin: 0;" ng-click="$mdOpenMenu($event)" aria-label="Profile">
+        <img ng-src="/{{vm.authentication.user.profileImageURL}}" alt="{{vm.authentication.user.displayName}}" style="border-radius: 50%; width: 40px; height: 40px; margin: -8px;" />
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item ng-repeat="item in vm.accountMenu.items">
+          <md-button ui-sref="{{item.state}}"> {{ item.title }} </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button href="/api/auth/signout" target="_self">Sign out</md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </div>
+</div>
+<div class="md-toolbar-tools" ui-view="tabs" ng-if="vm.hasTabs"></div>

@@ -13,6 +13,7 @@
       title: 'Categories',
       state: 'admin.categories.list',
       icon: 'folder',
+      position: 1,
       roles: ['admin']
     });
   }
