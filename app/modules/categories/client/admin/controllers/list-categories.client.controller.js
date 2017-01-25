@@ -8,7 +8,6 @@
   CategoriesListController.$inject = ['$timeout', '$location', 'CategoriesService', '$stateParams'];
 
   function CategoriesListController($timeout, $location, CategoriesService, $stateParams) {
-
     var vm = this;
 
     vm.categories = {};

@@ -15,7 +15,7 @@
     vm.remove = remove;
     vm.save = save;
 
-    vm.pictures = category.picture;
+    vm.pictures = vm.category.picture;
 
     vm.uploadPicture = uploadPicture;
     vm.deletePicture = deletePicture;
@@ -104,6 +104,7 @@
             category = Object.assign(category, response.data);
             vm.category = category;
             vm.pictures.push(category.picture.pop());
+            vm.category.picture = vm.pictures;
             vm.uploadProgress = 0;
             // vm.pictures.push(response.data);
             // console.log('Success ' + response.config.data.category.picture.pop().name + 'uploaded. Response: ' + response.data);
@@ -121,8 +122,7 @@
     function deletePicture(id) {
       CategoriesService.deletePicture({ categoryId: vm.category._id, pictureId: id })
         .then(function (response) {
-          category = Object.assign(category, response.data);
-          vm.category = category;
+          vm.category = Object.assign(vm.category, response.data);
           vm.pictures = vm.pictures.filter(function (value) {
             return value._id !== response.pictureId;
           });
@@ -153,6 +153,8 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.categoryForm');
         return false;
       }
+
+      console.dir(vm.category);
 
       // Create a new category, or update the current instance
       vm.category.createOrUpdate()

@@ -95,7 +95,7 @@ exports.changeProfilePicture = function (req, res) {
 
   function updateUser () {
     return new Promise(function (resolve, reject) {
-      user.profileImageURL = config.uploads.profile.image.dest + req.file.filename;
+      user.profileImageName = req.file.filename;
       user.save(function (err, theuser) {
         if (err) {
           reject(err);

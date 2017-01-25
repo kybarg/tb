@@ -30,7 +30,6 @@
       .state('admin', {
         abstract: true,
         url: '/admin',
-        // template: '<ui-view/>',
         views: {
           '@': {
             templateUrl: '/modules/core/client/admin/views/layout.client.view.html'
@@ -53,9 +52,9 @@
         controller: 'HomeController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Home'
+          pageTitle: 'Home',
+          roles: ['admin']
         }
-
       })
       .state('not-found', {
         url: '/not-found',
@@ -63,7 +62,7 @@
         controller: 'ErrorController',
         controllerAs: 'vm',
         params: {
-          message: function($stateParams) {
+          message: function ($stateParams) {
             return $stateParams.message;
           }
         },
@@ -78,7 +77,7 @@
         controller: 'ErrorController',
         controllerAs: 'vm',
         params: {
-          message: function($stateParams) {
+          message: function ($stateParams) {
             return $stateParams.message;
           }
         },
@@ -96,4 +95,4 @@
         }
       });
   }
-}());
+} ());

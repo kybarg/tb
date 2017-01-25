@@ -9,23 +9,23 @@
 
   function routeConfig($stateProvider) {
     $stateProvider
-      .state('products', {
+      .state('admin.products', {
         abstract: true,
         url: '/products',
         template: '<ui-view/>'
       })
-      .state('products.list', {
+      .state('admin.products.list', {
         url: '',
-        templateUrl: 'modules/products/client/views/list-products.client.view.html',
+        templateUrl: '/modules/products/client/admin/views/list-products.client.view.html',
         controller: 'ProductsListController',
         controllerAs: 'vm',
         data: {
           pageTitle: 'Products List'
         }
       })
-      .state('products.create', {
+      .state('admin.products.create', {
         url: '/create',
-        templateUrl: 'modules/products/client/views/form-product.client.view.html',
+        templateUrl: '/modules/products/client/admin/views/form-product.client.view.html',
         controller: 'ProductsController',
         controllerAs: 'vm',
         resolve: {
@@ -36,9 +36,9 @@
           pageTitle: 'Products Create'
         }
       })
-      .state('products.edit', {
+      .state('admin.products.edit', {
         url: '/:productId/edit',
-        templateUrl: 'modules/products/client/views/form-product.client.view.html',
+        templateUrl: '/modules/products/client/admin/views/form-product.client.view.html',
         controller: 'ProductsController',
         controllerAs: 'vm',
         resolve: {
@@ -49,9 +49,9 @@
           pageTitle: 'Edit Product {{ productResolve.name }}'
         }
       })
-      .state('products.view', {
+      .state('admin.products.view', {
         url: '/:productId',
-        templateUrl: 'modules/products/client/views/view-product.client.view.html',
+        templateUrl: '/modules/products/client/admin/views/view-product.client.view.html',
         controller: 'ProductsController',
         controllerAs: 'vm',
         resolve: {

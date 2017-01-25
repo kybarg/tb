@@ -22,10 +22,14 @@ coverage/
 public/dist/
 uploads
 modules/users/client/admin/img/profile/uploads
-modules/users/client/public/img/profile/uploads
+modules/users/client/all/img/profile/uploads
 config/env/local.js
 config/env/local-*.js
 *.pem
+
+# API docs
+# ======================
+apidoc
 
 # Compiled less and sass files
 # ============================

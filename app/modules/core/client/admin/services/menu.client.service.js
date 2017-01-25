@@ -51,6 +51,7 @@
         title: options.title || '',
         state: options.state || '',
         icon: options.icon || '',
+        params: options.params || {},
         type: options.type || 'item',
         class: options.class,
         roles: ((options.roles === null || typeof options.roles === 'undefined') ? service.defaultRoles : options.roles),

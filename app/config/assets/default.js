@@ -65,16 +65,14 @@ module.exports = {
       views: ['modules/*/client/admin/views/**/*.html'],
       templates: ['build/admin.templates.js']
     },
-    public: {
+    all: {
       lib: {
         css: [
           // bower:css
           'public/lib/bootstrap/dist/css/bootstrap.css',
           'public/lib/bootstrap/dist/css/bootstrap-theme.css',
           'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
-          'public/lib/angular-material/angular-material.css',
-          'public/lib/angular-material-data-table/dist/md-data-table.css',
-          'public/lib/textAngular/dist/textAngular.css'
+          'public/lib/angular-material/angular-material.css'
           // endbower
         ],
         js: [
@@ -90,29 +88,25 @@ module.exports = {
           'public/lib/angular-resource/angular-resource.js',
           'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
           'public/lib/angular-ui-router/release/angular-ui-router.js',
-          'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-          'public/lib/angular-material-data-table/dist/md-data-table.js',
-          'public/lib/textAngular/dist/textAngular-rangy.min.js',
-          'public/lib/textAngular/dist/textAngular-sanitize.min.js',
-          'public/lib/textAngular/dist/textAngular.min.js'
+          'public/lib/owasp-password-strength-test/owasp-password-strength-test.js'
           // endbower
         ],
         tests: ['public/lib/angular-mocks/angular-mocks.js']
       },
       css: [
-        'modules/*/client/public/{css,less,scss}/*.css'
+        'modules/*/client/all/{css,less,scss}/*.css'
       ],
       less: [
-        'modules/*/client/public/less/*.less'
+        'modules/*/client/all/less/*.less'
       ],
       sass: [
-        'modules/*/client/public/scss/*.scss'
+        'modules/*/client/all/scss/*.scss'
       ],
       js: [
-        'modules/core/client/public/app/config.js',
-        'modules/core/client/public/app/init.js',
-        'modules/*/client/public/*.js',
-        'modules/*/client/public/**/*.js'
+        'modules/core/client/all/app/config.js',
+        'modules/core/client/all/app/init.js',
+        'modules/*/client/all/*.js',
+        'modules/*/client/all/**/*.js'
       ],
       img: [
         'modules/**/*/public/img/**/*.jpg',
@@ -120,9 +114,9 @@ module.exports = {
         'modules/**/*/public/img/**/*.gif',
         'modules/**/*/public/img/**/*.svg'
       ],
-      views: ['modules/*/client/public/views/**/*.html'],
+      views: ['modules/*/client/all/views/**/*.html'],
       templates: ['build/public.templates.js']
-    }
+    },
   },
   server: {
     gulpConfig: ['gulpfile.js'],
