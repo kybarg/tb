@@ -81,7 +81,8 @@
     "transliteration": "^1.2.2",
     "validator": "~6.0.0",
     "winston": "^2.2.0",
-    "wiredep": "~4.0.0"
+    "wiredep": "~4.0.0",
+    "xml-stream": "^0.4.5"
   },
   "devDependencies": {
     "coveralls": "~2.11.6",
