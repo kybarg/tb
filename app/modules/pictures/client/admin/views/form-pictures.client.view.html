@@ -9,7 +9,7 @@
 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
 <md-grid-list md-cols="2" md-row-height="1:1">
-    <md-grid-tile ng-repeat="picture in vm.pictures" ng-style="{'background': picture.color}">
+    <md-grid-tile ng-repeat="picture in vm.pictures track by picture._id" ng-style="{'background': picture.color}">
 
       <img ngf-thumbnail="'/uploads/images/categories/' + picture.name" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
       <md-grid-tile-footer layout="column" layout-align="center stretch">

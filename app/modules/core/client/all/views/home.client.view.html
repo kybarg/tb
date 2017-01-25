@@ -1,1 +1,9 @@
-Home
+<md-grid-list md-cols="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="1:1" md-row-height="4:3"
+  md-gutter="8px">
+
+  <md-grid-tile class="md-whiteframe-1dp" ng-repeat="tile in vm.categories.items" ng-style="{'background-color': tile.picture[0].color}">
+    <md-grid-tile-footer>
+      <h3>{{tile.name}}</h3>
+    </md-grid-tile-footer>
+  </md-grid-tile>
+</md-grid-list>

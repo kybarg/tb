@@ -1,7 +1,7 @@
-<md-toolbar class="md-whiteframe-2dp" layout="row" layout-wrap style="z-index: 40;" ui-view="toolbar"></md-toolbar>
+<md-toolbar class="md-whiteframe-2dp md-hue-3" md-theme="grey" layout="row" layout-wrap style="z-index: 40;" ui-view="toolbar"></md-toolbar>
 <section layout="row" flex>
   <md-sidenav class="md-whiteframe-1dp" md-is-locked-open="$mdMedia('gt-md')" md-component-id="drawer" ui-view="drawer"></md-sidenav>
   <md-content flex layout-padding>
-    <section ui-view></section>
+    <section style="max-width: 1024px; margin: 0 auto;" ui-view></section>
   </md-content>
 </section>

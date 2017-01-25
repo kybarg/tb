@@ -24,7 +24,7 @@
 
     // If user is signed in then redirect back home
     if (vm.authentication.user) {
-      $location.path('/');
+      $location.path('/admin');
     }
 
     function signup(isValid) {
@@ -86,7 +86,7 @@
     }
 
     function onUserSigninError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Signin Error!', delay: 6000 });
+      Notification.error({ message: response.data ? response.data.message : '', title: '<i class="glyphicon glyphicon-remove"></i> Signin Error!', delay: 6000 });
     }
   }
 }());

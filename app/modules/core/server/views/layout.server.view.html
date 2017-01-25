@@ -38,9 +38,14 @@
   {{#each cssFiles.all}}<link rel="stylesheet" href="/{{this}}">{{/each}}
 </head>
 
-<body class="ng-cloak">
-  <div id="main" layout="column" ui-view></div>
-  <script>document.getElementById('main').innerHTML = "";</script>
+<body>
+
+  <div id="main" layout="column" ui-view>
+    {{{block "content"}}}
+  </div>
+  <script>
+    document.getElementById('main').innerHTML = "";
+  </script>
 
   <noscript>
     <style>

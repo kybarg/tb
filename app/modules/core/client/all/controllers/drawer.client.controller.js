@@ -5,9 +5,9 @@
     .module('core')
     .controller('DrawerController', DrawerController);
 
-  DrawerController.$inject = ['$scope', '$state', 'Authentication', 'menuService', 'isDrawerOpen'];
+  DrawerController.$inject = ['$mdSidenav', '$scope', '$state', 'Authentication', 'menuService'];
 
-  function DrawerController($scope, $state, Authentication, menuService, isDrawerOpen) {
+  function DrawerController($mdSidenav, $scope, $state, Authentication, menuService) {
     var vm = this;
 
     vm.accountMenu = menuService.getMenu('account').items[0];
@@ -17,11 +17,8 @@
 
     $scope.$on('$stateChangeSuccess', stateChangeSuccess);
 
-    $scope.isDrawerOpen = isDrawerOpen;
-
     function stateChangeSuccess() {
-      // Collapsing the menu after navigation
-      vm.isCollapsed = false;
+      $mdSidenav('drawer').close();
     }
   }
 }());

@@ -15,7 +15,6 @@
   function tbPictures() {
     return {
       // scope: {
-      //   action: '=action',
       //   'model': '=model'
       // },
       templateUrl: '/modules/pictures/client/admin/views/form-pictures.client.view.html'

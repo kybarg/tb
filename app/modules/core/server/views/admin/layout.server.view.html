@@ -36,12 +36,11 @@
   <!-- Application CSS Files -->
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   {{#each cssFiles.admin}}<link rel="stylesheet" href="/{{this}}">{{/each}}
-
 </head>
 
 <body>
 
-  <div id="main" layout="column" ui-view >
+  <div id="main" layout="column" ui-view style="height: 100%;">
     {{{block "content"}}}
   </div>
   <script>

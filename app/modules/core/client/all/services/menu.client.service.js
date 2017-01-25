@@ -50,6 +50,9 @@
       service.menus[menuId].items.push({
         title: options.title || '',
         state: options.state || '',
+        params: options.params || {},
+        icon: options.icon || '',
+        iconSvg: options.iconSvg || '',
         type: options.type || 'item',
         class: options.class,
         roles: ((options.roles === null || typeof options.roles === 'undefined') ? service.defaultRoles : options.roles),

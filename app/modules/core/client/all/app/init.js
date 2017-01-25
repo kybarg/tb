@@ -10,9 +10,14 @@
     .module(app.applicationModuleName)
     .config(bootstrapConfig);
 
-  bootstrapConfig.$inject = ['$compileProvider', '$locationProvider', '$httpProvider', '$logProvider'];
+  bootstrapConfig.$inject = ['$compileProvider', '$locationProvider', '$httpProvider', '$logProvider', '$mdThemingProvider'];
 
-  function bootstrapConfig($compileProvider, $locationProvider, $httpProvider, $logProvider) {
+  function bootstrapConfig($compileProvider, $locationProvider, $httpProvider, $logProvider, $mdThemingProvider) {
+
+    $mdThemingProvider
+      .theme('grey')
+      .primaryPalette('grey');
+
     $locationProvider.html5Mode({
       enabled: true,
       requireBase: false

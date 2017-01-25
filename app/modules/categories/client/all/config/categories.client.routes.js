@@ -9,30 +9,30 @@
 
   function routeConfig($stateProvider) {
     $stateProvider
-      .state('categories', {
+      .state('all.categories', {
         abstract: true,
         url: '/categories',
         template: '<ui-view/>'
       })
-      .state('categories.list', {
+      .state('all.categories.list', {
         url: '',
-        templateUrl: '/modules/categories/client/views/list-categories.client.view.html',
+        templateUrl: '/modules/categories/client/all/views/list-categories.client.view.html',
         controller: 'CategoriesListController',
         controllerAs: 'vm',
         data: {
           pageTitle: 'Categories List'
         }
       })
-      .state('categories.view', {
+      .state('all.categories.view', {
         url: '/:categoryId',
-        templateUrl: '/modules/categories/client/views/view-category.client.view.html',
+        templateUrl: '/modules/categories/client/all/views/view-category.client.view.html',
         controller: 'CategoriesController',
         controllerAs: 'vm',
         resolve: {
           categoryResolve: getCategory
         },
         data: {
-          pageTitle: 'Category {{ categoryResolve.name }}'
+          pageTitle: '{{ categoryResolve.name }}'
         }
       });
   }

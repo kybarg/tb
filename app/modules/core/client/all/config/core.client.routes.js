@@ -27,46 +27,32 @@
     });
 
     $stateProvider
-      // .state('', {
-      //   abstract: true,
-      //   url: '/',
-      //   views: {
-      //     '@': {
-      //       templateUrl: '/modules/core/client/all/views/layout.client.view.html'
-      //     },
-      //     'toolbar@all': {
-      //       templateUrl: '/modules/core/client/all/views/header.client.view.html',
-      //       controller: 'HeaderController',
-      //       controllerAs: 'vm'
-      //     },
-      //     'drawer@all': {
-      //       templateUrl: '/modules/core/client/all/views/drawer.client.view.html',
-      //       controller: 'DrawerController',
-      //       controllerAs: 'vm'
-      //     }
-      //   }
-      // })
-      .state('home', {
-        url: '/',
-         views: {
+      .state('all', {
+        abstract: true,
+        url: '',
+        views: {
           '@': {
             templateUrl: '/modules/core/client/all/views/layout.client.view.html'
           },
-          'toolbar@home': {
+          'toolbar@all': {
             templateUrl: '/modules/core/client/all/views/header.client.view.html',
             controller: 'HeaderController',
             controllerAs: 'vm'
           },
-          'drawer@home': {
+          'drawer@all': {
             templateUrl: '/modules/core/client/all/views/drawer.client.view.html',
             controller: 'DrawerController',
             controllerAs: 'vm'
-          },
-          '@home': {
-            templateUrl: '/modules/core/client/all/views/home.client.view.html',
-            controller: 'HomeController',
-            controllerAs: 'vm'
           }
+        }
+      })
+      .state('all.home', {
+        url: '/',
+        templateUrl: '/modules/core/client/all/views/home.client.view.html',
+        controller: 'HomeController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Trendberry'
         }
       })
       .state('not-found', {

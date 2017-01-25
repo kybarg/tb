@@ -23,4 +23,8 @@
     </em>
   </small>
   <p class="lead" ng-bind="vm.category.content"></p>
+
+  <div ng-repeat="child in vm.children.items track by child._id">
+    {{ child.name }}
+  </div>
 </section>

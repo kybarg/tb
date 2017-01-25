@@ -8,6 +8,15 @@
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(menuService) {
+
+    menuService.addMenuItem('drawer', {
+      title: 'Главная',
+      icon: 'home',
+      position: 0,
+      state: 'all.home',
+      roles: ['*']
+    });
+
     menuService.addMenu('account', {
       roles: ['user']
     });

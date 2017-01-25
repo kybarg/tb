@@ -8,6 +8,7 @@ var _ = require('lodash'),
   path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
+  ObjectId = mongoose.Types.ObjectId,
   multer = require('multer'),
   config = require(path.resolve('./config/config')),
   Category = mongoose.model('Category'),
@@ -82,6 +83,7 @@ exports.delete = function (req, res) {
  * List of Categories
  */
 exports.list = function (req, res) {
+  console.log(req.query);
   var sort = req.query.sort ? req.query.sort : 'path';
   // var sortParam = sort.replace('-', '');
   // sort = 'path';
@@ -89,13 +91,15 @@ exports.list = function (req, res) {
   var limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
   // var match = req.query.match ? req.query.match : {};
   var match = {};
-  if (req.query.name) {
+  if (req.query.name !== undefined) {
     match.name = {
       '$regex': req.query.name,
       '$options': 'i'
     };
-  } else if (req.query.parent !== undefined) {
-    match.parent = req.query.parent ? req.query.parent : null;
+  }
+
+  if (req.query.parent !== undefined) {
+    match.parent = req.query.parent ? new ObjectId(req.query.parent) : null;
   }
 
   // Maybe there less ugly way to solve sorting
@@ -106,25 +110,26 @@ exports.list = function (req, res) {
   // }
 
   async.parallel([function (callback) {
-    Category.count(function (err, count) {
+    Category.find(match).count(function (err, count) {
       callback(err, count);
     });
   }, function (callback) {
     // Category.find(filter).skip((page - 1) * limit).limit(limit).sort(sort).exec(function (err, categories) {
     //   callback(err, categories);
     // });
-    Category.aggregate([{
-      $match: match
-    }, {
-      $graphLookup: {
-        from: 'categories',
-        startWith: '$parent',
-        connectFromField: 'parent',
-        connectToField: '_id',
-        as: 'ancestors'
-      }
-    }, {
-      $project: {
+    Category
+      .aggregate()
+      .match(match)
+      .append({
+        $graphLookup: {
+          from: 'categories',
+          startWith: '$parent',
+          connectFromField: 'parent',
+          connectToField: '_id',
+          as: 'ancestors'
+        }
+      })
+      .project({
         _id: 1,
         name: 1,
         description: 1,
@@ -132,6 +137,7 @@ exports.list = function (req, res) {
         created: 1,
         parent: 1,
         ancestors: 1,
+        picture: 1,
         path: {
           $concatArrays: [
             {
@@ -144,8 +150,7 @@ exports.list = function (req, res) {
             [['$name', '$_id']]
           ]
         }
-      }
-    }]).sort(sort).skip((page - 1) * limit).limit(limit).exec(function (err, categories) {
+      }).sort(sort).skip((page - 1) * limit).limit(limit).exec(function (err, categories) {
       callback(err, categories);
     });
 
