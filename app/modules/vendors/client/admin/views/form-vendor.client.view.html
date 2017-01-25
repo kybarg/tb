@@ -1,24 +1,44 @@
-<section>
-  <div class="page-header">
-    <h1>{{vm.vendor._id ? 'Edit Vendor' : 'New Vendor'}}</h1>
-  </div>
-  <div class="col-md-12">
-    <form name="vm.form.vendorForm" class="form-horizontal" ng-submit="vm.save(vm.form.vendorForm.$valid)" novalidate>
-      <fieldset>
-        <div class="form-group" show-errors>
-          <label class="control-label" for="name">Name</label>
-          <input name="name" type="text" ng-model="vm.vendor.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.vendorForm.name.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Vendor name is required.</p>
+<md-card>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-title">{{vm.vendor._id ? 'Edit Vendor' : 'New Vendor'}}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <form name="vm.form.vendorForm" class="form-horizontal" ng-submit="vm.save(vm.form.vendorForm.$valid)" novalidate>
+    <div layout="column" layout-gt-sm="row" layout-padding>
+      <div flex-gt-sm="66">
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input name="name" ng-model="vm.vendor.name" required>
+          <div ng-messages="vm.form.vendorForm.name.$error">
+            <div ng-message="required">Vendor name is required.</div>
           </div>
+        </md-input-container>
+
+        <div class="md-textangular">
+          <label>Description</label>
+          <div text-angular ng-model="vm.vendor.description"></div>
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.vendor._id ? 'Update' : 'Create'}}</button>
-        </div>
-        <div ng-show="vm.error" class="text-danger">
-          <strong ng-bind="vm.error"></strong>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-</section>
+
+        <md-chips ng-model="vm.vendor.synonyms" readonly="false" md-removable="true" placeholder="Enter synonyms" secondary-placeholder="+Synonym"></md-chips>
+
+      </div>
+      <div flex-gt-sm="33">
+
+        <md-input-container class="md-block">
+          <label>Slug</label>
+          <input name="slug" ng-model="vm.vendor.slug">
+        </md-input-container>
+
+        <tb-meta model="vm.vendor"></tb-meta>
+
+        <tb-pictures model="vm.vendor" ng-if="vm.vendor._id"></tb-pictures>
+
+      </div>
+    </div>
+    <md-card-actions layout="row" layout-align="start center">
+      <md-button class="md-primary" type="submit">{{vm.vendor._id ? 'Update' : 'Create'}}</md-button>
+      <md-button ng-if="vm.vendor._id" ng-click="vm.remove()">Remove</md-button>
+    </md-card-actions>
+  </form>
+</md-card>
