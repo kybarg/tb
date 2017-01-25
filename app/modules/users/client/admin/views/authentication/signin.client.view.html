@@ -1,4 +1,4 @@
-<md-card style="max-width: 480px;">
+<md-card style="min-width: 320px; max-width: 480px;">
   <form name="vm.userForm" ng-submit="vm.signin(vm.userForm.$valid)" class="signin" novalidate autocomplete="off" md-card>
     <md-card-title>
       <md-card-title-text>
@@ -27,8 +27,8 @@
     </md-card-content>
     <md-card-actions layout="row" layout-align="start center">
       <md-button class="md-primary" type="submit">Sign in</md-button>
-      <md-button ui-sref="authentication.signup">Sign up</md-button>
-      <md-button ui-sref="password.forgot">Forgot your password?</md-button>
+      <!--<md-button ui-sref="admin.authentication.signup">Sign up</md-button>
+      <md-button ui-sref="admin.password.forgot">Forgot your password?</md-button>-->
     </md-card-actions>
   </form>
 </md-card>

@@ -5,13 +5,12 @@
     .module('articles')
     .controller('ArticlesController', ArticlesController);
 
-  ArticlesController.$inject = ['$mdDialog', '$mdToast', '$scope', '$state', '$window', 'articleResolve', 'Authentication', 'Notification'];
+  ArticlesController.$inject = ['$mdDialog', '$mdToast', '$scope', '$state', 'articleResolve'];
 
-  function ArticlesController($mdDialog, $mdToast, $scope, $state, $window, article, Authentication, Notification) {
+  function ArticlesController($mdDialog, $mdToast, $scope, $state, article) {
     var vm = this;
 
     vm.article = article;
-    vm.authentication = Authentication;
     vm.form = {};
     vm.remove = remove;
     vm.save = save;

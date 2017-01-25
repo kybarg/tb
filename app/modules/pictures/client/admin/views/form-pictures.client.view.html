@@ -9,14 +9,15 @@
 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
 <md-grid-list md-cols="2" md-row-height="1:1">
-    <md-grid-tile ng-repeat="picture in vm.pictures track by picture._id" ng-style="{'background': picture.color}">
-
-      <img ngf-thumbnail="'/uploads/images/categories/' + picture.name" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
-      <md-grid-tile-footer layout="column" layout-align="center stretch">
-        <div layout="row" layout-align="space-between center">
-          <h3 default="{{picture.color}}" md-color-history="false" md-color-picker md-color-clear-button="false" ng-model="picture.color"></h3>
-          <md-button class="md-icon-button md-accent" ng-click="vm.deletePicture(picture._id)"><md-icon>delete</md-icon></md-button>
-        </div>
-      </md-grid-tile-footer>
-    </md-grid-tile>
-  </md-grid-list>
+  <md-grid-tile ng-repeat="picture in vm.pictures track by picture._id" ng-style="{'background': picture.color}">
+    <img ngf-thumbnail="'/uploads/images/categories/' + picture.name" style="max-width: 100%; max-height: 100%; height: auto; width: auto;">
+    <md-grid-tile-footer layout="column" layout-align="center stretch">
+      <div layout="row" layout-align="space-between center">
+        <h3 default="{{picture.color}}" md-color-history="false" md-color-picker md-color-clear-button="false" ng-model="picture.color"></h3>
+        <md-button class="md-icon-button md-accent" ng-click="vm.deletePicture(picture._id)">
+          <md-icon>delete</md-icon>
+        </md-button>
+      </div>
+    </md-grid-tile-footer>
+  </md-grid-tile>
+</md-grid-list>
