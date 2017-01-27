@@ -83,7 +83,6 @@ exports.delete = function (req, res) {
  * List of Categories
  */
 exports.list = function (req, res) {
-  console.log(req.query);
   var sort = req.query.sort ? req.query.sort : 'path';
   // var sortParam = sort.replace('-', '');
   // sort = 'path';
@@ -151,8 +150,8 @@ exports.list = function (req, res) {
           ]
         }
       }).sort(sort).skip((page - 1) * limit).limit(limit).exec(function (err, categories) {
-      callback(err, categories);
-    });
+        callback(err, categories);
+      });
 
   }], function (err, results) {
     if (err) {
@@ -171,7 +170,7 @@ exports.list = function (req, res) {
 /**
  * Upload category picture
  */
-exports.uploadPicture = function (req, res) {
+exports.pictureCreate = function (req, res) {
   var category = req.category;
   var existingImageName;
 
@@ -192,10 +191,8 @@ exports.uploadPicture = function (req, res) {
   var upload = multer(multerConfig).single('picture');
 
   if (category) {
-    // existingImageName = (category.picture && category.picture[0]) ? category.picture[0].name : false;
     uploadImage()
       .then(updateCategory)
-      // .then(deleteOldImage)
       .then(function () {
         res.json(category);
       })
@@ -208,7 +205,7 @@ exports.uploadPicture = function (req, res) {
     });
   }
 
-  function uploadImage () {
+  function uploadImage() {
     return new Promise(function (resolve, reject) {
       upload(req, res, function (uploadError) {
         if (uploadError) {
@@ -220,7 +217,7 @@ exports.uploadPicture = function (req, res) {
     });
   }
 
-  function updateCategory () {
+  function updateCategory() {
     return new Promise(function (resolve, reject) {
       category.picturesToUpload = req.file;
       category.save(function (err, thecategory) {
@@ -233,35 +230,11 @@ exports.uploadPicture = function (req, res) {
     });
   }
 
-  function deleteOldImage () {
-    return new Promise(function (resolve, reject) {
-      if (existingImageName !== Category.schema.path('picture.name').defaultValue) {
-        fs.unlink(existingImageName, function (unlinkError) {
-          if (unlinkError) {
-            console.log(unlinkError);
-            reject({
-              message: 'Error occurred while deleting old profile picture'
-            });
-          } else {
-            resolve();
-          }
-        });
-      } else {
-        resolve();
-      }
-    });
-  }
 };
 
-exports.deletePicture = function (req, res) {
+exports.pictureDelete = function (req, res) {
   var category = req.category;
   category.picturesToDelete = [req.params.pictureId];
-
-
-  // console.log(req.params.pictureId);
-  // console.log(req.query);
-
-  // res.json({dfgsdfg: 'dfgdfgsfg'});
 
   category.save(function (err, category) {
     if (err) {
@@ -269,7 +242,7 @@ exports.deletePicture = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp({data: category, pictureId: req.params.pictureId});
+      res.jsonp({ data: category, pictureId: req.params.pictureId });
     }
   });
 };
