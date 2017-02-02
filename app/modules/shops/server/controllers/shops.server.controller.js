@@ -75,7 +75,7 @@ exports.delete = function (req, res) {
  * List of Shops
  */
 exports.list = function (req, res) {
-   var sort = req.query.sort ? req.query.sort : '-created';
+  var sort = req.query.sort ? req.query.sort : '-created';
   // var page = req.query.page ? parseInt(req.query.page, 10) : 1;
   //  var limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
   Shop.find().sort(sort).exec(function (err, shops) {

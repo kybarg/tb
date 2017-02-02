@@ -4,20 +4,24 @@
 var importPolicy = require('../policies/import.server.policy'),
   importController = require('../controllers/import.server.controller');
 
-module.exports = function (app) {
+// importId is is Id of corresponding shop
 
-  app.route('/api/import/:shopId/start').all(importPolicy.isAllowed)
+module.exports = function (app) {
+ 
+  app.route('/api/import/:importId//start').all(importPolicy.isAllowed)
     .post(importController.start);
 
-  app.route('/api/import/pause/:id').all(importPolicy.isAllowed)
+  app.route('/api/import/:importId/pause').all(importPolicy.isAllowed)
     .post(importController.pause);
 
-  app.route('/api/import/resume/:id').all(importPolicy.isAllowed)
-    .post(importController.resume);
-
+  app.route('/api/import/:importId/resume').all(importPolicy.isAllowed)
+    .post(importController.resume);    
+  
   app.route('/api/import').all(importPolicy.isAllowed)
     .get(importController.list);
 
-  app.route('/api/import/:Id').all(importPolicy.isAllowed)
+  app.route('/api/import/:importId').all(importPolicy.isAllowed)
     .get(importController.info);
+
+  app.param('importId', importController.importByID);  
  };
