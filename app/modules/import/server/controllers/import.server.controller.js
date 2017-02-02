@@ -13,12 +13,17 @@ var _ = require('lodash'),
   Shop = mongoose.model('Shop'),
   FeedImport = require(path.resolve('./modules/import/lib/feed_import')),
   async = require('async');
+  var XmlStream = require('xml-stream');
 
+
+//todo store import list
+//stop function
+//socket
 var feedImportList = new Map();
 
+
 exports.start = function (req, res) {
-  var feedImport = new FeedImport(req.body); //body must be a shop
-  feedImportList.set(req.body.id, feedImport);
+  var feedImport = req.import;
   feedImport.downloadFeed(function () {
     feedImport.startImport();
   });
@@ -46,41 +51,41 @@ exports.start = function (req, res) {
 };
 
 exports.pause = function (req, res) {
-  var feedImport = feedImportList.get(req.body.id);
-  if (!feedImport) {
-    return res.status(402).send({
-      status: 'error',
-      message: 'import object not found'
-    });
+  var feedImport = req.import;
+
+  if (feedImport.isPaused() != undefined && feedImport.isPaused()) {
+    return res.json({
+      status: feedImport.state,
+      message: 'already paused or incorrect state'
+    })
   }
+
   feedImport.pause();
   res.json({
     status: feedImport.state,
+    message: 'paused'
   });
 };
 
 exports.resume = function (req, res) {
-  var feedImport = feedImportList.get(req.body.id);
-  if (!feedImport) {
-    return res.status(402).send({
-      status: 'error',
-      message: 'import object not found'
-    });
+  var feedImport = req.import;
+ 
+  if (feedImport.isPaused() != undefined && !feedImport.isPaused()) {
+    return res.json({
+      status: feedImport.state,
+      message: 'already running or incorrect state'
+    })
   }
+  
   feedImport.resume();
   res.json({
     status: feedImport.state,
+    message: 'resumed'
   });
 }
 
 exports.info = function (req, res) {
-  var feedImport = feedImportList.get(req.body.id);
-  if (!feedImport) {
-    return res.status(402).send({
-      status: 'error',
-      message: 'import object not found'
-    });
-  }
+  var feedImport = req.import;
   res.json(feedImport.getInfo());
 }
 
@@ -100,7 +105,7 @@ exports.list = function (req, res) {
       //shops[i].import = feed.getInfo();
       result.push({
         shop: shops[i],
-        import: feed.getInfo() 
+        import: feed.getInfo()
       })
     }
     res.json({
@@ -109,3 +114,24 @@ exports.list = function (req, res) {
     })
   });
 }
+
+/**
+ * Import middleware
+ */
+exports.importByID = function (req, res, next, id) {
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'Import id is invalid'
+    });
+  }
+  var feedImport = feedImportList.get(id);
+  if (!feedImport) {
+    return res.status(404).send({
+      status: 'error',
+      message: 'Import object not found'
+    });
+  }
+  req.import = feedImport;
+  next();
+};

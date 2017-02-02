@@ -8,10 +8,49 @@ var http = require('http'),
   util = require('util'),
   contentDisposition = require('content-disposition'),
   XmlStream = require('xml-stream'),
-  ruleList = require(path.resolve('./modules/import/lib/feed_import')),
+  ruleList = require(path.resolve('./modules/import/lib/import_rules')),
   mongoose = require('mongoose'),
   Product = mongoose.model('Product'),
+  Category = mongoose.model('Category'),
+  crypto = require('crypto'),
   config = require(path.resolve('./config/config'));
+
+
+var getCategoriesMask = function (callback) {
+  Category.find().exec(function (err, categories) {
+    callback(err, categories);
+  });
+}
+
+var dbCategoriesMask = {
+  inner: {}
+};
+
+getCategoriesMask(function (err, categories) {
+  function sortCat(field, cat) {
+    for (var i = 0; i < categories.length; i++) {
+      if (categories[i].parent) {
+        if (categories[i].parent.toString() == cat._id.toString()) {
+          if (!field.inner) {
+            field.inner = {};
+          }
+          field.inner[categories[i].name] = (categories[i]);
+          sortCat(field.inner[categories[i].name], categories[i]);
+        }
+      }
+    }
+  }
+  for (var i = 0; i < categories.length; i++) {
+    if (!categories[i].parent) {
+      if (!dbCategoriesMask.inner) {
+        dbCategoriesMask.inner = {};
+      }
+      dbCategoriesMask.inner[categories[i].name] = categories[i];
+      sortCat(dbCategoriesMask.inner[categories[i].name], categories[i])
+    }
+  }
+});
+
 
 function FeedImport(source) {
   if (typeof source === 'string') {
@@ -38,8 +77,10 @@ function FeedImport(source) {
     ignored: 0
   };
   this.categories = {};
-  this.importStreamFile = {};
+  // this.importStreamFile = {};
+  this.processedCategories = {};
 }
+
 
 util.inherits(FeedImport, events.EventEmitter);
 
@@ -79,7 +120,6 @@ FeedImport.prototype.downloadFeed = function (callback) {
       }
     });
   } catch (e) {
-    // err = e;
     self.state = 'download_error';
     console.log(e);
     callback();
@@ -120,7 +160,7 @@ FeedImport.prototype.importItem = function (item) {
   var rule;
   var value;
   var category;
-  var categoryPath;
+  var finalCategoryTree = [];
   product.name = item.name.replace(" " + item.vendor, "");
   //  product.name = item.name;
   category = ruleList.getCategory(product.name);
@@ -146,7 +186,7 @@ FeedImport.prototype.importItem = function (item) {
       rule = ruleList.getRule('age');
       value = ruleList.getValue(rule, self.categories[item.categoryId]);
       if (!value) {
-        importStats.ignored++;
+        this.importStats.ignored++;
         return self.emit('itemImportIgnored', item);
       } else {
         product.age = value;
@@ -162,7 +202,7 @@ FeedImport.prototype.importItem = function (item) {
         rule = ruleList.getRule('gender');
         value = ruleList.getValue(rule, self.categories[item.categoryId]);
         if (!value) {
-          importStats.ignored++;
+          this.importStats.ignored++;
           return self.emit('itemImportIgnored', item);
         } else {
           product.sex = value;
@@ -173,27 +213,30 @@ FeedImport.prototype.importItem = function (item) {
 
   switch (product.age) {
     case 1:
-      categoryPath = 'Для малышей';
+      finalCategoryTree.push('Для малышей');
       break;
     case 2:
-      categoryPath = product.sex == 1 ? 'Девочке' : product.sex == 2 ? 'Мальчику' : '';
+      finalCategoryTree.push(product.sex == 1 ? 'Девочке' : product.sex == 2 ? 'Мальчику' : '');
       break;
     case 3:
-      categoryPath = product.sex == 1 ? 'Женщине' : product.sex == 2 ? 'Мужчине' : '';
+      finalCategoryTree.push(product.sex == 1 ? 'Женщине' : product.sex == 2 ? 'Мужчине' : '');
   }
 
-  categoryPath = categoryPath.concat('/', category.type, category.sub_type == '' ? '' : '/' + category.sub_type, '/', category.category_name);
+  finalCategoryTree.push(category.type);
+  if (category.sub_type != '') {
+    finalCategoryTree.push(category.sub_type);
+  }
+  finalCategoryTree.push(category.category_name);
 
   product.description = item.description;
   product.price = parseInt(item.price);
   product.oldPrice = item.oldprice !== undefined ? parseInt(item.oldprice) : null;
   product.url = item.url;
   product.shop = this.source.id !== undefined ? this.source : null;
-  self.pictDownloadQueue.push({
-    picts: picts,
-    product: product
-  }, function () {
-    self.importStats.new++;
+  this.productImportQueue.push({
+    product: product,
+    pictures: picts,
+    categoryTree: finalCategoryTree
   });
 }
 
@@ -201,30 +244,40 @@ FeedImport.prototype.startImport = function () {
   var self = this;
   this.importStartDate = Date.now();
   this._importTime = process.hrtime();
-  this.pictDownloadQueue = async.queue(function (data, callback) {
-    var picts = [].concat(data.picts);
-    var product = data.product;
+  this.productImportQueue = async.queue(function (data, callback) {
     var pictureFiles = [];
-    async.eachSeries(picts, function (picture, done) {
-      self.downloadPicture(picture, function (err, file) {
-        if (!err) {
-          pictureFiles.push(file);
-        } else {
-          console.log(err.message)
-        }
-        done();
-      });
-    }, function () {
-      product.picturesToUpload = pictureFiles;
-      product.save(function () {
-        callback();
+    self.processCategory(data.categoryTree, data.product, function (product) {
+      if (!product) {
+        console.log('cant get category');
+        return callback();
+      }
+      console.log(product);
+      return callback();
+      async.eachSeries(data.pictures, function (picture, done) {
+        self.downloadPicture(picture, function (err, file) {
+          if (!err) {
+            pictureFiles.push(file);
+          } else {
+            console.log(err.message)
+          }
+          done();
+        });
+      }, function () {
+        product.picturesToUpload = pictureFiles;
+        product.save(function () {
+          self.importStats.new++;
+          self.workTime = self.workTime + process.hrtime(self._importTime)[0];
+          callback();
+        });
       });
     });
   }, 1);
+
   this.state = 'working';
   this.xmlStream.on('error', function (e) {
     console.log(e);
   });
+
   this.xmlStream.collect('category');
   this.xmlStream.on('endElement: categories', function (categories) {
     function chainCat(cat) {
@@ -249,7 +302,7 @@ FeedImport.prototype.startImport = function () {
   this.xmlStream.collect('param');
   this.xmlStream.on('endElement: offer', function (item) {
     if (ruleList.inBlacklist(item.name)) {
-      importStats.blocked++;
+      self.importStats.blocked++;
       return self.emit('itemImportBlocked', item);
     };
 
@@ -257,12 +310,70 @@ FeedImport.prototype.startImport = function () {
       case item.vendor:
       case item.picture:
       case item.price:
-        importStats.ignored++;
+        self.importStats.ignored++;
         return self.emit('itemImportIgnored', item);
     }
     self.importItem(item);
-    self.workTime = self.workTime + process.hrtime(self._importTime)[0];
+    });
+  this.xmlStream.on('end', function () {
+    self.source.lastUpdate = Date.now;
+    console.log('stream parsed');
   });
+}
+
+FeedImport.prototype.processCategory = function (categoryTree, product, callback) {
+  var self = this;
+  var currentCat = dbCategoriesMask;
+  var catParent;
+  var pos = 0;
+
+  console.log(categoryTree);
+
+  function checkCat() {
+    if (pos === categoryTree.length) {
+      if (currentCat) {
+        product.category.push(currentCat);
+        self.processedCategories[categoryTree.toString()] = currentCat;
+        return callback(product);
+      }
+      return callback(undefined);
+    }
+    var catName = categoryTree[pos];
+    if (!currentCat.inner[catName]) {
+      var category = new Category({
+        name: catName,
+        parent: catParent ? catParent : undefined
+      });
+      category.inner = {};
+      currentCat.inner[catName] = category;
+      category.save(function (err, category) {
+        if (catParent) {
+          catParent.inner[category.name] = category;
+        }
+        catParent = category;
+        currentCat = currentCat.inner[catName];
+        pos++;
+        checkCat();
+      });
+    } else {
+      currentCat = currentCat.inner[catName];
+      if (!currentCat.inner) {
+        currentCat.inner = {};
+      }
+      catParent = currentCat;
+      if (!catParent.inner) {
+        catParent.inner = {}
+      }
+      pos++;
+      checkCat();
+    }
+  }
+  if (!this.processedCategories[categoryTree.toString()]) {
+    checkCat();
+  } else {
+    product.category.push(this.processedCategories[categoryTree.toString()]);
+    callback(product);
+  }
 }
 
 FeedImport.prototype.isPaused = function () {
@@ -311,6 +422,13 @@ FeedImport.prototype.importProgress = function () {
   }
 }
 
+FeedImport.prototype.queuedItemsCount = function () {
+  if (this.productImportQueue) {
+    return this.pictDownloadQueue.length;
+  }
+  return 0;
+}
+
 FeedImport.prototype.getInfo = function () {
   return {
     status: this.state,
@@ -321,6 +439,7 @@ FeedImport.prototype.getInfo = function () {
     workTime: this.workTime,
     streamSize: this.streamLength(),
     streamPos: this.streamPos(),
+    itemsInQueue: this.queuedItemsCount(),
     importStats: this.importStats
   };
 }
