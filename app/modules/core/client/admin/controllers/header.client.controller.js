@@ -5,9 +5,9 @@
     .module('core')
     .controller('HeaderController', HeaderController);
 
-  HeaderController.$inject = ['$window', '$mdSidenav', '$scope', '$state', 'Authentication', 'menuService', 'isDrawerOpen'];
+  HeaderController.$inject = ['$window', '$mdSidenav', '$scope', '$state', 'Authentication', 'menuService', '$interpolate'];
 
-  function HeaderController($window, $mdSidenav, $scope, $state, Authentication, menuService, isDrawerOpen) {
+  function HeaderController($window, $mdSidenav, $scope, $state, Authentication, menuService, $interpolate) {
     var vm = this;
     vm.back = false;
     vm.showBackButton = false;
@@ -24,7 +24,13 @@
       vm.isCollapsed = false;
 
       vm.hasTabs = $state.current.views && $state.current.views.hasOwnProperty('tabs@');
-      vm.sectionName = $state.current.data.pageTitle;
+
+      if ($state.current.data && $state.current.data.pageTitle) {
+        var sectionTitle = $interpolate($state.current.data.pageTitle)($state.$current.locals.globals);
+        vm.sectionName = sectionTitle;
+      } else {
+        vm.sectionName = 'Trendberry';
+      }
 
       vm.showBackButton = $state.current.data.back;
 
@@ -32,8 +38,6 @@
         $window.history.back();
       };
     }
-
-    vm.isDrawerOpen = isDrawerOpen;
 
     vm.toggleDrawer = function() {
       $mdSidenav('drawer').toggle();

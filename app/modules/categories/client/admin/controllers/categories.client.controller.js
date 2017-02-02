@@ -94,10 +94,6 @@
             method: 'POST',
             data: {
               picture: file
-              // category: $scope.$parent.model,
-              // body: {
-              //   picture: file
-              // }
             }
           })
           .then(function (response) {
@@ -107,6 +103,8 @@
             vm.category.picture = vm.pictures;
             vm.uploadProgress = 0;
             // vm.pictures.push(response.data);
+            $mdToast.show($mdToast.simple({ position: 'bottom right' }).textContent('Image uploaded successfully!'));
+
             // console.log('Success ' + response.config.data.category.picture.pop().name + 'uploaded. Response: ' + response.data);
           }, function (response) {
             errorCallback(response)
@@ -126,6 +124,7 @@
           vm.pictures = vm.pictures.filter(function (value) {
             return value._id !== response.pictureId;
           });
+          $mdToast.show($mdToast.simple({ position: 'bottom right' }).textContent('Image deleted successfully!'));
         })
         .catch(errorCallback);
     }

@@ -77,11 +77,11 @@ module.exports = function (app) {
 
   // Category pictures routes
   app.route('/api/categories/:categoryId/pictures').all(categoriesPolicy.isAllowed)
-    .post(categories.uploadPicture);
+    .post(categories.pictureCreate);
 
   // Single category routes
   app.route('/api/categories/:categoryId/pictures/:pictureId').all(categoriesPolicy.isAllowed)
-    .delete(categories.deletePicture);
+    .delete(categories.pictureDelete);
 
   // Finish by binding the Category middleware
   app.param('categoryId', categories.categoryByID);
