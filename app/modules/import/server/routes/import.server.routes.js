@@ -8,7 +8,7 @@ var importPolicy = require('../policies/import.server.policy'),
 
 module.exports = function (app) {
  
-  app.route('/api/import/:importId//start').all(importPolicy.isAllowed)
+  app.route('/api/import/:importId/start').all(importPolicy.isAllowed)
     .post(importController.start);
 
   app.route('/api/import/:importId/pause').all(importPolicy.isAllowed)
